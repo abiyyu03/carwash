@@ -1,5 +1,7 @@
 <?php
 
+namespace App\Http\Controllers;
+
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -18,3 +20,4 @@ Route::get('/', function () {
 });
 
 Route::get('/product',[ProductController::class,'index']);
+// Route::get('/product','app/Http/Controllers/ProductController@index');
