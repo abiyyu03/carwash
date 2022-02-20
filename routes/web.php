@@ -18,6 +18,12 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+// owner
+Route::get('/owner',[ProductController::class,'indexOwner']);
+Route::get('/owner/login',[Auth\LoginController::class,'loginOwner']);
 
-Route::get('/product',[ProductController::class,'index']);
+// cashier
+Route::get('/cashier',[ProductController::class,'indexCashier']);
+Route::get('/cashier/login',[Auth\LoginController::class,'loginCashier']);
+Route::post('/cashier/login',[Auth\LoginController::class,'authCashier'])->name('cashier.login');
 // Route::get('/product','app/Http/Controllers/ProductController@index');
