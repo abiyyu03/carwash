@@ -1,4 +1,4 @@
-@extends('layouts.master')
+@extends('cashier.layouts.master')
 
 @section('breadcrumb')
 <!-- Content Header (Page header) -->
@@ -20,5 +20,5 @@
 <!-- /.content-header -->
 @endsection
 @section('content')
-  <h1>HELLO WORLD</h1>
+  <h1>HELLO OWNER</h1>
 @endsection

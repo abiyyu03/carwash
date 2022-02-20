@@ -1,10 +1,10 @@
-@include('component.header')
+@include('owner.components.header')
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
 
-  @include('components.navbar')
+  @include('owner.components.navbar')
 
-  @include('components.sidebar')
+  @include('owner.components.sidebar')
 
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
@@ -23,7 +23,7 @@
     <!-- /.content -->
   </div>
   <!-- /.content-wrapper -->
-  @include('components.footer')
+  @include('owner.components.footer')
   <!-- /.control-sidebar -->
 </div>
-@include('components.script')
+@include('owner.components.script')
