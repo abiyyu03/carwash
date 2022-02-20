@@ -6,8 +6,13 @@ use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
-    public function index()
+    public function indexOwner()
     {
-        return view('product.index');
+        return view('owner.product.index');
+    }
+
+    public function indexCashier()
+    {
+        return view('cashier.product.index');
     }
 }
