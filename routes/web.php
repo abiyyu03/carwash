@@ -21,6 +21,7 @@ Route::get('/', function () {
 // owner
 Route::get('/owner',[ProductController::class,'indexOwner']);
 Route::get('/owner/login',[Auth\LoginController::class,'loginOwner']);
+Route::post('/owner/login',[Auth\LoginController::class,'authOwner'])->name('owner.login');
 
 // cashier
 Route::get('/cashier',[ProductController::class,'indexCashier']);

@@ -17,16 +17,16 @@
 <body class="hold-transition login-page">
 <div class="login-box">
   <!-- /.login-logo -->
-  <div class="card card-outline card-primary">
+  <div class="card card-outline card-maroon">
     <div class="card-header text-center">
       <a href="/cashier" class="h1"><b>Jiwalu </b>Carwash</a>
       <h5 class="mb-2">Owner</h5>
     </div>
     <div class="card-body">
-
-      <form action="{{route('cashier.login')}}" method="post">
+      <form action="{{route('owner.login')}}" method="post">
+      @csrf
         <div class="input-group mb-3">
-          <input type="email" class="form-control" placeholder="Email">
+          <input type="email" class="form-control" placeholder="Email" name="email">
           <div class="input-group-append">
             <div class="input-group-text">
               <span class="fas fa-envelope"></span>
@@ -34,7 +34,7 @@
           </div>
         </div>
         <div class="input-group mb-3">
-          <input type="password" class="form-control" placeholder="Password">
+          <input type="password" class="form-control" placeholder="Password" name="password">
           <div class="input-group-append">
             <div class="input-group-text">
               <span class="fas fa-lock"></span>
@@ -46,7 +46,7 @@
           </div>
           <!-- /.col -->
           <div class="col-4">
-            <button type="submit" class="btn btn-primary form-control">Masuk</button>
+            <button type="submit" class="btn bg-maroon form-control">Masuk</button>
           </div> 
           <!-- /.col -->
         </div>
