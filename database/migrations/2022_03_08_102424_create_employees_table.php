@@ -14,7 +14,7 @@ class CreateEmployeesTable extends Migration
     public function up()
     {
         Schema::create('employees', function (Blueprint $table) {
-            $table->string('id_employee')->primary();
+            $table->id('id_employee');
             $table->string('employee_name');
             $table->date('employee_dateof_birth');
             $table->enum('gender',['laki_laki','perempuan']);

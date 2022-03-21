@@ -19,7 +19,7 @@ class CreateServicesTable extends Migration
             $table->string('service_code');
             $table->integer('service_price');
             $table->text('service_description');
-            $table->unsignedInteger('service_packet_id')->references('id_service_packet')->on('service_packets');
+            // $table->unsignedInteger('service_packet_id')->references('id_service_packet')->on('service_packets');
             $table->timestamps();
         });
     }
