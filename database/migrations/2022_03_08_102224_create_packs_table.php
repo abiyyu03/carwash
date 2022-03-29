@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateServicePacketsTable extends Migration
+class CreatePacksTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,11 @@ class CreateServicePacketsTable extends Migration
      */
     public function up()
     {
-        Schema::create('service_packets', function (Blueprint $table) {
-            $table->id('id_service_packet');
-            $table->string('service_packet_name');
-            $table->string('vehicle_type_id')->references('id_vehicle_type')->on('vehicle_types');
-            $table->integer('service_packet_price');
+        Schema::create('packs', function (Blueprint $table) {
+            $table->id('id');
+            $table->string('pack_name');
+            $table->double('pack_origin_price');
+            $table->double('pack_disc_price');
             $table->timestamps();
         });
     }

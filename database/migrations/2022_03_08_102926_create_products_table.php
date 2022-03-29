@@ -14,13 +14,14 @@ class CreateProductsTable extends Migration
     public function up()
     {
         Schema::create('products', function (Blueprint $table) {
-            $table->id('id_product');
+            $table->id('id');
             $table->string('product_name');
             $table->string('product_code');
             $table->text('product_description');
+            $table->double('product_price');
             $table->integer('product_stock');
-            $table->unsignedBigInteger('product_category_id')->references('id_product_category')->on('product_categories');
-            $table->unsignedBigInteger('supplier_id')->references('id_supplier')->on('suppliers');
+            $table->string('image');
+            $table->foreignId('product_category_id');
             $table->timestamps();
         });
     }
@@ -35,5 +36,3 @@ class CreateProductsTable extends Migration
         Schema::dropIfExists('products');
     }
 }
-
-
