@@ -21,6 +21,9 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware('owner')->group(function(){
     Route::get('/',[DashboardController::class,'index']);
+    Route::get('/customer',[CustomerController::class,'index']);
+    Route::get('/transaction',[TransactionController::class,'create']);
+    Route::get('/transaction/selectService',[ServiceController::class,'selectService']);
 });
 
 Route::middleware('supervisor')->group(function(){
