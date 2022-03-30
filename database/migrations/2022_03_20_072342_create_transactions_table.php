@@ -18,7 +18,7 @@ class CreateTransactionsTable extends Migration
             $table->foreignId('customer_id');
             $table->foreignId('user_id');
             $table->timestamp('transaction_time');
-            $table->string('transaction_status')->default();
+            $table->string('transaction_status')->default('');
             $table->timestamps();
         });
     }
