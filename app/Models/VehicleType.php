@@ -2,18 +2,18 @@
 
 namespace App\Models;
 
-use App\Models\VehicleType;
+use App\Models\Customer;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Customer extends Model
+class VehicleType extends Model
 {
     use HasFactory;
 
     protected $guarded = ['id'];
 
-    public function vehicleType()
+    public function customers()
     {
-        return $this->belongsTo(VehicleType::class);
+        return $this->hasMany(Customer::class);
     }
 }
