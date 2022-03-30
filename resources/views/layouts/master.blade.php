@@ -15,8 +15,9 @@
         
         <!-- Main row -->
         <div class="row">
-          @yield('content')
+        @yield('content')
         </div>
+         
         <!-- /.row (main row) -->
       </div><!-- /.container-fluid -->
     </section>
