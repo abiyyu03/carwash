@@ -14,7 +14,7 @@ class CreateTransactionsTable extends Migration
     public function up()
     {
         Schema::create('transactions', function (Blueprint $table) {
-            $table->id('id')->primary();
+            $table->id('id');
             $table->foreignId('customer_id');
             $table->foreignId('user_id');
             $table->timestamp('transaction_time');
