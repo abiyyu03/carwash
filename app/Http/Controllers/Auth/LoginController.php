@@ -32,7 +32,7 @@ class LoginController extends Controller
             }
         } 
         //back if wrong username or password
-        return redirect()->back()->with('message','Username atau password belum sesuai');
+        return redirect()->back()->with('message','Username atau password salah !');
     }
     
     public function logout()
