@@ -51,12 +51,6 @@
                             </p>
                         </a>
                         <ul class="nav nav-treeview">
-                            {{-- <li class="nav-item">
-                                <a href="pages/layout/top-nav.html" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Laporan Penjualan</p>
-                                </a>
-                            </li> --}}
                             <li class="nav-item">
                                 <a href="pages/layout/top-nav-sidebar.html" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
@@ -66,7 +60,7 @@
                             <li class="nav-item">
                                 <a href="pages/layout/boxed.html" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
-                                    <p>Kategori</p>
+                                    <p>Kategori Produk</p>
                                 </a>
                             </li>
                         </ul>
@@ -89,7 +83,7 @@
                             <li class="nav-item">
                                 <a href="pages/charts/flot.html" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
-                                    <p>Flot</p>
+                                    <p>Steam</p>
                                 </a>
                             </li>
                             <li class="nav-item">
@@ -118,7 +112,7 @@
                             <li class="nav-item">
                                 <a href="pages/forms/general.html" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
-                                    <p>Absensi</p>
+                                    <p>Daftar Karyawan</p>
                                 </a>
                             </li>
                             <li class="nav-item">
@@ -128,15 +122,9 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="pages/forms/editors.html" class="nav-link">
+                                <a href="pages/forms/advanced.html" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
-                                    <p>Editors</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="pages/forms/validation.html" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Validation</p>
+                                    <p>Absensi</p>
                                 </a>
                             </li>
                         </ul>
@@ -149,12 +137,6 @@
                             </p>
                         </a>
                         <ul class="nav nav-treeview">
-                            <li class="nav-item">
-                                <a href="pages/forms/general.html" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Daftar Stok</p>
-                                </a>
-                            </li>
                             <li class="nav-item">
                                 <a href="pages/forms/advanced.html" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
@@ -175,19 +157,31 @@
                             <li class="nav-item">
                                 <a href="pages/tables/simple.html" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
-                                    <p>Penjualan Produk</p>
+                                    <p>Laporan Harian</p>
                                 </a>
                             </li>
                             <li class="nav-item">
                                 <a href="pages/tables/data.html" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
-                                    <p>Laporan Steam</p>
+                                    <p>Laporan Bulanan</p>
                                 </a>
                             </li>
                             <li class="nav-item">
                                 <a href="pages/tables/jsgrid.html" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
-                                    <p>Detil Penjualan</p>
+                                    <p>Laporan Tahunan</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="pages/tables/jsgrid.html" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Laporan Penjualan Produk</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="pages/tables/jsgrid.html" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Laporan Penjualan Jasa</p>
                                 </a>
                             </li>
                         </ul>
@@ -208,15 +202,94 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="pages/tables/data.html" class="nav-link">
+                                <!-- <a href="pages/tables/jsgrid.html" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
-                                    <p>DataTables</p>
+                                    <p>Tipe Kendaraan</p>
+                                </a> -->
+                                <!-- <ul class="nav nav-treeview">
+                                    <li class="nav-item">
+                                        <a href="pages/tables/simple.html" class="nav-link">
+                                            <p>Jenis Kendaraan</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="pages/tables/data.html" class="nav-link">
+                                            <p>DataTables</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="pages/tables/jsgrid.html" class="nav-link">
+                                            <p>jsGrid</p>
+                                        </a>
+                                    </li>
+                                </ul> -->
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="nav-icon fas fa-car"></i>
+                            <p>
+                                Kendaraan
+                                <i class="fas fa-angle-left right"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="pages/tables/simple.html" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Tipe Kendaraan</p>
                                 </a>
                             </li>
                             <li class="nav-item">
                                 <a href="pages/tables/jsgrid.html" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>jsGrid</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="nav-icon fas fa-users"></i>
+                            <p>
+                                Account Management
+                                <i class="fas fa-angle-left right"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="pages/tables/simple.html" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Account</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="pages/tables/data.html" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Role Manager</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </li> <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="nav-icon fas fa-file-invoice"></i>
+                            <p>
+                                Invoice
+                                <i class="fas fa-angle-left right"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="pages/tables/simple.html" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Account</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="pages/tables/data.html" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Role Manager</p>
                                 </a>
                             </li>
                         </ul>

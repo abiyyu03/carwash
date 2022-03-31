@@ -17,6 +17,7 @@
         <div class="row">
           @yield('content')
         </div>
+        
         <!-- /.row (main row) -->
       </div><!-- /.container-fluid -->
     </section>
