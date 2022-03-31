@@ -14,10 +14,13 @@ class CreateCustomersTable extends Migration
     public function up()
     {
         Schema::create('customers', function (Blueprint $table) {
-            $table->integer('id_customer')->primary();
+            $table->integer('id')->primary();
             $table->string('customer_name');
             $table->string('customer_contact');
+            $table->string('vehicle_registration_plate');
+            $table->string('vehicle_name');
             $table->timestamps();
+            $table->foreignId('vehicle_type_id');
         });
     }
 

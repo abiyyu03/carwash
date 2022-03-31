@@ -14,11 +14,11 @@ class CreateTransactionsTable extends Migration
     public function up()
     {
         Schema::create('transactions', function (Blueprint $table) {
-            $table->integer('id_transaction')->primary();
-            $table->unsignedBigInteger('customer_id')->references('id_customer')->on('customers');
-            $table->unsignedBigInteger('user_id')->references('id_user')->on('users');
+            $table->id('id');
+            $table->foreignId('customer_id');
+            $table->foreignId('user_id');
             $table->timestamp('transaction_time');
-            $table->string('transaction_status')->default();
+            $table->string('transaction_status')->default('');
             $table->timestamps();
         });
     }

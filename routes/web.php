@@ -21,8 +21,19 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware('owner')->group(function(){
     Route::get('/',[DashboardController::class,'index']);
-    Route::get('/product',[ProductController::class,'index']);
-    Route::get('/paket_steam',[ServicePacketController::class,'index']);
+    Route::get('/customer',[CustomerController::class,'index']);
+    Route::get('/transaction',[TransactionController::class,'create']);
+    Route::get('/transaction/selectService',[ServiceController::class,'selectService']);
+    Route::get('/checkout', function () {
+        return view('transaction.checkout');    
+    });
+    //Vehicle type
+    Route::get('/vehicle_type',[VehicleTypeController::class,'index']);
+    Route::post('/vehicle_type/store',[VehicleTypeController::class,'store'])->name('vehicle_type.store');
+
+    //product category
+    Route::get('/product_category',[ProductCategoryController::class,'index']);
+    Route::post('/product_category/store',[ProductCategoryController::class,'store'])->name('product_category.store');
 });
 
 Route::middleware('supervisor')->group(function(){
