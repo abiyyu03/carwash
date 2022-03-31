@@ -21,6 +21,8 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware('owner')->group(function(){
     Route::get('/',[DashboardController::class,'index']);
+    Route::get('/product',[ProductController::class,'index']);
+    Route::get('/paket_steam',[ServicePacketController::class,'index']);
 });
 
 Route::middleware('supervisor')->group(function(){
