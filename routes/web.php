@@ -34,6 +34,10 @@ Route::middleware('owner')->group(function(){
     //product category
     Route::get('/product_category',[ProductCategoryController::class,'index']);
     Route::post('/product_category/store',[ProductCategoryController::class,'store'])->name('product_category.store');
+
+    //product 
+    Route::get('/product',[ProductController::class,'index']);
+    Route::post('/product/store',[ProductController::class,'store'])->name('product.store');
 });
 
 Route::middleware('supervisor')->group(function(){
