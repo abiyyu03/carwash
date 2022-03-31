@@ -52,8 +52,8 @@ Route::middleware('cashier')->group(function(){
 //Authentication's route 
 Route::get('/login',[Auth\LoginController::class,'login']);
 Route::post('/login',[Auth\LoginController::class,'login_process'])->name('logins.login');
-Route::get('/register',[Auth\RegisterController::class,'register']);
-Route::post('/register',[Auth\RegisterController::class,'register_process'])->name('registers.register');
+Route::get('/register',[Auth\RegisterController::class,'index']);
+Route::post('/register',[Auth\RegisterController::class,'store'])->name('registers.register');
 Route::get('/logout',[Auth\LoginController::class,'logout']);
 
 // Route::get('/login_owner',[Auth\LoginController::class,'login_owner']);
