@@ -24,8 +24,14 @@ Route::middleware('owner')->group(function(){
     Route::get('/customer',[CustomerController::class,'index']);
     Route::get('/transaction',[TransactionController::class,'create']);
     Route::get('/transaction/selectService',[ServiceController::class,'selectService']);
-    Route::get('/checkout', function () {
+    Route::get('/transaction/checkout', function () {
         return view('transaction.checkout');    
+    });
+    Route::get('/transaction/selectProduct', function () {
+        return view('transaction.selectProduct');    
+    });
+    Route::get('/transaction2', function () {
+        return view('transaction.transaction2');    
     });
 });
 
