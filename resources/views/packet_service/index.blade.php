@@ -34,7 +34,7 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Tambah Produk</h5>
+        <h5 class="modal-title" id="exampleModalLabel">Tambah Paket Steam</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -42,27 +42,23 @@
       <div class="modal-body">
         <form>
           <div class="form-group">
-            <label for="recipient-name" class="col-form-label">Nama Produk</label>
-            <input type="text" class="form-control" id="nama_product" name="nama_product" required>
+            <label for="recipient-name" class="col-form-label">Nama Paket Steam</label>
+            <input type="text" class="form-control" id="service_packet_name" name="service_packet_name" required>
           </div>
           <div class="form-group">
             <label for="message-text" class="col-form-label">Deskripsi Produk</label>
-            <textarea class="form-control" id="description_product" name="description_product" required></textarea>
+            <textarea class="form-control" id="vehicle_type_id" name="vehicle_type_id" required></textarea>
           </div>
           <div class="form-group">
-            <label for="recipient-name" class="col-form-label">Stok</label>
-            <input type="number" class="form-control" id="stock" name="stock" required>
-          </div>
-          <div class="form-group">
-            <label for="recipient-name" class="col-form-label">Kategori Produk</label>
-            <input type="number" class="form-control" id="category_product_id" name="category_product_id" required>
+            <label for="recipient-name" class="col-form-label">Harga paket steam</label>
+            <input type="number" class="form-control" id="service_packet_price" name="service_packet_price" required>
           </div>
           <div class="form-group">
             <label for="recipient-name" class="col-form-label">Supplier</label>
             <input type="number" class="form-control" id="supplier_id" name="supplier_id" required>
           </div>
           <div class="modal-footer form-group">
-            <button type="submit" class="btn btn-primary">Tambah Produk</button>
+            <button type="submit" class="btn btn-primary">Tambah Paket</button>
           </div>
         </form>
       </div>

@@ -33,6 +33,13 @@ Route::middleware('owner')->group(function(){
     Route::get('/transaction2', function () {
         return view('transaction.transaction2');    
     });
+    //Vehicle type
+    Route::get('/vehicle_type',[VehicleTypeController::class,'index']);
+    Route::post('/vehicle_type/store',[VehicleTypeController::class,'store'])->name('vehicle_type.store');
+
+    //product category
+    Route::get('/product_category',[ProductCategoryController::class,'index']);
+    Route::post('/product_category/store',[ProductCategoryController::class,'store'])->name('product_category.store');
 });
 
 Route::middleware('supervisor')->group(function(){
@@ -51,8 +58,8 @@ Route::middleware('cashier')->group(function(){
 //Authentication's route 
 Route::get('/login',[Auth\LoginController::class,'login']);
 Route::post('/login',[Auth\LoginController::class,'login_process'])->name('logins.login');
-Route::get('/register',[Auth\RegisterController::class,'register']);
-Route::post('/register',[Auth\RegisterController::class,'register_process'])->name('registers.register');
+Route::get('/register',[Auth\RegisterController::class,'index']);
+Route::post('/register',[Auth\RegisterController::class,'store'])->name('registers.register');
 Route::get('/logout',[Auth\LoginController::class,'logout']);
 
 // Route::get('/login_owner',[Auth\LoginController::class,'login_owner']);

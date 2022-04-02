@@ -3,13 +3,13 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\{Product,Product_category};
+use App\Service_Packet;
 
-class ProductController extends Controller
+class ServicePacketController extends Controller
 {
     function index()
     {
-        return view('product.index');
+        return view('service_packet.index');
     }
 
     function store(Request $request)

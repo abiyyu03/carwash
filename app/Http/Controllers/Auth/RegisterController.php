@@ -8,19 +8,36 @@ use App\Models\{User, Role};
 
 class RegisterController extends Controller
 {
-    function register()
+    function index()
     {
-        $roles_data = Role::get();
-        return view('auth.register',compact('roles_data'));
+        $role_data = Role::get();
+        return view('auth.register',compact('role_data'));
     }
 
-    function register_process()
+    function store(Request $request)
     {
-        $data = new User();
-        $data->name = request()->get('name');
-        $data->email = request()->get('email');
-        $data->password = bcrypt(request()->get('password'));
-        $data->role_id = request()->get('role_id');
-        dd($data);
+        $user_data = $request->validate([
+            'name' => ['required'],
+            'email' => ['required','unique:users','email','max:255'],
+            'password' => ['required'],
+            'role_id' => ['required']
+        ]);
+        
+        // $user_data = User::create([
+        //     'id_user' => rand(),
+        //     'name' => $request->name,
+        //     'email' => $request->email,
+        //     'password' => Hash::make($request->password),
+        //     'role_id' => $request->role_id
+        // ]);
+        $user_data = new User();
+        $user_data->id_user = rand();
+        $user_data->name = $request->get('name');
+        $user_data->email = $request->get('email');
+        $user_data->password = bcrypt($request->get('password'));
+        $user_data->role_id = $request->get('role_id');
+        $user_data->save();
+
+        return redirect()->back()->with('success','Akun Berhasil didaftarkan');
     }
 }
