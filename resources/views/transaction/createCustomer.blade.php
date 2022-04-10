@@ -19,7 +19,7 @@
 <!-- /.content-header -->
 @endsection
 @section('content')
-<div class="container-fluid">
+<div class="container-fluid ">
 <div class="card">
     <div class="card-body">
         <form action="" method="post">
@@ -46,7 +46,8 @@
                 </select>
             </div>
             <div class="form-group">
-                <button class="bg-maroon btn " type="submit">Simpan</button>
+                <!-- <button class="bg-maroon btn " type="submit">Simpan dan lanjutkan </button> -->
+                <a href="/transaction2" class="btn bg-maroon">Simpan dan lanjutkan</a>
             </div>
             
         </form>

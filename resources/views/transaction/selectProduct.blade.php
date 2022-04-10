@@ -60,5 +60,6 @@
 		@endforeach
 		
 	</div>
+  <a href="/transaction/checkout" class="btn bg-maroon">Simpan dan lanjutkan</a>
 </div>
 @endsection
