@@ -6,7 +6,7 @@
   <div class="container-fluid">
     <div class="row mb-2">
       <div class="col-sm-6">
-        <h1 class="m-0">Daftar Karyawan</h1>
+        <h1 class="m-0">Karyawan</h1>
       </div><!-- /.col -->
       <div class="col-sm-6">
         <ol class="breadcrumb float-sm-right">
@@ -21,49 +21,74 @@
 @endsection
 @section('content')
 <!-- create data -->
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-  <i class="fas fa-plus"></i>
-  Tambah Data
-</button>
-<div class="card">
-  <div class="card-body">
-    <h1>asdasd</h1>
-  </div>
+<div class="container-fluid">
+    <div class=" d-flex justify-content-end">
+      <button type="button" class="btn bg-maroon" data-toggle="modal" data-target="#exampleModal">
+          <i class="fas fa-plus"></i>
+          Tambah Karyawan
+      </button>
+    </div>
+    <div class="card mt-3">
+        <div class="card-body">
+            <h1>karyawan</h1>
+        </div>
+    </div>
 </div>
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Tambah Produk</h5>
+        <h5 class="modal-title" id="exampleModalLabel">Tambah Data Karyawan</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
-        <form>
-          <div class="form-group">
-            <label for="recipient-name" class="col-form-label">Nama Produk</label>
-            <input type="text" class="form-control" id="nama_product" name="nama_product" required>
-          </div>
-          <div class="form-group">
-            <label for="message-text" class="col-form-label">Deskripsi Produk</label>
-            <textarea class="form-control" id="description_product" name="description_product" required></textarea>
-          </div>
-          <div class="form-group">
-            <label for="recipient-name" class="col-form-label">Stok</label>
-            <input type="number" class="form-control" id="stock" name="stock" required>
-          </div>
-          <div class="form-group">
-            <label for="recipient-name" class="col-form-label">Kategori Produk</label>
-            <input type="number" class="form-control" id="category_product_id" name="category_product_id" required>
-          </div>
-          <div class="form-group">
-            <label for="recipient-name" class="col-form-label">Supplier</label>
-            <input type="number" class="form-control" id="supplier_id" name="supplier_id" required>
-          </div>
-          <div class="modal-footer form-group">
-            <button type="submit" class="btn btn-primary">Tambah Produk</button>
-          </div>
+        <form method="POST" action="{{route('employee.store')}}">
+          @csrf
+            <div class="form-group">
+                <label for="employee_fullname" class="col-form-label">Nama lengkap</label>
+                <input type="text" class="form-control" value="{{old('employee_fullname')}}" id="employee_fullname" name="employee_fullname" required>
+            </div>
+            <div class="form-group">
+                <label for="employee_nickname" class="col-form-label">Nama Panggilan</label>
+                <input type="text" class="form-control" value="{{old('employee_nickname')}}" id="employee_nickname" name="employee_nickname" required>
+            </div>
+            <div class="form-group">
+                <label for="employee_nik" class="col-form-label">NIK</label>
+                <input type="text" class="form-control" value="{{old('employee_nik')}}" id="employee_nik" name="employee_nik" required>
+            </div>
+            <div class="form-group">
+                <label for="employee_birthdate" class="col-form-label">Tanggal Lahir</label>
+                <input type="date" class="form-control" value="{{old('employee_birthdate')}}" id="employee_birthdate" name="employee_birthdate" required>
+            </div>
+            <div class="form-group">
+                <label for="employee_gender" class="col-form-label">Gender</label>
+                <select name="employee_gender" id="employee_gender" class="form-control">
+                  <option>-</option>
+                  <option value="Laki-Laki">Laki-Laki</option>
+                  <option value="Perempuan">Perempuan</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="employee_contact" class="col-form-label">Kontak</label>
+                <input type="text" class="form-control" value="{{old('employee_contact')}}" id="employee_contact" name="employee_contact" required>
+            </div>
+            <div class="form-group">
+                <label for="employee_photo" class="col-form-label">Pas Foto</label>
+                <input type="text" class="form-control" value="{{old('employee_photo')}}" id="employee_photo" name="employee_photo" required>
+            </div>
+            <div class="form-group">
+                <label for="employee_email" class="col-form-label">Email</label>
+                <input type="email" class="form-control" value="{{old('employee_email')}}" id="employee_email" name="employee_email" required>
+            </div>
+            <div class="form-group">
+                <label for="employee_address" class="col-form-label">Alamat</label>
+                <input type="text" class="form-control" value="{{old('employee_address')}}" id="employee_address" name="employee_address" required>
+            </div>
+            <div class="modal-footer form-group">
+                <button type="submit" class="btn bg-maroon">Tambah Data</button>
+            </div>
         </form>
       </div>
     </div>
