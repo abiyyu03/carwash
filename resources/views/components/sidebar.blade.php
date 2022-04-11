@@ -54,48 +54,58 @@
                             <li class="nav-item">
                                 <a href="pages/layout/top-nav-sidebar.html" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
-                                    <p>Daftar Produk</p>
+                                    <p>Kategori Produk</p>
                                 </a>
                             </li>
                             <li class="nav-item">
                                 <a href="pages/layout/boxed.html" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
-                                    <p>Kategori Produk</p>
+                                    <p>Daftar Produk</p>
+                                    <i class="right fas fa-angle-left"></i>
                                 </a>
+                                <ul class="nav nav-treeview">
+                                    <li class="nav-item">
+                                        <a href="pages/charts/chartjs.html" class="nav-link">
+                                            <i class="far fa-dot nav-icon"></i>
+                                            <p>Cuci Mobil</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="pages/charts/flot.html" class="nav-link">
+                                            <i class="far fa-dot nav-icon"></i>
+                                            <p>Cuci Motor</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="pages/charts/inline.html" class="nav-link">
+                                            <i class="far fa-dot nav-icon"></i>
+                                            <p>Salon</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="pages/charts/uplot.html" class="nav-link">
+                                            <i class="far fa-dot nav-icon"></i>
+                                            <p>Aksesoris</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="pages/charts/uplot.html" class="nav-link">
+                                            <i class="far fa-dot nav-icon"></i>
+                                            <p>Makanan</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="pages/charts/uplot.html" class="nav-link">
+                                            <i class="far fa-dot nav-icon"></i>
+                                            <p>Minuman</p>
+                                        </a>
+                                    </li>
+                                </ul>
                             </li>
-                        </ul>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#" class="nav-link">
-                            <i class="nav-icon fas fa-car"></i>
-                            <p>
-                                Steam
-                                <i class="right fas fa-angle-left"></i>
-                            </p>
-                        </a>
-                        <ul class="nav nav-treeview">
                             <li class="nav-item">
-                                <a href="pages/charts/chartjs.html" class="nav-link">
+                                <a href="/vehicle_type" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
-                                    <p>Paket Steam</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="pages/charts/flot.html" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Steam</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="pages/charts/inline.html" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Inline</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="pages/charts/uplot.html" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>uPlot</p>
+                                    <p>Tipe Kendaraan</p>
                                 </a>
                             </li>
                         </ul>
@@ -142,6 +152,10 @@
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>Daftar Supplier</p>
                                 </a>
+                                <a href="pages/forms/advanced.html" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Daftar Inventory</p>
+                                </a>
                             </li>
                         </ul>
                     </li>
@@ -164,24 +178,6 @@
                                 <a href="pages/tables/data.html" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>Laporan Bulanan</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="pages/tables/jsgrid.html" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Laporan Tahunan</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="pages/tables/jsgrid.html" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Laporan Penjualan Produk</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="pages/tables/jsgrid.html" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Laporan Penjualan Jasa</p>
                                 </a>
                             </li>
                         </ul>
@@ -228,29 +224,6 @@
                     </li>
                     <li class="nav-item">
                         <a href="#" class="nav-link">
-                            <i class="nav-icon fas fa-car"></i>
-                            <p>
-                                Kendaraan
-                                <i class="fas fa-angle-left right"></i>
-                            </p>
-                        </a>
-                        <ul class="nav nav-treeview">
-                            <li class="nav-item">
-                                <a href="pages/tables/simple.html" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Tipe Kendaraan</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="pages/tables/jsgrid.html" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>jsGrid</p>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#" class="nav-link">
                             <i class="nav-icon fas fa-users"></i>
                             <p>
                                 Account Management
@@ -271,7 +244,8 @@
                                 </a>
                             </li>
                         </ul>
-                    </li> <li class="nav-item">
+                    </li> 
+                    <li class="nav-item">
                         <a href="#" class="nav-link">
                             <i class="nav-icon fas fa-file-invoice"></i>
                             <p>
