@@ -24,7 +24,10 @@
     <div class="card-body">
     @if($message = Session::get('message'))
         <div class="alert alert-danger">
-            <p>{{$message}}</p>
+            <p>
+              <i class="fas fa-times"></i>
+               {{$message}}
+            </p>
         </div>
     @endif
       <form action="{{route('logins.login')}}" method="post">
