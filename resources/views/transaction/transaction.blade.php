@@ -26,13 +26,13 @@
             <div class="card-body">
                 <form action="">
                 <div class="form-group">
-                <label for="vehicle_type_id">Kategori</label>
+                <label for="vehicle_type_id">Kategori Produk</label>
                 <select name="vehicle_type_id" class="form-control">
                 <option value="">Lambhorgini</option>
                 </select>
             </div>
             <div class="form-group">
-                <label for="vehicle_type_id">Kategori produk</label>
+                <label for="vehicle_type_id">Nama Produk</label>
                 <select name="vehicle_type_id" class="form-control">
                 <option value="">Lambhorgini</option>
                 </select>
@@ -40,9 +40,14 @@
             <div class="form-group">
                 <label for="vehicle_type_id">Jumlah Produk</label>
                 <input name="vehicle_type_id" type="number"min="1" class="form-control">
-                
-                
             </div>
+            <div class="form-group">
+                <label for="vehicle_type_id">Nama Karyawan</label>
+                <select name="vehicle_type_id" class="form-control">
+                <option value="">Lambhorgini</option>
+                </select>
+            </div>
+            
                 <div class="form-group">
                 <a href="" class="btn bg-maroon ml-2">Tambah</a>
                 </div>
@@ -63,6 +68,7 @@
                         <th>Nama Produk</th>
                         <th>Jumlah Produk</th>
                         <th>Harga Satuan </th>
+                        <th>Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -71,6 +77,7 @@
                         <td>Air Mineral</td>
                         <td>5</td>
                         <td>3000</td>
+                        <td><a href="#" class="btn bg-maroon">edit</a></td>
                     </tr>
                 </tbody>
             </table>
