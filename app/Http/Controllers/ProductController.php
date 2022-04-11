@@ -11,7 +11,14 @@ class ProductController extends Controller
 {
     function index()
     {
-        if(request()->ajax()){
+        $productCategory_data = ProductCategory::get();
+        // $product_data = Product::with('productCategory')->get();
+        // return Datatables::of(Product::with('productCategory')->get())->make(true);
+        return view('product.index',compact('productCategory_data'));
+    }
+    function productJson(Request $request)
+    {
+        if($request->ajax()){
             $product_data = Product::with('productCategory');
             return Datatables::eloquent($product_data)
                 ->addColumn('productCategory',function (Product $product){
@@ -19,10 +26,6 @@ class ProductController extends Controller
                 })
                 ->toJson();
         }
-        $productCategory_data = ProductCategory::get();
-        // $product_data = Product::with('productCategory')->get();
-        // return Datatables::of(Product::with('productCategory')->get())->make(true);
-        return view('product.index',compact('productCategory_data'));
     }
 
     function store(Request $request)

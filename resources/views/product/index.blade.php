@@ -117,15 +117,15 @@
 </div>
 @endsection
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>  
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.js"></script>
-    <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"></script>
-<script>
+  <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.js"></script>
+  <script src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"></script>
+<script type="text/javascript">
 $(document).ready(function(){
   $('.data-product').DataTable({
     processing:true,
     serverSide:true,
-    ajax:"{{route('product.index')}}",
+    ajax:"{{route('product.productJson')}}",
     columns:[
       {data:"id",name:"id"},
       {data:"product_name",name:"product_name"},
@@ -137,7 +137,7 @@ $(document).ready(function(){
         data:"image",
         name:"image",
         render: function(data,type,row){
-          return '<img src="img/'+data+'">';
+          return '<img src="img/product/'+data+'">';
         }
       },
       {data:"productCategory",name:"productCategory.category_name"}
