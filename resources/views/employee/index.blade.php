@@ -30,7 +30,26 @@
     </div>
     <div class="card mt-3">
         <div class="card-body">
-            <h1>karyawan</h1>
+          <div class="table-responsive">
+            <table class="table data-employee">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Nama Panjang Karyawan</th>
+                  <th>Nama Panggilan</th>
+                  <th>NIK</th>    
+                  <th>Jenis Kelamin</th>    
+                  <th>Tanggal Lahir</th>
+                  <th>PAS Foto</th> 
+                  <th>Kontak</th>   
+                  <th>Email</th>   
+                  <th>Alamat</th>
+                </tr>
+              </thead>
+              <tbody>
+              </tbody>
+            </table>
+          </div>
         </div>
     </div>
 </div>
@@ -95,3 +114,38 @@
   </div>
 </div>
 @endsection
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>  
+  <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.js"></script>
+  <script src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+  $('.data-employee').DataTable({
+    processing:true,
+    serverSide:true,
+    // sortable:true,
+    // searchable:true,
+    ajax:"{{route('employee.employeeJson')}}",
+    columns:[
+      {data:"id_employee",name:"id_employee"},
+      {data:"employee_fullname",name:"employee_fullname"},
+      {data:"employee_nickname",name:"employee_nickname"},
+      {data:"employee_nik",name:"employee_nik"},
+      {data:"employee_gender",name:"employee_gender"},
+      {data:"employee_birthdate",name:"employee_birthdate"},
+      {data:"employee_photo",name:"employee_photo"},
+      {data:"employee_contact",name:"employee_contact"},
+      {data:"employee_email",name:"employee_email"},
+      {data:"employee_address",name:"employee_address"}
+      // {
+      //   data:"image",
+      //   name:"image",
+      //   render: function(data,type,row){
+      //     return '<img src="img/product/'+data+'">';
+      //   }
+      // },
+      // {data:"productCategory",name:"productCategory.category_name"}
+    ]
+  });
+});
+</script>
