@@ -42,11 +42,15 @@ Route::middleware('owner')->group(function(){
     Route::post('/product_category/store',[ProductCategoryController::class,'store'])->name('product_category.store');
 
     //product 
-    Route::get('/product',[ProductController::class,'index'])->name('product.index');
+    Route::get('/product',[ProductController::class,'index']);
+    Route::get('/productJson',[ProductController::class,'productJson'])->name('product.productJson');
     Route::post('/product/store',[ProductController::class,'store'])->name('product.store');
+    // Route::get('/product/edit/{id}',[ProductController::class,'edit']);
+    // Route::get('/product/update',[ProductController::class,'update'])->name('product.update');
 
     //Employee 
-    Route::get('/employee',[EmployeeController::class,'index'])->name('employee.index');
+    Route::get('/employee',[EmployeeController::class,'index']);
+    Route::get('/employeeJson',[EmployeeController::class,'employeeJson'])->name('employee.employeeJson');
     Route::post('/employee/store',[EmployeeController::class,'store'])->name('employee.store');
 });
 
