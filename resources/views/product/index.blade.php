@@ -49,6 +49,7 @@
               <th>Stok Produk</th>
               <th>Gambar Produk</th>
               <th>Kategori Produk</th>
+              <th>Aksi</th>
             </tr>
           </thead>
           <tbody>
@@ -140,7 +141,13 @@ $(document).ready(function(){
           return '<img src="img/product/'+data+'">';
         }
       },
-      {data:"productCategory",name:"productCategory.category_name"}
+      {data:"productCategory",name:"productCategory.category_name"},
+      {
+        data:"image",
+        render: function(data,type,row){
+          return '<a href="#" class="btn btn-danger"><i class="fas fa-pencil-alt"></i></a>';
+        }
+      }
     ]
   });
 });
