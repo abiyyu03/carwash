@@ -20,32 +20,44 @@
 @endsection
 @section('content')
 <div class="container-fluid">
-<div class="card">
-    <div class="card-body">
-    <div class="table-responsive">
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>No</th>
-                        <th>Nama Produk</th>
-                        <th>Jumlah Produk</th>
-                        <th>Harga Satuan </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>Air Mineral</td>
-                        <td>5</td>
-                        <td>3000</td>
-                    </tr>
-                </tbody>
-            </table>
+<div class="row">
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+                <form action="">
+                <div class="form-group">
+                <label for="vehicle_type_id">Kategori Produk</label>
+                <select name="vehicle_type_id" class="form-control">
+                <option value="">Lambhorgini</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="vehicle_type_id">Nama Produk</label>
+                <select name="vehicle_type_id" class="form-control">
+                <option value="">Lambhorgini</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="vehicle_type_id">Jumlah Produk</label>
+                <input name="vehicle_type_id" type="number"min="1" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="vehicle_type_id">Nama Karyawan</label>
+                <select name="vehicle_type_id" class="form-control">
+                <option value="">Lambhorgini</option>
+                </select>
+            </div>
+            
+                <div class="form-group">
+                <a href="" class="btn bg-maroon ml-2">Tambah</a>
+                </div>
+                </form>
+            </div>
         </div>
 
     </div>
-</div>
-<div class="card">
+    <div class="col-md-8">
+    <div class="card">
     <div class="card-body">
         Halaman Transaksi
         <div class="table-responsive">
@@ -56,6 +68,7 @@
                         <th>Nama Produk</th>
                         <th>Jumlah Produk</th>
                         <th>Harga Satuan </th>
+                        <th>Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -64,6 +77,7 @@
                         <td>Air Mineral</td>
                         <td>5</td>
                         <td>3000</td>
+                        <td><a href="#" class="btn bg-maroon">edit</a></td>
                     </tr>
                 </tbody>
             </table>
@@ -74,6 +88,9 @@
     <div class="card-body d-flex justify-content-end">
        <h3>Total: Rp.6000</h3>
         <a href="" class="btn bg-maroon ml-2">Proses</a>
+    </div>
+</div>
+</div>
     </div>
 </div>
 </div>

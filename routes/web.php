@@ -22,16 +22,10 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('owner')->group(function(){
     Route::get('/',[DashboardController::class,'index']);
     Route::get('/customer',[CustomerController::class,'index']);
-    Route::get('/transaction',[TransactionController::class,'create']);
-    Route::get('/transaction/selectService',[ServiceController::class,'selectService']);
+    Route::get('/transaction/create_customer',[TransactionController::class,'create']);
+   
     Route::get('/transaction/checkout', function () {
-        return view('transaction.checkout');    
-    });
-    Route::get('/transaction/selectProduct', function () {
-        return view('transaction.selectProduct');    
-    });
-    Route::get('/transaction2', function () {
-        return view('transaction.transaction2');    
+        return view('transaction.transaction');    
     });
     //Vehicle type
     Route::get('/vehicle_type',[VehicleTypeController::class,'index']);
@@ -52,6 +46,9 @@ Route::middleware('owner')->group(function(){
     Route::get('/employee',[EmployeeController::class,'index']);
     Route::get('/employeeJson',[EmployeeController::class,'employeeJson'])->name('employee.employeeJson');
     Route::post('/employee/store',[EmployeeController::class,'store'])->name('employee.store');
+    
+    Route::get('/inventory',[InventoryController::class,'index']);
+
 });
 
 Route::middleware('supervisor')->group(function(){
