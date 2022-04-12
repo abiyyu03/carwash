@@ -23,7 +23,7 @@
   <div class=" d-flex justify-content-end">
       <button type="button" class="btn bg-maroon" data-toggle="modal" data-target="#exampleModal">
           <i class="fas fa-plus"></i>
-          Tambah Invetory
+          Tambah Inventory
       </button>
     </div>
     <div class="card mt-3">
@@ -45,8 +45,28 @@
         <form method="POST" action="{{route('vehicle_type.store')}}">
           @csrf
             <div class="form-group">
-                <label for="vehicle_type" class="col-form-label">Tipe Kendaraan</label>
-                <input type="text" class="form-control" id="nama_product" name="vehicle_type" required>
+                <label for="Item_name" class="col-form-label">Nama Barang</label>
+                <input type="text" class="form-control" id="" name="item_name" required>
+            </div>
+            <div class="form-group">
+                <label for="Item_code" class="col-form-label">Kode Barang</label>
+                <input type="text" class="form-control" id="" name="item_code" required>
+            </div>
+            <div class="form-group">
+                <label for="Item_stock" class="col-form-label">Jumlah Barang</label>
+                <input type="text" class="form-control" id="" name="item_stock" required>
+            </div>
+            <div class="form-group">
+                <label for="Item_dosage" class="col-form-label">Takaran Barang</label>
+                <input type="number" class="form-control" id="" name="item_dosage" required>
+            </div>
+            <div class="form-group">
+                <label for="Item_capital_price" class="col-form-label">Harga modal</label>
+                <input type="number" class="form-control" id="" name="item_capital_price" required>
+            </div>
+            <div class="form-group">
+                <label for="Item_selling_price" class="col-form-label">Harga jual</label>
+                <input type="number" class="form-control" id="" name="item_selling_price" required>
             </div>
             <div class="modal-footer form-group">
                 <button type="submit" class="btn btn-primary">Tambah Tipe</button>
