@@ -42,21 +42,21 @@
         </button>
       </div>
       <div class="modal-body">
-        <form method="POST" action="{{route('vehicle_type.store')}}">
+        <form method="POST" action="{{route('inventory.store')}}">
           @csrf
             <div class="form-group">
                 <label for="Item_name" class="col-form-label">Nama Barang</label>
-                <input type="text" class="form-control" id="" name="item_name" required>
+                <input type="text" class="form-control" id="" name="inventory_name" required>
             </div>
-            <div class="form-group">
+            <!-- <div class="form-group">
                 <label for="Item_code" class="col-form-label">Kode Barang</label>
                 <input type="text" class="form-control" id="" name="item_code" required>
-            </div>
+            </div> -->
             <div class="form-group">
                 <label for="Item_stock" class="col-form-label">Jumlah Barang</label>
-                <input type="text" class="form-control" id="" name="item_stock" required>
+                <input type="text" class="form-control" id="" name="inventory_amount" required>
             </div>
-            <div class="form-group">
+            <!-- <div class="form-group">
                 <label for="Item_dosage" class="col-form-label">Takaran Barang</label>
                 <input type="number" class="form-control" id="" name="item_dosage" required>
             </div>
@@ -67,7 +67,7 @@
             <div class="form-group">
                 <label for="Item_selling_price" class="col-form-label">Harga jual</label>
                 <input type="number" class="form-control" id="" name="item_selling_price" required>
-            </div>
+            </div> -->
             <div class="modal-footer form-group">
                 <button type="submit" class="btn btn-primary">Tambah Tipe</button>
             </div>
