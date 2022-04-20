@@ -44,6 +44,7 @@ Route::middleware('owner')->group(function(){
     Route::post('/employee/store',[EmployeeController::class,'store'])->name('employee.store');
     
     Route::get('/inventory',[InventoryController::class,'index']);
+    Route::post('/inventory/store',[InventoryController::class,'store'])->name('inventory.store');
 
 });
 

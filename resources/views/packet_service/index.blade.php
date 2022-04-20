@@ -46,16 +46,8 @@
             <input type="text" class="form-control" id="service_packet_name" name="service_packet_name" required>
           </div>
           <div class="form-group">
-            <label for="message-text" class="col-form-label">Deskripsi Produk</label>
-            <textarea class="form-control" id="vehicle_type_id" name="vehicle_type_id" required></textarea>
-          </div>
-          <div class="form-group">
             <label for="recipient-name" class="col-form-label">Harga paket steam</label>
             <input type="number" class="form-control" id="service_packet_price" name="service_packet_price" required>
-          </div>
-          <div class="form-group">
-            <label for="recipient-name" class="col-form-label">Supplier</label>
-            <input type="number" class="form-control" id="supplier_id" name="supplier_id" required>
           </div>
           <div class="modal-footer form-group">
             <button type="submit" class="btn btn-primary">Tambah Paket</button>
