@@ -26,30 +26,32 @@
             <div class="card-body">
                 <form action="">
                 <div class="form-group">
-                <label for="vehicle_type_id">Kategori Produk</label>
-                <select name="vehicle_type_id" class="form-control">
-                <option value="">Lambhorgini</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="vehicle_type_id">Nama Produk</label>
-                <select name="vehicle_type_id" class="form-control">
-                <option value="">Lambhorgini</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="vehicle_type_id">Jumlah Produk</label>
-                <input name="vehicle_type_id" type="number"min="1" class="form-control">
-            </div>
-            <div class="form-group">
-                <label for="vehicle_type_id">Nama Karyawan</label>
-                <select name="vehicle_type_id" class="form-control">
-                <option value="">Lambhorgini</option>
-                </select>
-            </div>
-            
+                    <label for="vehicle_type_id">Kategori Produk</label>
+                    <select name="vehicle_type_id" class="form-control">
+                        <option value="">Lambhorgini</option>
+                    </select>
+                </div>
                 <div class="form-group">
-                <a href="" class="btn bg-maroon ml-2">Tambah</a>
+                    <label for="vehicle_type_id">Nama Produk</label>
+                    <select name="vehicle_type_id" class="form-control">
+                        <option value="">Lambhorgini</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="vehicle_type_id">Jumlah Produk</label>
+                    <input name="vehicle_type_id" type="number"min="1" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="vehicle_type_id">Nama Karyawan</label>
+                    <select name="vehicle_type_id" id="employee_id" class="form-control">
+                        <option>-</option>
+                    @foreach($employee_data as $employee)
+                        <option value="{{$employee->id_employee}}">{{$employee->employee_fullname}}</option>
+                    @endforeach
+                    </select>
+                </div>
+                <div class="form-group">
+                    <a href="" class="btn bg-maroon ml-2">Tambah</a>
                 </div>
                 </form>
             </div>
@@ -59,13 +61,14 @@
     <div class="col-md-8">
     <div class="card">
     <div class="card-body">
-        Halaman Transaksi
         <div class="table-responsive">
-            <table class="table">
+            <p></p>
+            <table class="table mb-4">
                 <thead>
                     <tr>
                         <th>No</th>
                         <th>Nama Produk</th>
+                        <th>Jumlah Produk</th>
                         <th>Jumlah Produk</th>
                         <th>Harga Satuan </th>
                         <th>Aksi</th>
@@ -77,6 +80,7 @@
                         <td>Air Mineral</td>
                         <td>5</td>
                         <td>3000</td>
+                        <td>ss</td>
                         <td><a href="#" class="btn bg-maroon">edit</a></td>
                     </tr>
                 </tbody>
@@ -95,3 +99,6 @@
 </div>
 </div>
 @endsection
+<script>
+    $("#employee_id").select2();
+</script>
