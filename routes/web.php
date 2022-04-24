@@ -22,11 +22,11 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('owner')->group(function(){
     Route::get('/',[DashboardController::class,'index']);
     Route::get('/customer',[CustomerController::class,'index']);
-    Route::get('/transaction/create_customer',[TransactionController::class,'create']);
-   
-    Route::get('/transaction/checkout', function () {
-        return view('transaction.transaction');    
-    });
+
+    //transaction
+    Route::get('/transaction/create_customer',[TransactionController::class,'createCustomer']);
+    Route::get('/transaction/checkout',[TransactionController::class,'checkout']);
+
     //Vehicle type
     Route::get('/vehicle_type',[VehicleTypeController::class,'index']);
     Route::post('/vehicle_type/store',[VehicleTypeController::class,'store'])->name('vehicle_type.store');
