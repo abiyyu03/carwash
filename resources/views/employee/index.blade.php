@@ -123,8 +123,6 @@ $(document).ready(function(){
   $('.data-employee').DataTable({
     processing:true,
     serverSide:true,
-    // sortable:true,
-    // searchable:true,
     ajax:"{{route('employee.employeeJson')}}",
     columns:[
       {data:"id_employee",name:"id_employee"},
