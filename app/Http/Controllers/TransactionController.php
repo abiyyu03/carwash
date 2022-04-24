@@ -3,11 +3,18 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Employee;
 
 class TransactionController extends Controller
 {
-    function create()
+    function checkout()
     {
-        return view('transaction.createCustomer');
+        $employee_data = Employee::get(); 
+        return view('transaction.transaction',compact('employee_data'));
+    }
+
+    function createCustomer()
+    {
+        return view('transaction.transaction');
     }
 }
