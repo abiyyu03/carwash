@@ -24,6 +24,7 @@ class ProductController extends Controller
                 ->addColumn('productCategory',function (Product $product){
                     return $product->productCategory->category_name;
                 })
+                ->addIndexColumn()
                 ->toJson();
         }
     }
@@ -63,8 +64,13 @@ class ProductController extends Controller
         return redirect()->back()->with('success','Data Produk berhasil disimpan');
     }
 
-    // function jsonProduct()
-    // {
-    //     return Datatables::of(Product::with('productCategory')->get())->make(true);
-    // }
+    function destroy()
+    {
+
+    }
+
+    function update(Request $request)
+    {
+
+    }
 }
