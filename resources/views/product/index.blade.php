@@ -44,7 +44,6 @@
               <th>#</th>
               <th>Nama Produk</th>
               <th>Kode Produk</th>
-              <th>Deskripsi Produk</th>
               <th>Harga Produk</th>
               <th>Stok Produk</th>
               <th>Gambar Produk</th>
@@ -118,9 +117,9 @@
 </div>
 @endsection
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>  
-  <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.js"></script>
-  <script src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.js"></script>
+<script src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
   $('.data-product').DataTable({
@@ -128,10 +127,10 @@ $(document).ready(function(){
     serverSide:true,
     ajax:"{{route('product.productJson')}}",
     columns:[
-      {data:"id",name:"id"},
+      // {data:"DT_Row_Index",name:"DT_Row_Index", orderable:false, searchable:false},
+      {data:"DT_RowIndex",name:"DT_RowIndex", orderable:false, searchable:false},
       {data:"product_name",name:"product_name"},
       {data:"product_code",name:"product_code"},
-      {data:"product_description",name:"product_description"},
       {data:"product_price",name:"product_price"},
       {data:"product_stock",name:"product_stock"},
       {
@@ -143,7 +142,6 @@ $(document).ready(function(){
       },
       {data:"productCategory",name:"productCategory.category_name"},
       {
-        data:"image",
         render: function(data,type,row){
           return '<a href="#" class="btn btn-danger"><i class="fas fa-pencil-alt"></i></a>';
         }

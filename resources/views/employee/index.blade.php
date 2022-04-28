@@ -44,6 +44,7 @@
                   <th>Kontak</th>   
                   <th>Email</th>   
                   <th>Alamat</th>
+                  <th>Aksi</th>
                 </tr>
               </thead>
               <tbody>
@@ -95,7 +96,7 @@
             </div>
             <div class="form-group">
                 <label for="employee_photo" class="col-form-label">Pas Foto</label>
-                <input type="text" class="form-control" value="{{old('employee_photo')}}" id="employee_photo" name="employee_photo" required>
+                <input type="file" class="form-control" value="{{old('employee_photo')}}" id="employee_photo" name="employee_photo" required>
             </div>
             <div class="form-group">
                 <label for="employee_email" class="col-form-label">Email</label>
@@ -125,16 +126,23 @@ $(document).ready(function(){
     serverSide:true,
     ajax:"{{route('employee.employeeJson')}}",
     columns:[
-      {data:"id_employee",name:"id_employee"},
+      // {data:"DT_Row_Index",name:"DT_Row_Index", orderable:false, searchable:false},
+      {data:"DT_RowIndex",name:"DT_RowIndex", orderable:false, searchable:false},
       {data:"employee_fullname",name:"employee_fullname"},
       {data:"employee_nickname",name:"employee_nickname"},
       {data:"employee_nik",name:"employee_nik"},
       {data:"employee_gender",name:"employee_gender"},
       {data:"employee_birthdate",name:"employee_birthdate"},
-      {data:"employee_photo",name:"employee_photo"},
       {data:"employee_contact",name:"employee_contact"},
       {data:"employee_email",name:"employee_email"},
-      {data:"employee_address",name:"employee_address"}
+      {data:"employee_address",name:"employee_address"},
+      {data:"employee_photo",name:"employee_photo"},
+      {
+        data:"id_employee",
+        render: function(data,type,row){
+          return '<a href="/employee/edit/'+data+'" class="btn btn-warning"><i class="fas fa-edit"></i></a> <a href="" class="btn btn-danger"><i class="fas fa-trash-alt"></i></a>';
+        }
+      }
       // {
       //   data:"image",
       //   name:"image",

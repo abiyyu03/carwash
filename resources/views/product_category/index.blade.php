@@ -30,7 +30,19 @@
     </div>
     <div class="card mt-3">
         <div class="card-body">
-            <h1>asdasd</h1>
+          <div class="table-responsive">
+            <table class="table data-productCategory">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Nama Kategori</th>
+                  <th>Aksi</th>
+                </tr>
+              </thead>
+              <tbody>
+              </tbody>
+            </table>
+          </div>
         </div>
     </div>
 </div>
@@ -59,3 +71,41 @@
   </div>
 </div>
 @endsection
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>  
+  <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.js"></script>
+  <script src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+  $('.data-productCategory').DataTable({
+    processing:true,
+    serverSide:true,
+    ajax:"{{route('productCategory.productCategoryJson')}}",
+    columns:[
+      {data:"DT_RowIndex",name:"DT_RowIndex"},
+      {data:"category_name",name:"category_name"},
+      {
+        data:"id_product_category",
+        render: function(data,type,row){
+          return '<a href="/product_category/edit/'+data+'" class="btn btn-warning"><i class="fas fa-edit"></i></a> <a href="/product_category/edit/'+data+'" class="btn btn-danger"><i class="fas fa-trash-alt"></i></a>';
+        }
+      }
+      // {
+      //   data:"image",
+      //   name:"image",
+      //   render: function(data,type,row){
+      //     return '<img src="img/product/'+data+'">';
+      //   }
+      // },
+      // {data:"productCategory",name:"productCategory.category_name"},
+      // {
+      //   data:"image",
+      //   render: function(data,type,row){
+      //     return '<a href="#" class="btn btn-danger"><i class="fas fa-pencil-alt"></i></a>';
+      //   }
+      // }
+    ]
+  });
+});
+</script>
