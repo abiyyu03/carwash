@@ -15,24 +15,30 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// Route::get('/', function () {
-//     return view('welcome');
-// });
-
 Route::middleware('owner')->group(function(){
     Route::get('/',[DashboardController::class,'index']);
-    Route::get('/customer',[CustomerController::class,'index']);
 
     //transaction
-    Route::get('/transaction/create_customer',[TransactionController::class,'createCustomer']);
-    Route::get('/transaction/checkout',[TransactionController::class,'checkout']);
+    Route::get('/transaction',[TransactionController::class,'index']);
+    Route::get('/transaction/delete/{id_transaction}',[TransactionController::class,'deleteTransaction']);
+    Route::get('/transactionJson',[TransactionController::class,'transactionJson'])->name('transaction.transactionJson');
+    Route::post('/transaction/checkout',[TransactionController::class,'createCustomerAndTransactionWithNewCustomerData'])->name('transaction.create');
+    Route::post('/transaction/checkouts',[TransactionController::class,'createCustomerAndTransactionWithExistingCustomerData'])->name('transaction.useExisting');
+    Route::post('/transaction/detail/store',[TransactionController::class,'storeTransactionDetail'])->name('transaction.storeTransactionDetail');
+    Route::get('/transaction/{id_transaction}/selectProduct',[TransactionController::class,'checkout']);
 
     //Vehicle type
     Route::get('/vehicle_type',[VehicleTypeController::class,'index']);
     Route::post('/vehicle_type/store',[VehicleTypeController::class,'store'])->name('vehicle_type.store');
 
+    //customer
+    Route::get('/customer',[CustomerController::class,'index']);
+    Route::get('/customerJson',[CustomerController::class,'customerJson'])->name('customer.customerJson');
+    // Route::get('/customer/edit/{id_customer}',[CustomerController::class,'edit']);
+
     //product category
     Route::get('/product_category',[ProductCategoryController::class,'index']);
+    Route::get('/product_categoryJson',[ProductCategoryController::class,'productCategoryJson'])->name('productCategory.productCategoryJson');
     Route::post('/product_category/store',[ProductCategoryController::class,'store'])->name('product_category.store');
 
     //product 
@@ -47,7 +53,10 @@ Route::middleware('owner')->group(function(){
     Route::get('/employeeJson',[EmployeeController::class,'employeeJson'])->name('employee.employeeJson');
     Route::post('/employee/store',[EmployeeController::class,'store'])->name('employee.store');
     
+    //Inventory
     Route::get('/inventory',[InventoryController::class,'index']);
+    Route::get('/inventoryJson',[InventoryController::class,'inventoryJson'])->name('inventory.inventoryJson');
+    Route::post('/inventory/store',[InventoryController::class,'store'])->name('inventory.store');
 
 });
 
