@@ -35,10 +35,9 @@ class LoginController extends Controller
         return redirect()->back()->with('message','Username atau password salah !');
     }
     
-    public function logout()
+    function logout()
     {
         Auth()->logout();
-        // dd(Auth());
         return redirect()->to('/login');
     }
 
