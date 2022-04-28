@@ -17,10 +17,16 @@ class CreateServicesTable extends Migration
             $table->id('id_service');
             $table->string('service_name');
             $table->string('service_code');
-            $table->integer('service_price');
+            $table->double('service_price');
             $table->string('service_image');
-            $table->foreignId('vehicle_type_id');
-            $table->foreignId('item_id');
+            $table->integer('product_category_id')
+                ->references('id_product_category')
+                ->on('product_categories')
+                ->onDelete('cascade');
+            $table->integer('vehicle_type_id')
+                ->references('id_vehicle_type')
+                ->on('vehicle_types')
+                ->onDelete('cascade');
             $table->timestamps();
         });
     }

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateTransactionsTable extends Migration
+class CreateWorkDetailsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,18 +13,17 @@ class CreateTransactionsTable extends Migration
      */
     public function up()
     {
-        Schema::create('transactions', function (Blueprint $table) {
-            $table->string('id_transaction')->primary();
-            $table->integer('customer_id')
-                ->references('id_customer')
-                ->on('customers')
+        Schema::create('work_details', function (Blueprint $table) {
+            $table->id('id_work_detail');
+            $table->integer('transcation_detail_id')
+                ->references('id_transcation_detail')
+                ->on('transcation_details')
                 ->onDelete('cascade');
             $table->string('employee_id')
                 ->references('id_employee')
                 ->on('employees')
                 ->onDelete('cascade');
-            $table->timestamp('transaction_timestamp');
-            $table->string('transaction_status')->default('pending');
+            $table->integer('commission');
             $table->timestamps();
         });
     }
@@ -36,6 +35,6 @@ class CreateTransactionsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('transactions');
+        Schema::dropIfExists('work_details');
     }
 }

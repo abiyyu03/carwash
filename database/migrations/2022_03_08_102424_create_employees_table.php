@@ -14,7 +14,11 @@ class CreateEmployeesTable extends Migration
     public function up()
     {
         Schema::create('employees', function (Blueprint $table) {
-            $table->id('id_employee');
+            $table->string('id_employee')->primary(); //advice : create using timestamp
+            $table->integer('user_id')
+                ->references('id_user')
+                ->on('users')
+                ->onDelete('cascade');
             $table->string('employee_fullname');
             $table->string('employee_nickname');
             $table->string('employee_nik');

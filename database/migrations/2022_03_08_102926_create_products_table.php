@@ -19,9 +19,15 @@ class CreateProductsTable extends Migration
             $table->string('product_code');
             $table->double('product_price');
             $table->integer('product_stock');
-            $table->string('image');
-            $table->foreignId('product_category_id');
-            $table->foreignId('item_id');
+            $table->string('product_image');
+            $table->integer('product_category_id')
+                ->references('id_product_category')
+                ->on('product_categories')
+                ->onDelete('cascade');
+            // $table->foreign('product_type_id')
+            //     ->references('id_product_type')
+            //     ->on('product_types')
+            //     ->onDelete('cascade');
             $table->timestamps();
         });
     }
