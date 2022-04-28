@@ -2,22 +2,24 @@
 
 namespace App\Models;
 
-use App\Models\VehicleType;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
 class Customer extends Model
 {
     use HasFactory;
+    protected $table = "customers";
+    protected $primaryKey = "id_customer";
+    protected $fillable = ['customer_name','customer_contact','customer_license_plate','vehicle_type_id'];
 
-    protected $guarded = ['id'];
+    // // every customer has a vehicletype
+    // function vehicleType()
+    // {
+    //     return $this->belongsTo('App\Models\VehicleType','vehicle_type_id');
+    // }
 
-    public function vehicleType()
+    function transactions()
     {
-        return $this->belongsTo(VehicleType::class);
-    }
-    public function transactions()
-    {
-        return $this->hasMany(Transaction::class);
+        return $this->hasMany('App\Models\Transaction');
     }
 }

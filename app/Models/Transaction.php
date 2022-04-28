@@ -9,10 +9,24 @@ class Transaction extends Model
 {
     use HasFactory;
 
-    protected $guarded = ['id'];
+    protected $table = "transactions";
+    protected $primaryKey = "id_transaction";
+    protected $casts = ['id' => 'string'];
+    public $incrementing = false;
+    protected $fillable = ['id_transaction','customer_id','employee_id','transaction_timestamp','transaction_status'];
 
-    public function customer()
+    function customer()
     {
-        return $this->belongsTo(Customer::class);
+        return $this->belongsTo('App\Models\Customer','customer_id');
+    }
+
+    function transactionDetails()
+    {
+        return $this->hasMany('App\Models\TransactionDetail');
+    }
+
+    function employee()
+    {
+        return $this->belongsTo('App\Models\Employee','employee_id');
     }
 }

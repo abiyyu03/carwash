@@ -50,4 +50,9 @@ class User extends Authenticatable
     {
         return $this->belongsTo('App\Models\Role','role_id');
     }
+
+    function employees()
+    {
+        return $this->hasOne('App\Models\Employee');
+    }
 }
