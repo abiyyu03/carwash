@@ -14,7 +14,8 @@
                 <img src="{{url('../dist/img/user2-160x160.jpg')}}" class="img-circle elevation-2" alt="User Image">
             </div>
             <div class="info">
-                <a href="#" class="d-block">{{Auth()->user()->name}}</a>
+                <a href="#" class="d-block">{{ Auth()->user()->name }}</a>
+                <a href="/logout" class="btn btn-sm btn-warning"><i class="fas fa-sign-out-alt"></i> Logout</a>
             </div>
         </div>
         
@@ -36,12 +37,21 @@
                 <!-- Add icons to the links using the .nav-icon class
                     with font-awesome or any other icon font library -->
                     <li class="nav-item">
-                        <a href="#" class="nav-link">
+                        <a href="/" class="nav-link">
                             <i class="nav-icon fas fa-box"></i>
                             <p>
                                 Dashboard
                             </p>
                         </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/transaction" class="nav-link">
+                            <i class="nav-icon fas fa-exchange-alt"></i>
+                            <p>
+                                Transaksi
+                            </p>
+                        </a>
+                    </li>
                     <li class="nav-item">
                         <a href="#" class="nav-link active">
                             <i class="nav-icon fas fa-boxes"></i>
@@ -52,56 +62,63 @@
                         </a>
                         <ul class="nav nav-treeview">
                             <li class="nav-item">
-                                <a href="pages/layout/top-nav-sidebar.html" class="nav-link">
+                                <a href="/product_category" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
-                                    <p>Kategori Produk</p>
+                                    <p>Daftar Kategori Produk</p>
                                 </a>
                             </li>
                             <li class="nav-item">
+                                <a href="/product" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Daftar Semua Produk</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="pages/charts/chartjs.html" class="nav-link">
+                                    <i class="far fa-dot nav-icon"></i>
+                                    <p>Cuci Mobil</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="pages/charts/flot.html" class="nav-link">
+                                    <i class="far fa-dot nav-icon"></i>
+                                    <p>Cuci Motor</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="pages/charts/inline.html" class="nav-link">
+                                    <i class="far fa-dot nav-icon"></i>
+                                    <p>Salon</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="pages/charts/uplot.html" class="nav-link">
+                                    <i class="far fa-dot nav-icon"></i>
+                                    <p>Aksesoris</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="pages/charts/uplot.html" class="nav-link">
+                                    <i class="far fa-dot nav-icon"></i>
+                                    <p>Makanan</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="pages/charts/uplot.html" class="nav-link">
+                                    <i class="far fa-dot nav-icon"></i>
+                                    <p>Minuman</p>
+                                </a>
+                            </li>
+                            <!-- <li class="nav-item">
                                 <a href="pages/layout/boxed.html" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>Daftar Produk</p>
                                     <i class="right fas fa-angle-left"></i>
                                 </a>
                                 <ul class="nav nav-treeview">
-                                    <li class="nav-item">
-                                        <a href="pages/charts/chartjs.html" class="nav-link">
-                                            <i class="far fa-dot nav-icon"></i>
-                                            <p>Cuci Mobil</p>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="pages/charts/flot.html" class="nav-link">
-                                            <i class="far fa-dot nav-icon"></i>
-                                            <p>Cuci Motor</p>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="pages/charts/inline.html" class="nav-link">
-                                            <i class="far fa-dot nav-icon"></i>
-                                            <p>Salon</p>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="pages/charts/uplot.html" class="nav-link">
-                                            <i class="far fa-dot nav-icon"></i>
-                                            <p>Aksesoris</p>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="pages/charts/uplot.html" class="nav-link">
-                                            <i class="far fa-dot nav-icon"></i>
-                                            <p>Makanan</p>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="pages/charts/uplot.html" class="nav-link">
-                                            <i class="far fa-dot nav-icon"></i>
-                                            <p>Minuman</p>
-                                        </a>
-                                    </li>
+                                    
                                 </ul>
-                            </li>
+                            </li> -->
                             <li class="nav-item">
                                 <a href="/vehicle_type" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
@@ -120,7 +137,7 @@
                         </a>
                         <ul class="nav nav-treeview">
                             <li class="nav-item">
-                                <a href="pages/forms/general.html" class="nav-link">
+                                <a href="/employee" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>Daftar Karyawan</p>
                                 </a>
@@ -148,11 +165,11 @@
                         </a>
                         <ul class="nav nav-treeview">
                             <li class="nav-item">
-                                <a href="pages/forms/advanced.html" class="nav-link">
+                                <a href="/supplier" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>Daftar Supplier</p>
                                 </a>
-                                <a href="pages/forms/advanced.html" class="nav-link">
+                                <a href="/inventory" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>Daftar Inventory</p>
                                 </a>
@@ -169,13 +186,13 @@
                         </a>
                         <ul class="nav nav-treeview">
                             <li class="nav-item">
-                                <a href="pages/tables/simple.html" class="nav-link">
+                                <a href="/report/daily" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>Laporan Harian</p>
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="pages/tables/data.html" class="nav-link">
+                                <a href="/report/monthly" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>Laporan Bulanan</p>
                                 </a>
@@ -192,7 +209,7 @@
                         </a>
                         <ul class="nav nav-treeview">
                             <li class="nav-item">
-                                <a href="pages/tables/simple.html" class="nav-link">
+                                <a href="/customer" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>Daftar Pelanggan</p>
                                 </a>
@@ -274,3 +291,4 @@
         </div>
         <!-- /.sidebar -->
     </aside>
+    
