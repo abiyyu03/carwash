@@ -5,7 +5,7 @@
         <img src="{{url('logo/jiwalu-logo.png')}}" alt="AdminLTE Logo" class="brand-image img-circle border border-white" style="opacity: .8">
         <span class="brand-text text-white font-weight-bold">Jiwalu Carwash</span>
     </a>
-    
+
     <!-- Sidebar -->
     <div class="sidebar">
         <!-- Sidebar user panel (optional) -->
@@ -14,11 +14,11 @@
                 <img src="{{url('../dist/img/user2-160x160.jpg')}}" class="img-circle elevation-2" alt="User Image">
             </div>
             <div class="info">
-                <a href="#" class="d-block">{{ Auth()->user()->name }}</a>
+                <a href="#" class="d-block">{- Auth()->user()->name }}</a>
                 <a href="/logout" class="btn btn-sm btn-warning"><i class="fas fa-sign-out-alt"></i> Logout</a>
             </div>
         </div>
-        
+
         <!-- SidebarSearch Form -->
         {{-- <div class="form-inline">
             <div class="input-group" data-widget="sidebar-search">
@@ -30,7 +30,7 @@
                 </div>
             </div>
         </div> --}}
-        
+
         <!-- Sidebar Menu -->
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
@@ -116,7 +116,7 @@
                                     <i class="right fas fa-angle-left"></i>
                                 </a>
                                 <ul class="nav nav-treeview">
-                                    
+
                                 </ul>
                             </li> -->
                             <li class="nav-item">
@@ -261,7 +261,7 @@
                                 </a>
                             </li>
                         </ul>
-                    </li> 
+                    </li>
                     <li class="nav-item">
                         <a href="#" class="nav-link">
                             <i class="nav-icon fas fa-file-invoice"></i>
@@ -291,4 +291,3 @@
         </div>
         <!-- /.sidebar -->
     </aside>
-    

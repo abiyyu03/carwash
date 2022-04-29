@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Employee;
+use App\Models\{Employee, User, Role};
 use DataTables;
 
 class EmployeeController extends Controller
@@ -23,7 +23,8 @@ class EmployeeController extends Controller
     }
     function index()
     {
-        return view('employee.index');
+      $role_data = Role::get();
+      return view('employee.index',compact('role_data'));
     }
 
     function store(Request $request)
@@ -39,6 +40,14 @@ class EmployeeController extends Controller
             'employee_email' => ['required'],
             'employee_address' => ['required']
         ]);
+
+        $user_data = $request->validate([
+            'name' => ['required'],
+            'email' => ['required'],
+            'password' => ['required'],
+            'role_id' => ['required'],
+        ]);
+
         $image = $request->file('employee_photo');
         $filename = $image->getClientOriginalName();
 
@@ -59,6 +68,14 @@ class EmployeeController extends Controller
         $employee_data->employee_email = $request->get('employee_email');
         $employee_data->employee_address = $request->get('employee_address');
         $employee_data->save();
+
+        $user_data = new User();
+        $user_data->id_user = rand();
+        $user_data->name = $request->get('employee_fullname');
+        $user_data->email = $request->get('employee_email');
+        $user_data->password = bcrypt($request->get('password'));
+        $user_data->role_id = $request->get('role_id');
+        $user_data->save();
         // Employee::create($employee_data);
         return redirect()->back()->with('success','Data Karyawan berhasil ditambahkan');
     }

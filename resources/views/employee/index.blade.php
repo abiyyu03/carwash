@@ -37,12 +37,12 @@
                   <th>#</th>
                   <th>Nama Panjang Karyawan</th>
                   <th>Nama Panggilan</th>
-                  <th>NIK</th>    
-                  <th>Jenis Kelamin</th>    
+                  <th>NIK</th>
+                  <th>Jenis Kelamin</th>
                   <th>Tanggal Lahir</th>
-                  <th>PAS Foto</th> 
-                  <th>Kontak</th>   
-                  <th>Email</th>   
+                  <th>PAS Foto</th>
+                  <th>Kontak</th>
+                  <th>Email</th>
                   <th>Alamat</th>
                   <th>Aksi</th>
                 </tr>
@@ -58,7 +58,7 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Tambah Data Karyawan</h5>
+        <h5 class="modal-title" id="exampleModalLabel">Daftarkan Karyawan</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -99,12 +99,26 @@
                 <input type="file" class="form-control" value="{{old('employee_photo')}}" id="employee_photo" name="employee_photo" required>
             </div>
             <div class="form-group">
+                <label for="employee_address" class="col-form-label">Alamat</label>
+                <input type="text" class="form-control" value="{{old('employee_address')}}" id="employee_address" name="employee_address" required>
+            </div>
+            <div class="form-group">
                 <label for="employee_email" class="col-form-label">Email</label>
                 <input type="email" class="form-control" value="{{old('employee_email')}}" id="employee_email" name="employee_email" required>
             </div>
             <div class="form-group">
-                <label for="employee_address" class="col-form-label">Alamat</label>
-                <input type="text" class="form-control" value="{{old('employee_address')}}" id="employee_address" name="employee_address" required>
+                <label for="password" class="col-form-label">Password</label>
+                <input type="password" class="form-control" value="{{old('password')}}" id="password" name="password" required>
+            </div>
+            <div class="form-group">
+                <label for="role_id" class="col-form-label">Password</label>
+                <!-- <input type="role_id" class="form-control" value="{{old('role_id')}}" id="role_id" name="role_id" required> -->
+                <select class="form-control" name="role_id">
+                  <option>-</option>
+                  @foreach($role_data as $role)
+                    <option value="{{$role->id_role}}">{{$role->role_name}}</option>
+                  @endforeach
+                </select>
             </div>
             <div class="modal-footer form-group">
                 <button type="submit" class="btn bg-maroon">Tambah Data</button>
@@ -115,7 +129,7 @@
   </div>
 </div>
 @endsection
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>  
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
   <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.js"></script>
   <script src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"></script>
