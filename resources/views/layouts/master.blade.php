@@ -4,6 +4,7 @@
 
   @include('components.navbar')
 
+  {-- @include('components.sidebar',['color' => 'navy']) --}
   @include('components.sidebar')
 
   <!-- Content Wrapper. Contains page content -->
@@ -25,6 +26,8 @@
   </div>
   <!-- /.content-wrapper -->
   @include('components.footer')
+  @include('sweetalert::alert')
   <!-- /.control-sidebar -->
 </div>
 @include('components.script')
+@stack('addon-scripts')
