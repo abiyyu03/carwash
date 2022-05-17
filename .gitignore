@@ -1,5 +1,12 @@
 /node_modules
 /public/hot
+/public/img/product
+/public/img/employee/*.JPG
+/public/img/employee/*.jpg
+/public/img/employee/*.jpeg
+/public/img/employee/*.JPEG
+/public/img/employee/*.png
+/public/img/employee/*.PNG
 /public/storage
 /storage/*.key
 /vendor
