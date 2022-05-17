@@ -5,7 +5,7 @@
   <div class="container-fluid">
     <div class="row mb-2">
       <div class="col-sm-6">
-        <h1 class="m-0">Inventory</h1>
+        <h1 class="m-0">Inventori</h1>
       </div><!-- /.col -->
       <div class="col-sm-6">
         <ol class="breadcrumb float-sm-right">
@@ -21,9 +21,9 @@
 @section('content')
 <div class="container-fluid">
   <div class=" d-flex justify-content-end">
-      <button type="button" class="btn bg-maroon" data-toggle="modal" data-target="#exampleModal">
+      <button type="button" class="btn bg-info" data-toggle="modal" data-target="#exampleModal">
           <i class="fas fa-plus"></i>
-          Tambah Inventory
+          Tambah Inventori
       </button>
     </div>
     <div class="card mt-3">
@@ -34,7 +34,9 @@
                 <tr>
                   <th>#</th>
                   <th>Nama Barang</th>
+                  <th>Kode Barang</th>
                   <th>Jumlah Barang</th>
+                  <th>Penggunaan</th>
                   <th>Aksi</th>
                 </tr>
               </thead>
@@ -49,7 +51,7 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Tambah Tipe Kendaraan</h5>
+        <h5 class="modal-title" id="exampleModalLabel">Tambah Inventori</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -61,28 +63,28 @@
                 <label for="Item_name" class="col-form-label">Nama Barang</label>
                 <input type="text" class="form-control" id="" name="inventory_name" required>
             </div>
-            <!-- <div class="form-group">
-                <label for="Item_code" class="col-form-label">Kode Barang</label>
-                <input type="text" class="form-control" id="" name="item_code" required>
-            </div> -->
             <div class="form-group">
-                <label for="Item_stock" class="col-form-label">Jumlah Barang</label>
-                <input type="text" class="form-control" id="" name="inventory_amount" required>
+                <label for="inventory_code" class="col-form-label">Kode Barang</label>
+                <input type="text" class="form-control" id="" name="inventory_code" required>
+            </div>
+            <div class="form-group">
+                <label for="inventory_unit" class="col-form-label">Jumlah Barang</label>
+                <input type="text" class="form-control" id="" name="inventory_unit" required>
+            </div>
+            <div class="form-group">
+                <label for="inventory_usable" class="col-form-label">Penggunaan (khusus bahan steam)</label>
+                <input type="number" class="form-control" id="" name="inventory_usable" required>
             </div>
             <!-- <div class="form-group">
-                <label for="Item_dosage" class="col-form-label">Takaran Barang</label>
-                <input type="number" class="form-control" id="" name="item_dosage" required>
-            </div>
-            <div class="form-group">
-                <label for="Item_capital_price" class="col-form-label">Harga modal</label>
-                <input type="number" class="form-control" id="" name="item_capital_price" required>
-            </div>
-            <div class="form-group">
-                <label for="Item_selling_price" class="col-form-label">Harga jual</label>
-                <input type="number" class="form-control" id="" name="item_selling_price" required>
+                <label for="inventory_usage" class="col-form-label">Takaran Barang</label>
+                <input type="number" class="form-control" id="" name="inventory_usage" required>
             </div> -->
+            <div class="form-group">
+                <label for="inventory_capital_price" class="col-form-label">Harga modal</label>
+                <input type="number" class="form-control" id="" name="inventory_capital_price" required>
+            </div>
             <div class="modal-footer form-group">
-                <button type="submit" class="btn btn-primary">Tambah Tipe</button>
+                <button type="submit" class="btn btn-info">Tambah Tipe</button>
             </div>
         </form>
       </div>
@@ -103,7 +105,9 @@ $(document).ready(function(){
     columns:[
       {data:"DT_RowIndex",name:"DT_RowIndex"},
       {data:"inventory_name",name:"inventory_name"},
-      {data:"inventory_stock",name:"inventory_stock"},
+      {data:"inventory_code",name:"inventory_code"},
+      {data:"inventory_unit",name:"inventory_unit"},
+      {data:"inventory_usage",name:"inventory_usage"},
       {
         data:"id_inventory",
         render: function(data,type,row){
