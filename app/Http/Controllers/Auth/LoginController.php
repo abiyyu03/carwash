@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\User;
+use Alert;
 
 class LoginController extends Controller
 {
@@ -12,7 +13,7 @@ class LoginController extends Controller
     {
         //check if user have already logged in
         if(Auth()->check()){
-            return redirect()->back();
+            return back();
         } else {
             return view('auth.login');
         }   
@@ -23,16 +24,18 @@ class LoginController extends Controller
         if(Auth()->attempt($data))
         {
             //check roles
-            if(Auth()->user()->role->role_name == 'owner'){
-                return redirect()->to('/');
-            }elseif(Auth()->user()->role->role_name == 'cashier'){
-                return redirect()->to('/');
-            }elseif(Auth()->user()->role->role_name == 'supervisor'){
-                return redirect()->to('/');
-            }
+            // if(Auth()->user()->role->role_name == 'owner'){
+            //     return redirect()->to('/');
+            // }elseif(Auth()->user()->role->role_name == 'cashier'){
+            //     return redirect()->to('/');
+            // }elseif(Auth()->user()->role->role_name == 'supervisor'){
+            //     return redirect()->to('/');
+            // }
+            return redirect()->to('/');
         } 
         //back if wrong username or password
-        return redirect()->back()->with('message','Username atau password salah !');
+        Alert::warning('Warning','Username atau Password salah');
+        return redirect()->back();
     }
     
     function logout()
