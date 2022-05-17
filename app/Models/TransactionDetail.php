@@ -10,6 +10,8 @@ class TransactionDetail extends Model
     use HasFactory;
     protected $table = "transaction_details";
     protected $primaryKey = "id_transaction_detail";
+    public $incrementing = false;
+    // protected $casts = ['id'=>'integer'];
     protected $fillable = ['transaction_detail_amount','transaction_detail_price','transaction_detail_total','transaction_id','product_id'];
 
     function transaction()
@@ -20,5 +22,10 @@ class TransactionDetail extends Model
     function product()
     {
         return $this->belongsTo('App\Models\Product','product_id');
+    }
+
+    function workDetail()
+    {
+        return $this->hasMany('App\Models\WorkDetail');
     }
 }
