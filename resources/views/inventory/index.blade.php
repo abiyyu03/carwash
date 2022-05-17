@@ -51,7 +51,7 @@
                   <td>{{ $inventory->inventory_capital_price }}</td>
                   <td>{{ $inventory->inventory_usable }}</td>
                   <td><a href="#" id="editButton" data-toggle="modal" data-target="#editModal" class="btn btn-warning"><i class="fas fa-edit"></i></a> 
-                      <a href="" class="btn btn-danger"><i class="fas fa-trash-alt"></i></a></td>
+                      <a href="/inventory/delete/{{ $inventory->id_inventory }}" id="deleteButton" class="btn btn-danger deleteButton"><i class="fas fa-trash-alt"></i></a></td>
                 </tr>
                 @endforeach
               </tbody>
@@ -155,6 +155,7 @@
 <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.js"></script>
 <script src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
   // $('.data-inventory').DataTable({
@@ -175,6 +176,26 @@ $(document).ready(function(){
   //     }
   //   ]
   // });
+
+  $('.deleteButton').on("click",function(event){
+    event.preventDefault();
+    var url = $(this).attr('href');
+    console.log(url);
+    swal.fire({
+      title: 'Apakah Kamu yakin ingin menghapus data ini ?',
+      text: "Data yang terhapus tidak bisa di kembalikan!",
+      icon: 'warning',
+      // buttons: ["Cancel","Yakin!"],
+      showCancelButton: true,
+      // confirmButtonColor: '#3085d6',
+      // cancelButtonColor: '#d33',
+      confirmButtonText: 'Yakin !'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          window.location.href = url;
+        }
+    });
+  });
 
   var table = $('.data-inventory').DataTable();
   // $('#editButton').on("click",function(){
@@ -197,5 +218,6 @@ $(document).ready(function(){
     $('#editModal').modal('show');
 
   });
+  
 });
 </script>

@@ -55,6 +55,14 @@ class InventoryController extends Controller
 
         Alert::success('Sukses','Data Inventory Berhasil Diubah !');
         return redirect()->back();
+    }
 
+    function delete($id_inventory)
+    {
+        $inventory_data = Inventory::findOrFail($id_inventory);
+        $inventory_data->delete();
+
+        Alert::success('Sukses','Data Inventory Berhasil Dihapus !');
+        return back();
     }
 }

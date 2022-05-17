@@ -50,6 +50,7 @@ Route::middleware('owner')->group(function(){
     Route::get('/inventoryJson',[InventoryController::class,'inventoryJson'])->name('inventory.inventoryJson');
     Route::post('/inventory/store',[InventoryController::class,'store'])->name('inventory.store');
     Route::put('/inventory/update/{id_inventory}',[InventoryController::class,'update'])->name('inventory.update');
+    Route::get('/inventory/delete/{id_inventory}',[InventoryController::class,'delete']);
     
     //Report
     Route::get('/report/daily',[ReportController::class,'index']);
