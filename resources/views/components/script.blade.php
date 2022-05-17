@@ -4,7 +4,9 @@
 
 <!-- JQuery DataTable -->
 <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
-
+<script src="{{url('js/jquery.dataTables.min.js')}}"></script>
+<!-- Sweetalert2 -->
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <!-- jQuery UI 1.11.4 -->
 <script src="{{url('plugins/jquery-ui/jquery-ui.min.js')}}"></script>
 <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
@@ -21,8 +23,8 @@
 <!-- Sparkline -->
 <script src="{{url('plugins/sparklines/sparkline.js')}}"></script>
 <!-- JQVMap -->
-<script src="{{url('plugins/jqvmap/jquery.vmap.min.js')}}"></script>
-<script src="{{url('plugins/jqvmap/maps/jquery.vmap.usa.js')}}"></script>
+<!-- <script src="{{url('plugins/jqvmap/jquery.vmap.min.js')}}"></script>
+<script src="{{url('plugins/jqvmap/maps/jquery.vmap.usa.js')}}"></script> -->
 <!-- jQuery Knob Chart -->
 <script src="{{url('plugins/jquery-knob/jquery.knob.min.js')}}"></script>
 <!-- daterangepicker -->
