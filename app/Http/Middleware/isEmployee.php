@@ -5,7 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 
-class isSupervisor
+class isEmployee
 {
     /**
      * Handle an incoming request.
@@ -14,16 +14,16 @@ class isSupervisor
      * @param  \Closure(\Illuminate\Http\Request): (\Illuminate\Http\Response|\Illuminate\Http\RedirectResponse)  $next
      * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
      */
-    public function handle(Request $request, Closure $next, $roles)
+    public function handle(Request $request, Closure $next)
     {
         if(!Auth()->check())
         {
             return redirect()->to('/login');
         }
-        if(Auth()->user()->role->role_name == "supervisor")
+        if(Auth()->user()->role->role_name == "employee")
         {
             return $next($request);
         }
-        return redirect()->back(); 
+        return redirect()->back();
     }
 }
