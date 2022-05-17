@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>AdminLTE 3 | Log in (v2)</title>
+  <title>JIWALU CARWASH | Log in </title>
 
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -17,19 +17,19 @@
 <body class="hold-transition login-page">
 <div class="login-box">
   <!-- /.login-logo -->
-  <div class="card card-outline card-maroon">
+  <div class="card card-outline card-info">
     <div class="card-header text-center">
       <a href="/cashier" class="h1"><b>Jiwalu </b>Carwash</a>
     </div>
     <div class="card-body">
-    @if($message = Session::get('message'))
-        <div class="alert alert-danger">
+      @if($message = Session::get('message'))
+      <div class="alert alert-danger">
             <p>
               <i class="fas fa-times"></i>
                {{$message}}
             </p>
         </div>
-    @endif
+        @endif
       <form action="{{route('logins.login')}}" method="post">
       @csrf
         <div class="input-group mb-3">
@@ -49,14 +49,15 @@
           </div>
         </div>
         <div class="row">
-          <div class="col-8">
-          </div>
+          <!-- <div class="col-8">
+          </div> -->
           <!-- /.col -->
-          <div class="col-4">
-            <button type="submit" class="btn bg-maroon form-control">Masuk</button>
+          <div class="col-12">
+            <button type="submit" class="btn bg-info form-control">Masuk</button>
           </div> 
           <!-- /.col -->
         </div>
+        @include('sweetalert::alert')
       </form>
     </div>
     <!-- /.card-body -->
@@ -64,7 +65,6 @@
   <!-- /.card -->
 </div>
 <!-- /.login-box -->
-
 <!-- jQuery -->
 <script src="../../plugins/jquery/jquery.min.js"></script>
 <!-- Bootstrap 4 -->
