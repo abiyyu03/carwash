@@ -48,6 +48,10 @@ return [
             'driver' => 'session',
             'provider' => 'cashiers',
         ],
+        'employee' => [
+            'driver' => 'session',
+            'provider' => 'employees',
+        ],
     ],
 
     /*
@@ -80,6 +84,10 @@ return [
             'driver' => 'eloquent',
             'model' => App\Models\Cashier::class,
         ],
+        'employees' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Employee::class,
+        ],
 
         // 'users' => [
         //     'driver' => 'database',
@@ -106,7 +114,7 @@ return [
         'users' => [
             'provider' => 'users',
             'table' => 'password_resets',
-            'expire' => 60,
+            'expire' => 99999,
             'throttle' => 60,
         ],
     ],
