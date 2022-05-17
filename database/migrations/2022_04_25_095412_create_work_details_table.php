@@ -15,15 +15,16 @@ class CreateWorkDetailsTable extends Migration
     {
         Schema::create('work_details', function (Blueprint $table) {
             $table->id('id_work_detail');
-            $table->integer('transcation_detail_id')
-                ->references('id_transcation_detail')
-                ->on('transcation_details')
+            $table->integer('transaction_detail_id')
+            ->references('id_transaction_detail')
+                ->on('transaction_details')
                 ->onDelete('cascade');
             $table->string('employee_id')
                 ->references('id_employee')
                 ->on('employees')
                 ->onDelete('cascade');
-            $table->integer('commission');
+            $table->date('date')->default(date('Y-m-d'));
+            $table->integer('commission');  
             $table->timestamps();
         });
     }

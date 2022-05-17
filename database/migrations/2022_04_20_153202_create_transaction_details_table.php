@@ -15,10 +15,9 @@ class CreateTransactionDetailsTable extends Migration
     {
         Schema::create('transaction_details', function (Blueprint $table) {
             $table->id('id_transaction_detail');
-            $table->integer('transaction_detail_amount');
-            $table->integer('transaction_detail_price');
+            $table->integer('transaction_detail_amount')->default(1);
             $table->integer('transaction_detail_total');
-            $table->integer('transaction_id')
+            $table->string('transaction_id')
                 ->references('id_transaction')
                 ->on('transactions')
                 ->onDelete('cascade');

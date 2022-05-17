@@ -14,8 +14,8 @@ class CreateAttendancesTable extends Migration
     public function up()
     {
         Schema::create('attendances', function (Blueprint $table) {
-            $table->integer('id_employee')->primary();
-            $table->unsignedInteger('employee_id')->references('id_employee')->on('employees');
+            $table->id('id_attendance');
+            $table->integer('employee_id')->references('id_employee')->on('employees');
             $table->date('attendance_date');
             $table->time('attendance_time');
             $table->string('attendance_status');

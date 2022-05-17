@@ -24,6 +24,7 @@ class CreateTransactionsTable extends Migration
                 ->on('employees')
                 ->onDelete('cascade');
             $table->timestamp('transaction_timestamp');
+            $table->integer('transaction_grandtotal');
             $table->string('transaction_status')->default('pending');
             $table->timestamps();
         });

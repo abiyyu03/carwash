@@ -17,17 +17,20 @@ class CreateProductsTable extends Migration
             $table->id('id_product');
             $table->string('product_name');
             $table->string('product_code');
-            $table->double('product_price');
+            $table->integer('product_price');
+            $table->integer('product_capital_price'); //harga modal
             $table->integer('product_stock');
-            $table->string('product_image');
+            $table->integer('product_minimum_stock')->nullable();
+            $table->string('product_image')->nullable();
             $table->integer('product_category_id')
                 ->references('id_product_category')
                 ->on('product_categories')
                 ->onDelete('cascade');
-            // $table->foreign('product_type_id')
-            //     ->references('id_product_type')
-            //     ->on('product_types')
-            //     ->onDelete('cascade');
+            $table->integer('supplier_id')
+                ->references('id_supplier')
+                ->on('suppliers')
+                ->onDelete('cascade')
+                ->nullable();
             $table->timestamps();
         });
     }

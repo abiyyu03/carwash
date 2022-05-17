@@ -14,14 +14,11 @@ class CreateCustomersTable extends Migration
     public function up()
     {
         Schema::create('customers', function (Blueprint $table) {
-            $table->id('id_customer');
-            $table->string('customer_name');
-            $table->string('customer_contact');
-            $table->string('customer_license_plate')->unique();
-            // $table->integer('vehicle_type_id')
-            //     ->references('id_vehicle_type')
-            //     ->on('vehicle_types')
-            //     ->onDelete('cascade');
+            $table->string('id_customer')->primary();
+            $table->string('customer_name')->nullable();
+            $table->string('customer_contact')->nullable();
+            $table->string('customer_license_plate')->unique()->nullable();
+            $table->string('customer_vehicle')->nullable();
             $table->timestamps();
         });
     }

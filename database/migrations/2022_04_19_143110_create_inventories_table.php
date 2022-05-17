@@ -16,7 +16,18 @@ class CreateInventoriesTable extends Migration
         Schema::create('inventories', function (Blueprint $table) {
             $table->id('id_inventory');
             $table->string('inventory_name');
-            $table->integer('inventory_stock');
+            $table->string('inventory_code');
+            $table->integer('inventory_unit'); // jumlah barang
+            $table->integer('inventory_capital_price'); //harga modal
+            // $table->integer('inventory_volume')->nullable(); //banyaknya volume per unit (satuan ML)
+            // $table->integer('inventory_dosage')->nullable(); //dosis per pemakaian (satuan ML)
+            $table->integer('inventory_usage')->nullable(); 
+            $table->integer('inventory_usable')->nullable(); 
+            $table->integer('supplier_id')
+                ->references('id_supplier')
+                ->on('suppliers')
+                ->onDelete('cascade')
+                ->nullable();
             $table->timestamps();
             
         });
