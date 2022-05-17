@@ -11,7 +11,8 @@ class InventoryController extends Controller
 {
     function index()
     {
-        return view('inventory.index');
+        $inventory_data = Inventory::get();
+        return view('inventory.index',compact('inventory_data'));
     }
 
     function inventoryJson()
@@ -38,6 +39,21 @@ class InventoryController extends Controller
         $inventory_data->save();
 
         Alert::success('sukses','Data Inventory Berhasil Ditambahkan !');
+        return redirect()->back();
+
+    }
+
+    function update(Request $request, $id_inventory)
+    {
+        $inventory_data = Inventory::findOrFail($id_inventory);
+        $inventory_data->inventory_name = $request->inventory_name;
+        $inventory_data->inventory_code = $request->inventory_code;
+        $inventory_data->inventory_capital_price = $request->inventory_capital_price;
+        $inventory_data->inventory_usable = $request->inventory_usable;
+        $inventory_data->inventory_unit = $request->inventory_unit;
+        $inventory_data->save();
+
+        Alert::success('Sukses','Data Inventory Berhasil Diubah !');
         return redirect()->back();
 
     }
