@@ -20,8 +20,17 @@
 @endsection
 @section('content')
 <div class="container-fluid">
+@if($errors->any())
+  <div class="alert-danger alert">
+    <ul>
+      @foreach($errors->all() as $error)
+        <li>{{ $error }}</li>
+      @endforeach
+    </ul>
+  </div>
+@endif
 <div class=" d-flex justify-content-end">
-    <a class="btn bg-maroon" href="/transaction/checkout" data-toggle="modal" data-target="#exampleModal">
+    <a class="btn bg-info" href="#" data-toggle="modal" data-target="#exampleModal">
         <i class="fas fa-exchange-alt"></i>
         Tambah Transaksi
     </a>
@@ -30,7 +39,7 @@
     <div class="card-body">
         Halaman Transaksi
         <div class="table-responsive">
-        <table class="table data-transaction">
+        <table class="table data-transaction table-striped table-bordered" style="width:100%">
           <thead>
             <tr>
               <th>#</th>
@@ -72,6 +81,10 @@
                   <label for="customer_license_plate">Plat Nomor Kendaraan</label>
                   <input type="text" name="customer_license_plate" class="form-control">
               </div>
+              <div class="form-group">
+                  <label for="customer_vehicle">Merk Kendaraan</label>
+                  <input type="text" name="customer_vehicle" class="form-control">
+              </div>
               <!-- <div class="form-group">
                   <label for="vehicle_type_id">Tipe Kendaraan</label>
                   <select name="vehicle_type_id" class="form-control">
@@ -80,9 +93,9 @@
               </div> -->
             </div>
             <div class="modal-footer form-group">
-              <a href="#" id="clickTambah" onclick="clickTambah()" class="text-maroon">Tambah Data Pelanggan</a>
-              <a href="#" id="clickExisting" onclick="clickExisting()" class="text-maroon" style="display:none">Ambil Data sebelumnya</a>
-              <button type="submit" class="btn bg-maroon">
+              <a href="#" id="clickTambah" onclick="clickTambah()" class="btn bg-secondary">Tambah Data Pelanggan</a>
+              <a href="#" id="clickExisting" onclick="clickExisting()" class="btn bg-secondary" style="display:none">Ambil Data sebelumnya</a>
+              <button type="submit" class="btn bg-info">
                 <i class="fas fa-check"></i>
                 Lanjutkan
               </button>
@@ -94,20 +107,20 @@
             <div class="form-group">
                 <label for="id_customer">Cek Plat Kendaraan</label>
                 <!-- better use select with search bar -->
-                <select name="id_customer" class="form-control" >
+                <select name="id_customer" class="form-control" required>
                     <!-- <option>-</option> -->
                     <option>-</option>
                     @foreach($customer_data as $customer)
-                      <option value="{{ $customer->id_customer }}">{{ $customer->customer_license_plate }}</option>
+                      <option value="{{ $customer->id_customer }}">{{ $customer->customer_name }}</option>
                     @endforeach
                 </select>
             </div>
-            <a href="#" id="clickTambah" onclick="clickTambah()" class="text-maroon">Tambah Data Pelanggan</a>
-            <a href="#" id="clickExisting" onclick="clickExisting()" class="text-maroon" style="display:none">Ambil Data sebelumnya</a>
-            <button type="submit" class="btn bg-maroon">
+            <button type="submit" class="btn bg-info form-control">
               <i class="fas fa-check"></i>
               Lanjutkan
             </button>
+            <a href="#" id="clickTambah" onclick="clickTambah()" class="justify-content-center d-flex mt-2 btn btn-secondary">Tambah Data Pelanggan</a> 
+            <a href="#" id="clickExisting" onclick="clickExisting()" class="btn btn-secondary" style="display:none">Ambil Data sebelumnya</a>
           </form>
         </div>
       </div>
@@ -142,7 +155,7 @@ $(document).ready(function(){
       {
         data:"id_transaction",
         render: function(data,type,row){
-          return '<a href="/transaction/'+data+'/selectProduct" class="btn btn-warning"><i class="fas fa-edit"></i></a> <a href="" class="btn btn-danger"><i class="fas fa-trash-alt"></i></a>';
+          return '<a href="/transaction/'+data+'/selectProduct" class="btn btn-warning"><i class="fas fa-edit"></i></a> <a href="/transaction/delete/'+data+'" class="btn btn-danger"><i class="fas fa-trash-alt"></i></a>';
         }
       }
     ]

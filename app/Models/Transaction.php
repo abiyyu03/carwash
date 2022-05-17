@@ -13,7 +13,7 @@ class Transaction extends Model
     protected $primaryKey = "id_transaction";
     protected $casts = ['id' => 'string'];
     public $incrementing = false;
-    protected $fillable = ['id_transaction','customer_id','employee_id','transaction_timestamp','transaction_status'];
+    protected $fillable = ['id_transaction','customer_id','employee_id','transaction_timestamp','transaction_status','transaction_grandtotal'];
 
     function customer()
     {
