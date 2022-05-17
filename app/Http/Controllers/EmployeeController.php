@@ -3,22 +3,26 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\{Employee, User, Role};
+use App\Models\{Employee, User, Role, WorkDetail, TransactionDetail};
+use Illuminate\Support\Facades\DB;
 use DataTables;
+use Alert;
+use Image;
+use App\Actions\Employee\{StorePhotoAction, StoreUserAction, StoreEmployeeAction};
 
 class EmployeeController extends Controller
 {
+    function __construct()
+    {
+        $this->employee_data = Employee::with('user');
+    }
     function employeeJson(Request $request)
     {
         if($request->ajax()){
-            $employee_data = Employee::get();
+            $employee_data = $this->employee_data->get();
             return Datatables::of($employee_data)
                 ->addIndexColumn()
                 ->make(true);
-                // ->addColumn('productCategory',function (Product $product){
-                //     return $product->productCategory->category_name;
-                // })
-                // ->toJson();
         }
     }
     function index()
@@ -27,7 +31,7 @@ class EmployeeController extends Controller
       return view('employee.index',compact('role_data'));
     }
 
-    function store(Request $request)
+    function store(Request $request, StoreEmployeeAction $storeEmployeeAction)
     {
         $employee_data = $request->validate([
             'employee_fullname' => ['required'],
@@ -42,41 +46,33 @@ class EmployeeController extends Controller
         ]);
 
         $user_data = $request->validate([
-            'name' => ['required'],
-            'email' => ['required'],
+            // 'name' => ['required'],
+            // 'email' => ['required'],
             'password' => ['required'],
             'role_id' => ['required'],
         ]);
 
-        $image = $request->file('employee_photo');
-        $filename = $image->getClientOriginalName();
-
-        $image->move(public_path().'/img/img_temp/',$filename);
-        $image_compressed = Image::make(public_path().'/img/img_temp/'.$filename);
-        $image_compressed->fit(240,120);
-        $image_compressed->save(public_path('/img/employee/'.$filename));
-        unlink(public_path('/img/img_temp/'.$filename));
-
-        $employee_data = new Employee();
-        $employee_data->employee_fullname = $request->get('employee_fullname');
-        $employee_data->employee_nickname = $request->get('employee_nickname');
-        $employee_data->employee_nik = $request->get('employee_nik');
-        $employee_data->employee_gender = $request->get('employee_gender');
-        $employee_data->employee_birthdate = $request->get('employee_birthdate');
-        $employee_data->employee_photo = $filename;
-        $employee_data->employee_contact = $request->get('employee_contact');
-        $employee_data->employee_email = $request->get('employee_email');
-        $employee_data->employee_address = $request->get('employee_address');
-        $employee_data->save();
-
-        $user_data = new User();
-        $user_data->id_user = rand();
-        $user_data->name = $request->get('employee_fullname');
-        $user_data->email = $request->get('employee_email');
-        $user_data->password = bcrypt($request->get('password'));
-        $user_data->role_id = $request->get('role_id');
-        $user_data->save();
-        // Employee::create($employee_data);
+        DB::transaction(function() use ($request, $user_data, $employee_data, $storeEmployeeAction){
+            $storeEmployeeAction->execute($request);
+        });
+        Alert::success('Sukses','Data Karyawan berhasil ditambahkan !');
         return redirect()->back()->with('success','Data Karyawan berhasil ditambahkan');
     }
+
+    function delete($id_employee)
+    {
+        DB::transaction(function() use ($id_employee){
+            $employee_data = $this->employee_data->find($id_employee);
+            
+            $user_data = User::find($employee_data->user_id);
+            unlink(public_path('/img/employee/'.$employee_data->employee_photo));
+
+            $employee_data->delete();
+            $user_data->delete();
+        });
+        Alert::success('Sukses','Data Karyawan berhasil dihapus !');
+        return redirect()->back();
+    }
+
+
 }

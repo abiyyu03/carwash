@@ -23,7 +23,7 @@
 <!-- create data -->
 <div class="container-fluid">
     <div class=" d-flex justify-content-end">
-      <button type="button" class="btn bg-maroon" data-toggle="modal" data-target="#exampleModal">
+      <button type="button" class="btn bg-info" data-toggle="modal" data-target="#exampleModal">
           <i class="fas fa-plus"></i>
           Tambah Karyawan
       </button>
@@ -35,15 +35,16 @@
               <thead>
                 <tr>
                   <th>#</th>
+                  <th>NIP</th>
                   <th>Nama Panjang Karyawan</th>
                   <th>Nama Panggilan</th>
                   <th>NIK</th>
                   <th>Jenis Kelamin</th>
-                  <th>Tanggal Lahir</th>
+                  <!-- <th>Tanggal Lahir</th>
                   <th>PAS Foto</th>
                   <th>Kontak</th>
                   <th>Email</th>
-                  <th>Alamat</th>
+                  <th>Alamat</th> -->
                   <th>Aksi</th>
                 </tr>
               </thead>
@@ -64,7 +65,7 @@
         </button>
       </div>
       <div class="modal-body">
-        <form method="POST" action="{{route('employee.store')}}">
+        <form method="POST" action="{{route('employee.store')}}" enctype="multipart/form-data">
           @csrf
             <div class="form-group">
                 <label for="employee_fullname" class="col-form-label">Nama lengkap</label>
@@ -121,7 +122,7 @@
                 </select>
             </div>
             <div class="modal-footer form-group">
-                <button type="submit" class="btn bg-maroon">Tambah Data</button>
+                <button type="submit" class="btn bg-info">Tambah Data</button>
             </div>
         </form>
       </div>
@@ -142,30 +143,44 @@ $(document).ready(function(){
     columns:[
       // {data:"DT_Row_Index",name:"DT_Row_Index", orderable:false, searchable:false},
       {data:"DT_RowIndex",name:"DT_RowIndex", orderable:false, searchable:false},
+      {data:"id_employee",name:"id_employee"},
       {data:"employee_fullname",name:"employee_fullname"},
       {data:"employee_nickname",name:"employee_nickname"},
       {data:"employee_nik",name:"employee_nik"},
       {data:"employee_gender",name:"employee_gender"},
-      {data:"employee_birthdate",name:"employee_birthdate"},
-      {data:"employee_contact",name:"employee_contact"},
-      {data:"employee_email",name:"employee_email"},
-      {data:"employee_address",name:"employee_address"},
-      {data:"employee_photo",name:"employee_photo"},
+      // {data:"employee_birthdate",name:"employee_birthdate"},
+      // {data:"employee_photo",name:"employee_photo"},
+      // {data:"employee_contact",name:"employee_contact"},
+      // {data:"employee_email",name:"employee_email"},
+      // {data:"employee_address",name:"employee_address"},
       {
         data:"id_employee",
         render: function(data,type,row){
-          return '<a href="/employee/edit/'+data+'" class="btn btn-warning"><i class="fas fa-edit"></i></a> <a href="" class="btn btn-danger"><i class="fas fa-trash-alt"></i></a>';
+          return '<a href="/employee/detail/'+data+'" class="btn btn-primary"><i class="fas fa-info-circle"></i> Detail</a> <a href="/employee/edit/'+data+'" class="btn btn-warning"><i class="fas fa-edit"></i> Edit</a> <a href="/employee/delete/'+data+'" class="btn btn-danger"><i class="fas fa-trash-alt"></i> Delete</a>';
         }
       }
-      // {
-      //   data:"image",
-      //   name:"image",
-      //   render: function(data,type,row){
-      //     return '<img src="img/product/'+data+'">';
-      //   }
-      // },
-      // {data:"productCategory",name:"productCategory.category_name"}
     ]
   });
+  table.on("click",'#detailButton',function(){
+    $tr = $(this).closest('tr');
+    if($($tr).hasClass('child')){
+      $tr = $tr.prev('.parent');
+    }
+
+    var data = table.row($tr).data();
+    // console.log(data);
+
+    $('#detail_product_name').text(data[1]);
+    $('#detail_product_code').val(data[2]);
+    $('#detail_product_price').val(data[4]);
+    $('#detail_product_stock').val(data[3]);
+    $('#detail_product_image').val(data[5]);
+    // $('#edit_product_category_id').val(data[6]);
+    // $('#editForm').attr('action','product/update/'+data[0]);
+    $('#detailModal').modal('show');
+
+  });
+
+  
 });
 </script>
