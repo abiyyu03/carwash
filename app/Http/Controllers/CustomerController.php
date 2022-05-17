@@ -16,7 +16,9 @@ class CustomerController extends Controller
     function customerJson()
     {
         $customer_data = Customer::get();
-        return Datatables::of($customer_data)->addIndexColumn()->make(true);
+        return Datatables::of($customer_data)
+                    ->addIndexColumn()
+                    ->make(true);
     }
     
 }

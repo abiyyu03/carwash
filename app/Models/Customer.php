@@ -10,6 +10,8 @@ class Customer extends Model
     use HasFactory;
     protected $table = "customers";
     protected $primaryKey = "id_customer";
+    protected $casts = ['id' => 'string'];
+    public $incrementing = false;
     protected $fillable = ['customer_name','customer_contact','customer_license_plate','vehicle_type_id'];
 
     // // every customer has a vehicletype
