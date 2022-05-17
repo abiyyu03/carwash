@@ -10,7 +10,10 @@ class Product extends Model
     use HasFactory;
     protected $table = "products";
     protected $primaryKey = "id_product";
-    protected $fillable = ['product_name','product_code','product_description','product_stock','image','product_category_id'];
+    protected $fillable = ['product_name','product_code','product_price',
+                        'product_stock','product_image','product_category_id',
+                        'product_minimum_stock','product_capital_price','supplier_id'
+                        ];
 
     function productCategory()
     {
@@ -19,6 +22,6 @@ class Product extends Model
 
     function transactionDetails()
     {
-        return $this->hasaMany('App\Models\TransactionDetail');
+        return $this->hasMany('App\Models\TransactionDetail');
     }
 }

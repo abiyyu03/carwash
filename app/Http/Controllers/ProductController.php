@@ -4,23 +4,28 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\{Product,ProductCategory};
+use Illuminate\Support\Facades\DB;
+use App\Actions\Product\{StoreProductImageAction};
 use Image;
 use DataTables;
+use Alert;
 
 class ProductController extends Controller
 {
+    function __construct()
+    {
+        $this->product_data = Product::with('productCategory');
+    }
     function index()
     {
         $productCategory_data = ProductCategory::get();
-        // $product_data = Product::with('productCategory')->get();
-        // return Datatables::of(Product::with('productCategory')->get())->make(true);
-        return view('product.index',compact('productCategory_data'));
+        $product_data = $this->product_data->get();
+        return view('product.index',compact('productCategory_data','product_data'));
     }
     function productJson(Request $request)
     {
         if($request->ajax()){
-            $product_data = Product::with('productCategory');
-            return Datatables::eloquent($product_data)
+            return Datatables::eloquent($this->product_data)
                 ->addColumn('productCategory',function (Product $product){
                     return $product->productCategory->category_name;
                 })
@@ -29,48 +34,67 @@ class ProductController extends Controller
         }
     }
 
-    function store(Request $request)
+    function store(Request $request, StoreProductImageAction $storeProductImageAction)
     {
         //validate produk_data
-        $produk_data = $request->validate([
+        $product_data = $request->validate([
             'product_name' => ['required'],
             'product_code' => ['required'],
-            'product_description' => ['required'],
             'product_price' => ['required'],
             'product_stock' => ['required'],
-            'image' => ['required'],
+            // 'product_image' => ['required'],
             'product_category_id' => ['required']
         ]);
 
-        //upload cover product image
-        $image = $request->file('image');
-        $filename = $image->getClientOriginalName();
+        DB::transaction(function() use ($request, $storeProductImageAction){
+            //upload cover product image
+           if($request->file('product_image') != NULL)
+           {
+                $storeProductImageAction->executeProduct($request);
+           }
 
-        $image->move(public_path().'/img/img_temp/',$filename);
-        $image_compressed = Image::make(public_path().'/img/img_temp/'.$filename);
-        $image_compressed->fit(240,120);
-        $image_compressed->save(public_path('/img/product/'.$filename));
-        unlink(public_path('/img/img_temp/'.$filename));
+            $product_data = new Product();
+            $product_data->product_name = $request->product_name;
+            $product_data->product_code = $request->product_code;
+            $product_data->product_price = $request->product_price;
+            $product_data->product_capital_price = $request->product_capital_price;
+            $product_data->product_stock = $request->product_stock;
+            $product_data->product_minimum_stock = $request->product_minimum_stock;
+            $product_data->product_image =  $storeProductImageAction->filename;
+            $product_data->product_category_id = $request->product_category_id;
+            $product_data->save();
+        });
+        Alert::success('Sukses','Data Produk berhasil disimpan');
+        return redirect()->back(); //->with('success','Data Produk berhasil disimpan');
+    }
 
-        $product_data = new Product();
-        $product_data->product_name = $request->get('product_name');
-        $product_data->product_code = $request->get('product_code');
-        $product_data->product_description = $request->get('product_description');
-        $product_data->product_price = $request->get('product_price');
-        $product_data->product_stock = $request->get('product_stock');
-        $product_data->image = $filename;
-        $product_data->product_category_id = $request->get('product_category_id');
+    function delete($id_product)
+    {
+        DB::transaction(function() use ($id_product){
+            $product_data = $this->product_data->find($id_product);
+            unlink(public_path('/img/product/'.$product_data->product_image));
+            $product_data->delete();
+        });
+        Alert::success('Sukses','Data Produk berhasil dihapus !');
+        return redirect()->back();
+    }
+
+    function edit($id_product)
+    {
+        
+    }
+
+    function update(Request $request,$id_product)
+    {
+        $product_data = Product::findOrFail($id_product);
+        $product_data->product_name = $request->product_name; 
+        $product_data->product_code = $request->product_code; 
+        $product_data->product_stock = $request->product_stock; 
+        $product_data->product_price = $request->product_price; 
+        $product_data->product_category_id = $request->product_category_id; 
         $product_data->save();
-        return redirect()->back()->with('success','Data Produk berhasil disimpan');
-    }
-
-    function destroy()
-    {
-
-    }
-
-    function update(Request $request)
-    {
-
+        
+        Alert::success('Sukses','Data produk berhasil diubah !');
+        return back();
     }
 }

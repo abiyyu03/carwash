@@ -35,7 +35,22 @@
           Tambah Produk
       </button>
   </div>
-  <div class="card mt-3">
+  <div class="card card-body mt-3">
+    <div class="d-flex justify-content-between">
+      <div class="as">
+        asd
+      </div>
+      <div class="">
+        <select name="product_category_id" class="form-control" required>
+          <option>-</option>
+          @foreach($productCategory_data as $productCategory)
+          <option value="{{$productCategory->id_product_category}}">{{$productCategory->category_name}}</option>
+          @endforeach
+        </select>
+      </div>
+    </div>
+  </div>
+  <div class="card">
     <div class="card-body">
       <div class="table-responsive">
         <table class="table data-product">
@@ -46,12 +61,25 @@
               <th>Kode Produk</th>
               <th>Harga Produk</th>
               <th>Stok Produk</th>
-              <th>Gambar Produk</th>
+              <!-- <th>Gambar Produk</th> -->
               <th>Kategori Produk</th>
               <th>Aksi</th>
             </tr>
           </thead>
           <tbody>
+            @foreach($product_data as $product)
+              <tr>
+                <td>{{ $loop->iteration }}</td>
+                <td>{{ $product->product_name }}</td>
+                <td>{{ $product->product_code }}</td>
+                <td>{{ $product->product_price }}</td>
+                <td>{{ $product->product_stock }}</td>
+                <td>{{ $product->productCategory->category_name }}</td>
+                <td><a href="#" id="detailButton" class="btn btn-primary"><i class="fas fa-info-circle"></i> Detail</a>
+                    <a href="#" id="editButton" data-toggle="modal" data-target="#editModal" class="btn btn-warning"><i class="fas fa-edit"></i> Edit</a> 
+                    <a href="#" class="btn btn-danger"><i class="fas fa-trash-alt"></i> Delete</a> </td>
+              </tr>
+            @endforeach
           </tbody>
         </table>
       </div>
@@ -78,38 +106,106 @@
               <input type="text" class="form-control" id="product_code" value="{{old('product_code')}}" name="product_code" required>
             </div>
             <div class="form-group">
-              <label for="message-text" class="col-form-label">Deskripsi Produk</label>
-              <textarea class="form-control" id="product_description" name="product_description" required>{{old('product_description')}}</textarea>
+              <label for="product_price" class="col-form-label">Harga Jual</label>
+              <input type="number" class="form-control" id="product_price" value="{{old('product_price')}}" name="product_price" required>
             </div>
             <div class="form-group">
-              <label for="product_price" class="col-form-label">Harga Produk</label>
-              <input type="number" class="form-control" id="product_price" value="{{old('product_price')}}" name="product_price" required>
+              <label for="product_capital_price" class="col-form-label">Harga Beli</label>
+              <input type="number" class="form-control" id="product_capital_price" value="{{old('product_capital_price')}}" name="product_capital_price" required>
             </div>
             <div class="form-group">
               <label for="product_stock" class="col-form-label">Jumlah Stok</label>
               <input type="number" class="form-control" id="product_stock" value="{{old('product_stock')}}" name="product_stock" required>
             </div>
             <div class="form-group">
+              <label for="product_minimum_stock" class="col-form-label">Minimal Stok</label>
+              <input type="number" class="form-control" id="product_minimum_stock" value="{{old('product_minimum_stock')}}" name="product_minimum_stock" required>
+            </div>
+            <div class="form-group">
               <label for="image" class="col-form-label">Gambar Produk</label>
-              <input type="file" class="form-control" id="image" value="{{old('image')}}" name="image" required>
+              <input type="file" class="form-control" id="product_image" value="{{old('product_image')}}" name="product_image">
             </div>
             <div class="form-group">
                 <label for="product_category_id">Kategori Produk</label>
                 <select name="product_category_id" class="form-control" required>
-                  <option>-</option>
+                  <option disabled>-</option>
                   @foreach($productCategory_data as $productCategory)
-                  <option value="{{$productCategory->id}}">{{$productCategory->category_name}}</option>
+                  <option value="{{$productCategory->id_product_category}}">{{$productCategory->category_name}}</option>
                   @endforeach
                 </select>
             </div>
-            <!-- <div class="form-group">
-              <label for="recipient-name" class="col-form-label">Supplier</label>
-              <input type="number" class="form-control" id="supplier_id" name="supplier_id" required>
-            </div> -->
             <div class="modal-footer form-group">
               <button type="submit" class="btn btn-primary">Tambah Produk</button>
             </div>
           </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- edit data -->
+<div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Edit Produk</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form action="" method="POST" id="editForm">
+            @csrf
+            {{method_field('PUT')}}
+            <div class="form-group">
+              <label for="product_name" class="col-form-label">Nama Produk</label>
+              <input type="text" class="form-control" id="edit_product_name" value="{{old('product_name')}}" name="product_name">
+            </div>
+            <div class="form-group">
+              <label for="product_code" class="col-form-label">Kode Produk</label>
+              <input type="text" class="form-control" id="edit_product_code" value="{{old('product_code')}}" name="product_code" required>
+            </div>
+            <div class="form-group">
+              <label for="product_price" class="col-form-label">Harga Produk</label>
+              <input type="number" class="form-control" id="edit_product_price" value="{{old('product_price')}}" name="product_price" required>
+            </div>
+            <div class="form-group">
+              <label for="product_stock" class="col-form-label">Jumlah Stok</label>
+              <input type="number" class="form-control" id="edit_product_stock" value="{{old('product_stock')}}" name="product_stock" required>
+            </div>
+            <!-- <div class="form-group">
+              <label for="image" class="col-form-label">Gambar Produk</label>
+              <input type="file" class="form-control" id="edit_product_image" value="{{old('product_image')}}" name="product_image">
+            </div> -->
+            <div class="form-group">
+                <label for="product_category_id">Kategori Produk</label>
+                <select name="product_category_id" id="edit_product_category_id" class="form-control" required>
+                  <option disabled>-</option>
+                  @foreach($productCategory_data as $productCategory)
+                  <option value="{{$productCategory->id_product_category}}">{{$productCategory->category_name}}</option>
+                  @endforeach
+                </select>
+            </div>
+            <div class="modal-footer form-group">
+              <button type="submit" class="btn btn-primary">Edit Produk</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="detailModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Tambah Produk</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <h1 id="detail_product_name"></h1>
         </div>
       </div>
     </div>
@@ -122,31 +218,73 @@
 <script src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
-  $('.data-product').DataTable({
-    processing:true,
-    serverSide:true,
-    ajax:"{{route('product.productJson')}}",
-    columns:[
-      // {data:"DT_Row_Index",name:"DT_Row_Index", orderable:false, searchable:false},
-      {data:"DT_RowIndex",name:"DT_RowIndex", orderable:false, searchable:false},
-      {data:"product_name",name:"product_name"},
-      {data:"product_code",name:"product_code"},
-      {data:"product_price",name:"product_price"},
-      {data:"product_stock",name:"product_stock"},
-      {
-        data:"image",
-        name:"image",
-        render: function(data,type,row){
-          return '<img src="img/product/'+data+'">';
-        }
-      },
-      {data:"productCategory",name:"productCategory.category_name"},
-      {
-        render: function(data,type,row){
-          return '<a href="#" class="btn btn-danger"><i class="fas fa-pencil-alt"></i></a>';
-        }
-      }
-    ]
+  // $('.data-product').DataTable({
+  //   processing:true,
+  //   serverSide:true,
+  //   ajax:"{{route('product.productJson')}}",
+  //   columns:[
+  //     // {data:"DT_Row_Index",name:"DT_Row_Index", orderable:false, searchable:false},
+  //     {data:"DT_RowIndex",name:"DT_RowIndex", orderable:false, searchable:false},
+  //     {data:"product_name",name:"product_name"},
+  //     {data:"product_code",name:"product_code"},
+  //     // {data:"product_price",name:"product_price"},
+  //     {data:"product_stock",name:"product_stock"},
+  //     // {
+  //     //   data:"product_image",
+  //     //   name:"product_image",
+  //     //   render: function(data,type,row){
+  //     //     return '<img src="img/product/'+data+'">';
+  //     //   }
+  //     // },
+  //     {data:"productCategory",name:"productCategory.category_name"},
+  //     {
+  //       data:"id_product",
+  //       render: function(data,type,row){
+  //         return '<a href="/employee/detail/'+data+'" class="btn btn-primary"><i class="fas fa-info-circle"></i> Detail</a> <a href="#" id="editButton" data-toggle="modal" data-target="#editModal" class="btn btn-warning" data-id="'+data+'"><i class="fas fa-edit"></i> Edit</a> <a href="/product/delete/'+data+'" class="btn btn-danger"><i class="fas fa-trash-alt"></i> Delete</a> ';
+  //       }
+  //     }
+  //   ]
+  // });
+  var table = $('.data-product').DataTable();
+  // $('#editButton').on("click",function(){
+  table.on("click",'#editButton',function(){
+    $tr = $(this).closest('tr');
+    if($($tr).hasClass('child')){
+      $tr = $tr.prev('.parent');
+    }
+
+    var data = table.row($tr).data();
+    // console.log(data);
+
+    $('#edit_product_name').val(data[1]);
+    $('#edit_product_code').val(data[2]);
+    $('#edit_product_price').val(data[4]);
+    $('#edit_product_stock').val(data[3]);
+    $('#edit_product_image').val(data[5]);
+    // $('#edit_product_category_id').val(data[6]);
+    $('#editForm').attr('action','product/update/'+data[0]);
+    $('#editModal').modal('show');
+
+  });
+
+  table.on("click",'#detailButton',function(){
+    $tr = $(this).closest('tr');
+    if($($tr).hasClass('child')){
+      $tr = $tr.prev('.parent');
+    }
+
+    var data = table.row($tr).data();
+    // console.log(data);
+
+    $('#detail_product_name').text(data[1]);
+    $('#detail_product_code').val(data[2]);
+    $('#detail_product_price').val(data[4]);
+    $('#detail_product_stock').val(data[3]);
+    $('#detail_product_image').val(data[5]);
+    // $('#edit_product_category_id').val(data[6]);
+    // $('#editForm').attr('action','product/update/'+data[0]);
+    $('#detailModal').modal('show');
+
   });
 });
 </script>
