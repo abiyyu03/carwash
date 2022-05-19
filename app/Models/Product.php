@@ -24,4 +24,9 @@ class Product extends Model
     {
         return $this->hasMany('App\Models\TransactionDetail');
     }
+
+    function supplier()
+    {
+        return $this->belongsTo('App\Models\Supplier','supplier_id');
+    }
 }

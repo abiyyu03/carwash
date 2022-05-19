@@ -14,4 +14,9 @@ class Inventory extends Model
     protected $fillable = ['inventory_name','inventory_amount','inventory_usable',
                         'inventory_unit','inventory_code','inventory_usage',
                         'inventory_capital_price','supplier_id'];
+
+    function supplier()
+    {
+        return $this->belongsTo('App\Models\Supplier','supplier_id');
+    }
 }
