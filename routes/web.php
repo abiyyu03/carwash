@@ -56,6 +56,12 @@ Route::middleware('owner')->group(function(){
     Route::get('/report/daily',[ReportController::class,'index']);
     Route::get('/report/monthly',[ReportController::class,'index']);
 
+    //Supplier
+    Route::get('/supplier',[SupplierController::class,'index']);
+    Route::post('/supplier/store/{Sid_supplier)',[SupplierController::class,'store'])->name('supplier.store');
+    Route::get('/supplier/delete/{id_supplier}',[SupplierController::class,'delete']);
+    Route::put('/supplier/update/{id_supplier}',[SupplierController::class,'update'])->name('supplier.update');
+        
 });
 
 Route::middleware('supervisor')->group(function(){
@@ -77,7 +83,7 @@ Route::middleware('role: cashier|owner')->group(function(){
     
     Route::post('/transaction/detail/store',[TransactionController::class,'storeTransactionDetail'])->name('transaction.storeTransactionDetail');
     Route::get('/transaction/detail/delete/{id_transaction_detail}',[TransactionController::class,'deleteTransactionDetail']);
-    Route::get('/transaction/{id_transaction}/selectProduct',[TransactionController::class,'checkout']);
+    Route::get('/transaction/{id_transaction}/select-product',[TransactionController::class,'checkout']);
     Route::get('/transaction/getTotal/{id_transaction}',[TransactionController::class,'getTotal']);
 
     // config
