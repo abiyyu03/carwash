@@ -139,6 +139,7 @@ return [
         /*
          * Laravel Framework Service Providers...
          */
+        Darryldecode\Cart\CartServiceProvider::class,
         Barryvdh\DomPDF\ServiceProvider::class,
         Yajra\DataTables\DataTablesServiceProvider::class,
         Intervention\Image\ImageServiceProvider::class,
@@ -233,7 +234,8 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
         'Image' => Intervention\Image\Facades\Image::class,
-        'DataTables' => Yajra\DataTables\Facades\DataTables::class
+        'DataTables' => Yajra\DataTables\Facades\DataTables::class,
+        'Cart' => Darryldecode\Cart\Facades\CartFacade::class
     ],
 
 ];
