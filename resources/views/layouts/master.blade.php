@@ -3,8 +3,7 @@
 <div class="wrapper">
 
   @include('components.navbar')
-
-  {-- @include('components.sidebar',['color' => 'navy']) --}
+  
   @include('components.sidebar')
 
   <!-- Content Wrapper. Contains page content -->
@@ -29,5 +28,6 @@
   @include('sweetalert::alert')
   <!-- /.control-sidebar -->
 </div>
-@include('components.script')
 @stack('addon-scripts')
+</body>
+<html>
