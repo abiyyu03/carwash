@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use DataTables;
 use Alert;
+use Cart;
 
 class TransactionController extends Controller
 {
@@ -66,8 +67,6 @@ class TransactionController extends Controller
         $employee_data = Employee::whereHas('user', function($query){ 
             $query->where('user_id',Auth()->user()->id_user); 
         })->first();
-        // $employee_data = Employee::with('user')->where('user_id',Auth()->user()->id_user)->find();
-        // dd($employee_data->id_employee);
 
         $this->transaction->id_transaction = rand(); //\Str::random();
         $this->transaction->customer_id = $customer_data->id_customer;
@@ -75,7 +74,7 @@ class TransactionController extends Controller
         $this->transaction->transaction_timestamp = Carbon::now();
         $this->transaction->save();
 
-        return redirect()->to('transaction/'.$this->transaction->id_transaction.'/selectProduct');
+        return redirect()->to('transaction/'.$this->transaction->id_transaction.'/select-product');
     }
 
     function createCustomerAndTransactionWithNewCustomerData(Request $request)
@@ -106,7 +105,7 @@ class TransactionController extends Controller
             $this->transaction->save();
 
         });
-        return redirect()->to('transaction/'.$this->transaction->id_transaction.'/selectProduct');
+        return redirect()->to('transaction/'.$this->transaction->id_transaction.'/select-product');
         
     }
     
@@ -120,27 +119,38 @@ class TransactionController extends Controller
             //check are product or service
             if($productCategory_data->productType->product_type == "produk")
             {
+                // $product_cart = Cart::session(Auth()->user()->id_user)->add([
+                //     'id' => 123,
+                //     'name' => 'apaan',
+                //     'price' => 1234,
+                //     'quantity' => 2,
+                //     'attributes' => [
+                //         'product_id' => $request->product_id
+                //     ]
+                // ]);
+                // dd($product_cart);
+
                 $this->transactionDetail->id_transaction_detail = rand();
                 $this->transactionDetail->product_id = $request->product_id;
-                // $this->transactionDetail->transaction_detail_price = $product_data->product_price;
                 $this->transactionDetail->transaction_detail_amount = $request->transaction_detail_amount;
                 $this->transactionDetail->transaction_detail_total = ($request->transaction_detail_amount  * $product_data->product_price); 
                 $this->transactionDetail->transaction_id = $request->transaction_id;
                 $this->transactionDetail->save();
                 
                 //subtract (kurangi) product's stock
-                // $this->subtractProductStock($transactionDetail_data->product_id, $transactionDetail_data->transaction_detail_amount);
+                $this->subtractProductStock(
+                    $this->transactionDetail->product_id, 
+                    $this->transactionDetail->transaction_detail_amount
+                );
             } else {
                 $this->transactionDetail->id_transaction_detail = rand();
                 $this->transactionDetail->product_id = $request->product_id;
-                // $this->transactionDetail->transaction_detail_price = $product_data->product_price;
                 $this->transactionDetail->transaction_detail_amount = $request->transaction_detail_amount;
                 $this->transactionDetail->transaction_detail_total = ($request->transaction_detail_amount * $product_data->product_price); 
                 $this->transactionDetail->transaction_id = $request->transaction_id;
                 $this->transactionDetail->save();
                 
                 $commission = ((40/100) * $product_data->product_price);
-                // $tax = 10/100;
                 
                 // save employee data (siapa aja yang nyuci)
                 for ($i=0; $i < sizeof($employee_data); $i++) {
@@ -150,18 +160,13 @@ class TransactionController extends Controller
                     $this->workDetail->date = Carbon::today();
                     $this->workDetail->save();
                 }
-                // $s[] = Session(['key' => $this->workDetail]);
-                //inventory data
                 // suggests : save inventorysubtract or productstocksubtract, work detail in temporary 
-                $this->inventorySubtract('sampo');
-                
-                //bisnis proses yang belum : pengurangan inventory, penggajian karyawan (pembagian komisi)
+                foreach($product_data->inventories as $inventory)
+                {
+                    $this->inventorySubtract($inventory->inventory_name);
+                }
             }   
         });
-        //get Total
-        // $transaction_data = Transaction::with('customer','employee')->find($request->get('transaction_id'));
-        // $transaction_data->transaction_grandtotal = $this->getTotal($request->get('transaction_id'));
-        // $transaction_data->save();
         
         Alert::success('Sukses','Data transaksi sukses disimpan');
         return redirect()->back();
@@ -184,7 +189,6 @@ class TransactionController extends Controller
             }
             $selectedInventory->save();
         }
-        
     }
 
     function dropdownProduct(Request $request)
@@ -192,35 +196,58 @@ class TransactionController extends Controller
         $product_data = $this->product->select(['product_name','id_product','product_category_id','product_price'])
                     ->where('product_category_id',$request->id)
                     ->get();
-        // dd($product_data);
         return response()->json($product_data);
     }
-
     
     function deleteTransactionDetail($id_transaction_detail)
     {
-        $transactionDetail_data = $this->transactionDetail->find($id_transaction_detail);
-        $workDetail_data = WorkDetail::whereHas('transactionDetail', function($query){ 
-            $query->where('transaction_detail_id',request()->route('id_transaction_detail')); 
-        })->get();
-        if($transactionDetail_data->product->productCategory->productType->product_type == "produk"){
-            $transactionDetail_data->delete();
-        } else {
-            foreach ($workDetail_data as $workDetail) {
-                $selectedWorkDetail = WorkDetail::find($workDetail->id_work_detail);
-                $selectedWorkDetail->delete();
+        DB::transaction(function() use ($id_transaction_detail){
+            $transactionDetail_data = $this->transactionDetail->find($id_transaction_detail);
+            $product_data = Product::find($transactionDetail_data->product->id_product);
+            $workDetail_data = WorkDetail::whereHas('transactionDetail', function($query){ 
+                $query->where('transaction_detail_id',request()->route('id_transaction_detail')); 
+            })->get();
+
+            //check if data is product
+            if($transactionDetail_data->product->productCategory->productType->product_type == "produk"){
+                //rollback product stock
+                $product_data->product_stock += $transactionDetail_data->transaction_detail_amount;
+                $product_data->save();
+
+                $transactionDetail_data->delete();
+            } else {
+                foreach ($workDetail_data as $workDetail) {
+                    $selectedWorkDetail = WorkDetail::find($workDetail->id_work_detail);
+                    $selectedWorkDetail->delete();
+                }
+                foreach($product_data->inventories as $inventory)
+                {    
+                    $inventory_data = Inventory::find($inventory->id_inventory);
+                    $inventory_data->inventory_usage += 1;
+                    $inventory_data->save();
+                }
+                $transactionDetail_data->delete();
             }
-            $transactionDetail_data->delete();
-        }
-        
+        });
         // dd($selectedWorkDetail->id_work_detail);
         Alert::success('Sukses','Data Transaksi Produk berhasil dihapus');
         return redirect()->back();
     }
 
-    function processTransaction()
+    function processTransaction($id_transaction)
     {
         //complete transaction and print struct
+        // update transaction status, subtract product, subtract inventory, store grandtotal transaction 
+        //and print struct
+
+        //1 update status and grandtotal in transaction, print receipt
+        $transaction_data = $this->transaction->with('customer','employee')->find($id_transaction);
+        $transaction_data->transaction_status = "complete";
+        $transaction_data->transaction_grandtotal = $this->getTotal($id_transaction);
+        $transaction_data->save();
+
+        Alert::success('Sukses','Transaksi complete !');
+        return redirect()->to('/transaction');
     }
 
     function deleteTransaction($id_transaction, Request $request)
@@ -254,7 +281,6 @@ class TransactionController extends Controller
     {
         $product_data = $this->product->with('productCategory')->find($product_id);
         $product_data->product_stock -= $transaction_detail_amount;
-        // $product_data->save();
-        return $product_data;
+        $product_data->save();
     }
 }

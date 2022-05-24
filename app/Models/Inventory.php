@@ -19,4 +19,9 @@ class Inventory extends Model
     {
         return $this->belongsTo('App\Models\Supplier','supplier_id');
     }
+
+    function products()
+    {
+        return $this->belongsToMany('App\Models\Product','inventory_product','inventory_id','product_id');//->withPivot('product_id');//,'inventory_product','inventory_id','product_id');
+    }
 }
