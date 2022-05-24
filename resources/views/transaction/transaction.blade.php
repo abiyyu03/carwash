@@ -106,11 +106,108 @@
             <div class="card">
                 <div class="card-body d-flex justify-content-end">
                     <h3 class="font-weight-bold">Total : Rp.{{ $getTotal }}</h3>
-                    <a href="#" class="btn bg-info ml-2"><i class="fas fa-check"></i> Proses</a>
+                    <a href="" class="btn bg-info ml-2" data-toggle="modal" data-target="#structModal"><i class="fas fa-check"></i> Konfirmasi Transaksi</a>
                 </div>
             </div>
         </div>
     </div>
+</div>
+<div class="modal fade" id="structModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <!-- <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Buat Transaksi</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div> -->
+        <div class="modal-body">
+            <div class="container bg-light">
+                <div class="header">
+                    <div class="mx-auto text-center">
+                        <!-- <div class="img-brand mt-2">
+                            <img src="jiwalu-logo.png" width="60px" alt="" id="img-brand">
+                        </div> -->
+                        <div class="info-brand">
+                            <p class="mb-0 lead font-weight-bold">Jiwalu Carwash</p>
+                            <p class="small">Jalan Pancasila, Depok, Jawabarat, 21342</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="title-brand">
+                    <hr>
+                    <p class="small">ID Transaksi : {{ $transaction_data->id_transaction }}</p>
+                    <p class="small">Hari/Tanggal : {{ \Carbon\Carbon::parse($transaction_data->transaction_timestamp)->isoFormat('dddd, D MMMM Y') }}</p>
+                    <p class="small">Pukul : {{ \Carbon\Carbon::parse($transaction_data->transaction_timestamp)->isoFormat('HH:mm') }} WIB</p>
+                </div>
+                <div class="content">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th class="small">#</th>
+                                    <th class="small">Nama</th>
+                                    <th class="small">Amount</th>
+                                    <th class="small">Harga/pcs</th>
+                                    <th class="small">Subtotal</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($transactionWhereHas_data as $transactionDetail)
+                                <tr>
+                                    <td class="small">{{ $loop->iteration }}</td>
+                                    <td class="small">{{ $transactionDetail->product->product_name }}</td>
+                                    <td class="small">{{ $transactionDetail->transaction_detail_amount }}</td>
+                                    <td class="small">{{ $transactionDetail->product->product_price }}</td>
+                                    <td class="small">{{ $transactionDetail->transaction_detail_total }}</td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                            <!-- <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td colspan="3"></td>
+                            </tr> -->
+                        </table>
+                        <div class="result text-left">
+                            <hr>
+                            <p class="text-center">Perhitungan</p>
+                            <table class="table">
+                                <tr>
+                                    <td class="small">Harga Jual</td>
+                                    <td class="small"> : </td>
+                                    <td class="small"><span class="font-weight-bold">Rp.{{ $getTotal }}</td>
+                                </tr>
+                                <tr>
+                                    <td class="small">PPN</td>
+                                    <td class="small"> : </td>
+                                    <td class="small"><span class="font-weight-bold">Rp. 1000</td>
+                                </tr>
+                                <tr>
+                                    <td class="small">Grand Total</td>
+                                    <td class="small"> : </td>
+                                    <td class="small"><span class="font-weight-bold">Rp. 55000</td>
+                                </tr>
+                        </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-4 text-right">
+                <a href="#" class="btn btn-secondary" data-dismiss="modal" aria-label="Close">
+                    <i class="fas fa-times"></i>
+                    Tutup
+                </a>
+                <a href="/transaction/{{ request()->route('id_transaction') }}/finish" class="btn btn-info">
+                    <i class="fas fa-check-circle"></i>
+                    Selesaikan Pembayaran
+                </a>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 @endsection
 @push('addon-scripts')
