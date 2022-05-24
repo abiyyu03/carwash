@@ -15,7 +15,7 @@ class CreateTransactionsTable extends Migration
     {
         Schema::create('transactions', function (Blueprint $table) {
             $table->string('id_transaction')->primary();
-            $table->integer('customer_id')
+            $table->string('customer_id')
                 ->references('id_customer')
                 ->on('customers')
                 ->onDelete('cascade');
