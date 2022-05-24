@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\{Product,ProductCategory};
+use App\Models\{Product,ProductCategory, Inventory};
 use Illuminate\Support\Facades\DB;
 use App\Actions\Product\{StoreProductImageAction};
 use Image;
@@ -20,7 +20,8 @@ class ProductController extends Controller
     {
         $productCategory_data = ProductCategory::get();
         $product_data = $this->product_data->get();
-        return view('product.index',compact('productCategory_data','product_data'));
+        $inventory_data = Inventory::get();
+        return view('product.index',compact('productCategory_data','product_data','inventory_data'));
     }
     function productJson(Request $request)
     {
@@ -47,11 +48,11 @@ class ProductController extends Controller
         ]);
 
         DB::transaction(function() use ($request, $storeProductImageAction){
-            //upload cover product image
-           if($request->file('product_image') != NULL)
-           {
+            //upload product image
+            if($request->file('product_image') != NULL)
+            {
                 $storeProductImageAction->executeProduct($request);
-           }
+            }
 
             $product_data = new Product();
             $product_data->product_name = $request->product_name;
@@ -63,6 +64,9 @@ class ProductController extends Controller
             $product_data->product_image =  $storeProductImageAction->filename;
             $product_data->product_category_id = $request->product_category_id;
             $product_data->save();
+
+            //store inventory data used
+            $product_data->inventories()->attach($request->input('inventory_id'));
         });
         Alert::success('Sukses','Data Produk berhasil disimpan');
         return redirect()->back(); //->with('success','Data Produk berhasil disimpan');
@@ -72,7 +76,11 @@ class ProductController extends Controller
     {
         DB::transaction(function() use ($id_product){
             $product_data = $this->product_data->find($id_product);
-            unlink(public_path('/img/product/'.$product_data->product_image));
+            //check if image data is exist
+            if($product_data->product_image != NULL)
+            {
+                unlink(public_path('/img/product/'.$product_data->product_image));
+            }
             $product_data->delete();
         });
         Alert::success('Sukses','Data Produk berhasil dihapus !');
