@@ -15,8 +15,9 @@ Route::middleware('owner')->group(function(){
     //customer
     Route::get('/customer',[CustomerController::class,'index']);
     Route::get('/customerJson',[CustomerController::class,'customerJson'])->name('customer.customerJson');
-    // Route::get('/customer/edit/{id_customer}',[CustomerController::class,'edit']);
-
+    Route::get('/customer/delete/{id_customer}',[CustomerController::class,'delete']);
+    Route::put('/customer/update/{id_customer}',[CustomerController::class,'update']);
+    
     //product category
     Route::get('/product_category',[ProductCategoryController::class,'index']);
     Route::get('/product_categoryJson',[ProductCategoryController::class,'productCategoryJson'])->name('productCategory.productCategoryJson');
@@ -78,12 +79,13 @@ Route::middleware('role: cashier|owner')->group(function(){
     Route::get('/transaction',[TransactionController::class,'index']);
     Route::get('/transaction/delete/{id_transaction}',[TransactionController::class,'deleteTransaction']);
     Route::get('/transactionJson',[TransactionController::class,'transactionJson'])->name('transaction.transactionJson');
-    Route::post('/transaction/checkout/create_new',[TransactionController::class,'createCustomerAndTransactionWithNewCustomerData'])->name('transaction.create');
-    Route::post('/transaction/checkout/use_existing',[TransactionController::class,'createCustomerAndTransactionWithExistingCustomerData'])->name('transaction.useExisting');
+    Route::post('/transaction/checkout/create-new',[TransactionController::class,'createCustomerAndTransactionWithNewCustomerData'])->name('transaction.create');
+    Route::post('/transaction/checkout/use-existing',[TransactionController::class,'createCustomerAndTransactionWithExistingCustomerData'])->name('transaction.useExisting');
     
     Route::post('/transaction/detail/store',[TransactionController::class,'storeTransactionDetail'])->name('transaction.storeTransactionDetail');
     Route::get('/transaction/detail/delete/{id_transaction_detail}',[TransactionController::class,'deleteTransactionDetail']);
     Route::get('/transaction/{id_transaction}/select-product',[TransactionController::class,'checkout']);
+    Route::get('/transaction/{id_transaction}/finish',[TransactionController::class,'processTransaction']);
     Route::get('/transaction/getTotal/{id_transaction}',[TransactionController::class,'getTotal']);
 
     // config
