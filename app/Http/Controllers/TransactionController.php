@@ -68,7 +68,7 @@ class TransactionController extends Controller
             $query->where('user_id',Auth()->user()->id_user); 
         })->first();
 
-        $this->transaction->id_transaction = rand(); //\Str::random();
+        $this->transaction->id_transaction = \Str::random(); //\Str::random();
         $this->transaction->customer_id = $customer_data->id_customer;
         $this->transaction->employee_id = (Auth()->user()->role->role_name == "owner") ? 0 : $employee_data->id_employee;
         $this->transaction->transaction_timestamp = Carbon::now();
@@ -98,7 +98,7 @@ class TransactionController extends Controller
                 $query->where('user_id',Auth()->user()->id_user); 
             })->first();
 
-            $this->transaction->id_transaction = rand(); //\Str::random();
+            $this->transaction->id_transaction = \Str::random(); //\Str::random();
             $this->transaction->customer_id = $this->customer->id_customer;
             $this->transaction->employee_id = (Auth()->user()->role->role_name == "owner") ? 0 : $employee_data->id_employee ;
             $this->transaction->transaction_timestamp = Carbon::now();
