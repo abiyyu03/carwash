@@ -23,14 +23,15 @@ class CreateProductsTable extends Migration
             $table->integer('product_minimum_stock')->nullable();
             $table->string('product_image')->nullable();
             $table->integer('product_category_id')
-                ->references('id_product_category')
-                ->on('product_categories')
-                ->onDelete('cascade');
+            ->references('id_product_category')
+            ->on('product_categories')
+            ->onDelete('cascade');
             $table->integer('supplier_id')
-                ->references('id_supplier')
-                ->on('suppliers')
-                ->onDelete('cascade')
-                ->nullable();
+            ->references('id_supplier')
+            ->on('suppliers')
+            ->onDelete('cascade')
+            ->nullable();
+            // $table->bool('is_active')->default(true);
             $table->timestamps();
         });
     }
