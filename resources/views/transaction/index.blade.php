@@ -32,8 +32,13 @@
 <div class=" d-flex justify-content-end">
     <a class="btn bg-info" href="#" data-toggle="modal" data-target="#exampleModal">
         <i class="fas fa-exchange-alt"></i>
-        Tambah Transaksi
+        Buat Transaksi
     </a>
+</div>
+<div class="card mt-3">
+  <div class="card-body">
+    filter
+  </div>
 </div>
 <div class="card mt-3">
     <div class="card-body">
@@ -85,12 +90,6 @@
                   <label for="customer_vehicle">Merk Kendaraan</label>
                   <input type="text" name="customer_vehicle" class="form-control">
               </div>
-              <!-- <div class="form-group">
-                  <label for="vehicle_type_id">Tipe Kendaraan</label>
-                  <select name="vehicle_type_id" class="form-control">
-                      <option>-</option>
-                  </select>
-              </div> -->
             </div>
             <div class="modal-footer form-group">
               <a href="#" id="clickTambah" onclick="clickTambah()" class="btn bg-secondary">Tambah Data Pelanggan</a>
@@ -127,57 +126,57 @@
     </div>
   </div>
 </div>
+<!-- <script src="{{ asset('js/transaction.min.js') }}"></script> -->
 @endsection
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>  
-<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-<script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.js"></script>
-<script src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"></script>
-<script type="text/javascript">
-$(document).ready(function(){
-  $('.data-transaction').DataTable({
-    processing:true,
-    serverSide:true,
-    ajax:"{{route('transaction.transactionJson')}}",
-    columns:[
-      // {data:"DT_Row_Index",name:"DT_Row_Index", orderable:false, searchable:false},
-      {data:"DT_RowIndex",name:"DT_RowIndex", orderable:false, searchable:false},
-      {data:"customer",name:"customer.customer_name"},
-      {data:"transaction_timestamp",name:"transaction_timestamp"},
-      // {data:"transaction_status",name:"transaction_status"},
-      {
-        data:"transaction_status",
-        name:"transaction_status",
-        render: function(data,type,row,name){
-          return '<span class="bg-warning rounded p-1">'+data+'</span>'
-        }
-      },
-      {
-        data:"id_transaction",
-        render: function(data,type,row){
-          return '<a href="/transaction/'+data+'/selectProduct" class="btn btn-warning"><i class="fas fa-edit"></i></a> <a href="/transaction/delete/'+data+'" class="btn btn-danger"><i class="fas fa-trash-alt"></i></a>';
-        }
-      }
-    ]
-  });
-});
-</script>
+@push('addon-scripts')
 <script>
-    $("#licence_plate").select2();
-    let tambah = document.getElementById('tambah-data');
-
-    function clickTambah()
-    {
-      $("#licence_plate").hide();
-      $("#tambah-customer").show();
-      $("#clickTambah").hide();
-      $("#clickExisting").show();
-    }
-    function clickExisting()
-    {
-      $("#licence_plate").show();
-      $("#tambah-customer").hide();
-      $("#clickTambah").show();
-      $("#clickExisting").hide();
-    }
+$(document).ready(function(){
+    $('.data-transaction').DataTable({
+      processing:true,
+      serverSide:true,
+      ajax:"{{route('transaction.transactionJson')}}",
+      columns:[
+        // {data:"DT_Row_Index",name:"DT_Row_Index", orderable:false, searchable:false},
+        {data:"DT_RowIndex",name:"DT_RowIndex", orderable:false, searchable:false},
+        {data:"customer",name:"customer.customer_name"},
+        {data:"transaction_timestamp",name:"transaction_timestamp"},
+        // {data:"transaction_status",name:"transaction_status"},
+        {
+          data:"transaction_status",
+          name:"transaction_status",
+          render: function(data,type,row,name){
+            return '<span class="{{'+data+' != "complete" ? "bg-danger" : "bg-primary" }} rounded p-1">'+data+'</span>'
+          }
+        },
+        {
+          data:"id_transaction",
+          render: function(data,type,row){
+            return '<a href="/transaction/'+data+'/select-product" class="btn btn-warning"><i class="fas fa-edit"></i> Edit</a> <a href="/transaction/delete/'+data+'" class="btn btn-danger"><i class="fas fa-trash-alt"></i> Hapus</a>';
+          }
+        }
+      ]
+    });
+    
+  });
 </script>
+@endpush
+<script>
+$("#licence_plate").select2();
+  let tambah = document.getElementById('tambah-data');
+
+  function clickTambah()
+  {
+    $("#licence_plate").hide();
+    $("#tambah-customer").show();
+    $("#clickTambah").hide();
+    $("#clickExisting").show();
+  }
+  function clickExisting()
+  {
+    $("#licence_plate").show();
+    $("#tambah-customer").hide();
+    $("#clickTambah").show();
+    $("#clickExisting").hide();
+  }
+</script>
+

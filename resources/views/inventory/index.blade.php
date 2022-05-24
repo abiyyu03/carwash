@@ -49,9 +49,9 @@
                   <td>{{ $inventory->inventory_code }}</td>
                   <td>{{ $inventory->inventory_unit }}</td>
                   <td>{{ $inventory->inventory_capital_price }}</td>
-                  <td>{{ $inventory->inventory_usable }}</td>
-                  <td><a href="#" id="editButton" data-toggle="modal" data-target="#editModal" class="btn btn-warning"><i class="fas fa-edit"></i></a> 
-                      <a href="/inventory/delete/{{ $inventory->id_inventory }}" id="deleteButton" class="btn btn-danger deleteButton"><i class="fas fa-trash-alt"></i></a></td>
+                  <td>{{ $inventory->inventory_usage }}</td>
+                  <td><a href="#" id="editButton" data-toggle="modal" data-target="#editModal" class="btn btn-warning"><i class="fas fa-edit"></i> Edit</a> 
+                      <a href="/inventory/delete/{{ $inventory->id_inventory }}" id="deleteButton" class="btn btn-danger deleteButton"><i class="fas fa-trash-alt"></i> Hapus</a></td>
                 </tr>
                 @endforeach
               </tbody>

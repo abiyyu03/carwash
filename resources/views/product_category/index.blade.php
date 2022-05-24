@@ -125,28 +125,10 @@
     </div>
   </div>
 </div>
+<script src="{{ asset('js/productCategory.min.js') }}"></script>
 @endsection
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>  
-<script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.js"></script>
-<script src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"></script>
 <script>
-  $(document).ready(function(){
-  var table = $('.data-productCategory').DataTable();
-  // $('#editButton').on("click",function(){
-  table.on("click",'#editButton',function(){
-    $tr = $(this).closest('tr');
-    if($($tr).hasClass('child')){
-      $tr = $tr.prev('.parent');
-    }
-
-    var data = table.row($tr).data();
-    console.log(data);
-
-    $('#edit_category_name').val(data[1]);
-    $('#edit_product_type_id ').val(data[0]);
-    $('#editForm').attr('action','product_category/update/'+data[0]);
-    $('#editModal').modal('show');
+  
     
     // var id = $(this).attr('data');
     // console.log(id);
@@ -165,26 +147,4 @@
     //     $('#edit_product_type_id').val(data.product_type_id);
     //   }
     // });
-});
-});
-</script>
-<script type="text/javascript">
-  $(document).ready(function(){
-  // $('.data-productCategory').DataTable({
-  //   processing:true,
-  //   serverSide:true,
-  //   ajax:"{{route('productCategory.productCategoryJson')}}",
-  //   columns:[
-  //     {data:"DT_RowIndex",name:"DT_RowIndex"},
-  //     {data:"category_name",name:"category_name"},
-  //     // {data:"productType.product_type",name:"productType.product_type"},
-  //     {
-  //       data:"id_product_category",
-  //       render: function(data,type,row){
-  //         return '<a href="#" id="editButton" data-toggle="modal" data-target="#editModal" class="btn btn-warning" data-id="'+data+'"><i class="fas fa-edit"></i> Edit</a> <a href="/product_category/edit/'+data+'" class="btn btn-danger"><i class="fas fa-trash-alt"></i> Delete</a>';
-  //       }
-  //     }
-  //   ]
-  // });
-});
 </script>

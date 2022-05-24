@@ -136,32 +136,34 @@
   <script src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
-  $('.data-employee').DataTable({
-    processing:true,
-    serverSide:true,
-    ajax:"{{route('employee.employeeJson')}}",
-    columns:[
-      // {data:"DT_Row_Index",name:"DT_Row_Index", orderable:false, searchable:false},
-      {data:"DT_RowIndex",name:"DT_RowIndex", orderable:false, searchable:false},
-      {data:"id_employee",name:"id_employee"},
-      {data:"employee_fullname",name:"employee_fullname"},
-      {data:"employee_nickname",name:"employee_nickname"},
-      {data:"employee_nik",name:"employee_nik"},
-      {data:"employee_gender",name:"employee_gender"},
-      // {data:"employee_birthdate",name:"employee_birthdate"},
-      // {data:"employee_photo",name:"employee_photo"},
-      // {data:"employee_contact",name:"employee_contact"},
-      // {data:"employee_email",name:"employee_email"},
-      // {data:"employee_address",name:"employee_address"},
-      {
-        data:"id_employee",
-        render: function(data,type,row){
-          return '<a href="/employee/detail/'+data+'" class="btn btn-primary"><i class="fas fa-info-circle"></i> Detail</a> <a href="/employee/edit/'+data+'" class="btn btn-warning"><i class="fas fa-edit"></i> Edit</a> <a href="/employee/delete/'+data+'" class="btn btn-danger"><i class="fas fa-trash-alt"></i> Delete</a>';
-        }
-      }
-    ]
-  });
-  table.on("click",'#detailButton',function(){
+  $('.data-employee').DataTable();
+  //   processing:true,
+  //   serverSide:true,
+  //   ajax:"{{route('employee.employeeJson')}}",
+  //   columns:[
+  //     // {data:"DT_Row_Index",name:"DT_Row_Index", orderable:false, searchable:false},
+  //     {data:"DT_RowIndex",name:"DT_RowIndex", orderable:false, searchable:false},
+  //     {data:"id_employee",name:"id_employee"},
+  //     {data:"employee_fullname",name:"employee_fullname"},
+  //     {data:"employee_nickname",name:"employee_nickname"},
+  //     {data:"employee_nik",name:"employee_nik"},
+  //     {data:"employee_gender",name:"employee_gender"},
+  //     // {data:"employee_birthdate",name:"employee_birthdate"},
+  //     // {data:"employee_photo",name:"employee_photo"},
+  //     // {data:"employee_contact",name:"employee_contact"},
+  //     // {data:"employee_email",name:"employee_email"},
+  //     // {data:"employee_address",name:"employee_address"},
+  //     {
+  //       data:"id_employee",
+  //       render: function(data,type,row){
+  //         return '<a href="/employee/detail/'+data+'" class="btn btn-primary"><i class="fas fa-info-circle"></i> Detail</a> <a href="/employee/edit/'+data+'" class="btn btn-warning"><i class="fas fa-edit"></i> Edit</a> <a href="/employee/delete/'+data+'" class="btn btn-danger"><i class="fas fa-trash-alt"></i> Delete</a>';
+  //       }
+  //     }
+  //   ]
+  // });
+  var table = $('.data-employee').DataTable();
+  // $('#editButton').on("click",function(){
+  table.on("click",'#editButton',function(){
     $tr = $(this).closest('tr');
     if($($tr).hasClass('child')){
       $tr = $tr.prev('.parent');
@@ -170,17 +172,34 @@ $(document).ready(function(){
     var data = table.row($tr).data();
     // console.log(data);
 
-    $('#detail_product_name').text(data[1]);
-    $('#detail_product_code').val(data[2]);
-    $('#detail_product_price').val(data[4]);
-    $('#detail_product_stock').val(data[3]);
-    $('#detail_product_image').val(data[5]);
+    $('#edit_product_name').val(data[1]);
+    $('#edit_product_code').val(data[2]);
+    $('#edit_product_price').val(data[3]);
+    $('#edit_product_stock').val(data[4]);
+    $('#edit_product_image').val(data[5]);
+    // $('#edit_product_category_id').val(data[6]);
+    $('#editForm').attr('action','product/update/'+data[0]);
+    $('#editModal').modal('show');
+
+  });
+
+  $('#detailImage').on("click",function(event){
+    event.preventDefault();
+    $tr = $(this).closest('tr');
+    if($($tr).hasClass('child')){
+      $tr = $tr.prev('.parent');
+    }
+    console.log($('#detailImage').attr('href'));
+
+    var data = table.row($tr).data();
+    // console.log(data);
+    $('#product_image').data('id');
+    $('#detail_product_image').attr('src','/img/product/'+data[6]);
     // $('#edit_product_category_id').val(data[6]);
     // $('#editForm').attr('action','product/update/'+data[0]);
     $('#detailModal').modal('show');
 
   });
-
   
 });
 </script>

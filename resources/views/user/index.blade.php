@@ -36,7 +36,7 @@
                 <th>Nama</th>
                 <th>Email</th>
                 <th>Role</th>
-                <th>Aksi</th>
+                <!-- <th>Aksi</th> -->
               </tr>
             </thead>
             <tbody>
@@ -89,12 +89,12 @@ $(document).ready(function(){
       {data:"name",name:"name"},
       {data:"email",name:"email"},
       {data:"role.role_name",name:"role.role_name"},
-      {
-        data:"id_customer",
-        render: function(data,type,row){
-          return '<a href="/customer/edit/'+data+'" class="btn btn-warning"><i class="fas fa-edit"></i></a> <a href="" class="btn btn-danger"><i class="fas fa-trash-alt"></i></a>';
-        }
-      }
+      // {
+      //   data:"id_customer",
+      //   render: function(data,type,row){
+      //     return '<a href="/customer/edit/'+data+'" class="btn btn-warning"><i class="fas fa-edit"></i></a> <a href="" class="btn btn-danger"><i class="fas fa-trash-alt"></i></a>';
+      //   }
+      // }
     ]
   });
 });

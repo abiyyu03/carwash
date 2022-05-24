@@ -30,7 +30,7 @@
       </div>
   @endif
   <div class=" d-flex justify-content-end">
-      <button type="button" class="btn bg-maroon" data-toggle="modal" data-target="#exampleModal">
+      <button type="button" class="btn bg-info" data-toggle="modal" data-target="#exampleModal">
           <i class="fas fa-plus"></i>
           Tambah Produk
       </button>
@@ -44,7 +44,7 @@
         <select name="product_category_id" class="form-control" required>
           <option>-</option>
           @foreach($productCategory_data as $productCategory)
-          <option value="{{$productCategory->id_product_category}}">{{$productCategory->category_name}}</option>
+          <option value="{{$productCategory->id_product_category}}" >{{$productCategory->category_name}}</option>
           @endforeach
         </select>
       </div>
@@ -60,8 +60,9 @@
               <th>Nama Produk</th>
               <th>Kode Produk</th>
               <th>Harga Produk</th>
+              <th>Harga Modal</th>
               <th>Stok Produk</th>
-              <!-- <th>Gambar Produk</th> -->
+              <th>Gambar</th>
               <th>Kategori Produk</th>
               <th>Aksi</th>
             </tr>
@@ -73,11 +74,13 @@
                 <td>{{ $product->product_name }}</td>
                 <td>{{ $product->product_code }}</td>
                 <td>{{ $product->product_price }}</td>
+                <td>{{ $product->product_capital_price }}</td>
                 <td>{{ $product->product_stock }}</td>
+                <td><a href="#" id="detailImage" data-toggle="modal" class="btn btn-primary" data-target="#detailModal" data-product-image="{{ $product->product_image }}"><i class="fas fa-image"></i> Tampilkan</a></td>
                 <td>{{ $product->productCategory->category_name }}</td>
-                <td><a href="#" id="detailButton" class="btn btn-primary"><i class="fas fa-info-circle"></i> Detail</a>
+                <td><!-- <a href="#" id="detailButton" class="btn btn-primary"><i class="fas fa-info-circle"></i> Detail</a> -->
                     <a href="#" id="editButton" data-toggle="modal" data-target="#editModal" class="btn btn-warning"><i class="fas fa-edit"></i> Edit</a> 
-                    <a href="#" class="btn btn-danger"><i class="fas fa-trash-alt"></i> Delete</a> </td>
+                    <a href="/product/delete/{{ $product->id_product }}" id="deleteButton" class="btn btn-danger deleteButton"><i class="fas fa-trash-alt"></i> Delete</a> </td>
               </tr>
             @endforeach
           </tbody>
@@ -134,8 +137,17 @@
                   @endforeach
                 </select>
             </div>
+            <div class="form-group">
+                <label for="inventory_id">Penggunaan Inventori</label>
+                <select name="inventory_id[]" class="form-control" multiple required>
+                  <option disabled>-</option>
+                  @foreach($inventory_data as $inventory)
+                  <option value="{{$inventory->id_inventory}}">{{$inventory->inventory_name}}</option>
+                  @endforeach
+                </select>
+            </div>
             <div class="modal-footer form-group">
-              <button type="submit" class="btn btn-primary">Tambah Produk</button>
+              <button type="submit" class="btn btn-info">Tambah Produk</button>
             </div>
           </form>
         </div>
@@ -187,7 +199,7 @@
                 </select>
             </div>
             <div class="modal-footer form-group">
-              <button type="submit" class="btn btn-primary">Edit Produk</button>
+              <button type="submit" class="btn btn-info">Edit Produk</button>
             </div>
           </form>
         </div>
@@ -205,17 +217,15 @@
           </button>
         </div>
         <div class="modal-body">
-          <h1 id="detail_product_name"></h1>
+          <img src="" id="detail_product_image">
+          <!-- <h1 id="detail_product_name"></h1> -->
         </div>
       </div>
     </div>
   </div>
 </div>
 @endsection
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>  
-<script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.js"></script>
-<script src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"></script>
+@push('addon-scripts')
 <script type="text/javascript">
 $(document).ready(function(){
   // $('.data-product').DataTable({
@@ -245,6 +255,26 @@ $(document).ready(function(){
   //     }
   //   ]
   // });
+  $('.deleteButton').on("click",function(event){
+    event.preventDefault();
+    var url = $(this).attr('href');
+    console.log(url);
+    swal.fire({
+      title: 'Apakah Kamu yakin ingin menghapus data ini ?',
+      text: "Data yang terhapus tidak bisa di kembalikan!",
+      icon: 'warning',
+      // buttons: ["Cancel","Yakin!"],
+      showCancelButton: true,
+      // confirmButtonColor: '#3085d6',
+      // cancelButtonColor: '#d33',
+      confirmButtonText: 'Yakin !'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          window.location.href = url;
+        }
+    });
+  });
+
   var table = $('.data-product').DataTable();
   // $('#editButton').on("click",function(){
   table.on("click",'#editButton',function(){
@@ -258,8 +288,8 @@ $(document).ready(function(){
 
     $('#edit_product_name').val(data[1]);
     $('#edit_product_code').val(data[2]);
-    $('#edit_product_price').val(data[4]);
-    $('#edit_product_stock').val(data[3]);
+    $('#edit_product_price').val(data[3]);
+    $('#edit_product_stock').val(data[4]);
     $('#edit_product_image').val(data[5]);
     // $('#edit_product_category_id').val(data[6]);
     $('#editForm').attr('action','product/update/'+data[0]);
@@ -267,24 +297,19 @@ $(document).ready(function(){
 
   });
 
-  table.on("click",'#detailButton',function(){
+  $('#detailImage').on("click",function(event){
+    event.preventDefault();
     $tr = $(this).closest('tr');
     if($($tr).hasClass('child')){
       $tr = $tr.prev('.parent');
     }
+    // console.log($('#detailImage').attr('href'));
+    console.log($('#detailImage').data('product-image'));
 
     var data = table.row($tr).data();
-    // console.log(data);
-
-    $('#detail_product_name').text(data[1]);
-    $('#detail_product_code').val(data[2]);
-    $('#detail_product_price').val(data[4]);
-    $('#detail_product_stock').val(data[3]);
-    $('#detail_product_image').val(data[5]);
-    // $('#edit_product_category_id').val(data[6]);
-    // $('#editForm').attr('action','product/update/'+data[0]);
     $('#detailModal').modal('show');
 
   });
 });
 </script>
+@endpush
