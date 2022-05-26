@@ -41,10 +41,10 @@
         asd
       </div>
       <div class="">
-        <select name="product_category_id" class="form-control" required>
-          <option>-</option>
+        <select name="product_category_id" id="product_category_id" class="form-control" required>
+          <option disabled>-</option>
           @foreach($productCategory_data as $productCategory)
-          <option value="{{$productCategory->id_product_category}}" >{{$productCategory->category_name}}</option>
+            <option value="{{$productCategory->id_product_category}}" >{{$productCategory->category_name}}</option>
           @endforeach
         </select>
       </div>
@@ -309,6 +309,14 @@ $(document).ready(function(){
     var data = table.row($tr).data();
     $('#detailModal').modal('show');
 
+  });
+
+  table.on('preXhr.dt',function(e,settings,data){
+      data.product_category_id = $('#product_category_id').val(); 
+  });
+  $('#product_category_id').change(function(){
+    table.DataTable().ajax.reload();
+    return false;
   });
 });
 </script>

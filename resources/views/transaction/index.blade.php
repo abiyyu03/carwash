@@ -45,7 +45,7 @@
         Halaman Transaksi
         <div class="table-responsive">
         <table class="table data-transaction table-striped table-bordered" style="width:100%">
-          <thead>
+          <thead class="table-dark">
             <tr>
               <th>#</th>
               <th>Nama Customer</th>
@@ -55,6 +55,18 @@
             </tr>
           </thead>
           <tbody>
+            @foreach($transaction_data as $transaction)
+            @if($transaction->transaction_status == "pending")
+            <tr>
+              <td>{{ $loop->iteration }}</td>
+              <td>{{ $transaction->customer->customer_name }}</td>
+              <td>{{ \Carbon\Carbon::parse($transaction->transaction_timestamp)->isoFormat('dddd, D MMMM Y - HH:mm') }}</td>
+              <td>{{ $transaction->transaction_status }}</td>
+              <td><a href="/transaction/{{ $transaction->id_transaction}}/select-product" class="btn btn-warning"><i class="fas fa-edit"></i> Edit</a> 
+                  <a href="/transaction/delete/{{ $transaction->id_transaction}}" class="btn btn-danger" id="deleteButton"><i class="fas fa-trash-alt"></i> Hapus</a></td>
+            </tr>
+            @endif
+            @endforeach
           </tbody>
         </table>
       </div>
@@ -126,38 +138,56 @@
     </div>
   </div>
 </div>
-<!-- <script src="{{ asset('js/transaction.min.js') }}"></script> -->
 @endsection
 @push('addon-scripts')
 <script>
 $(document).ready(function(){
-    $('.data-transaction').DataTable({
-      processing:true,
-      serverSide:true,
-      ajax:"{{route('transaction.transactionJson')}}",
-      columns:[
-        // {data:"DT_Row_Index",name:"DT_Row_Index", orderable:false, searchable:false},
-        {data:"DT_RowIndex",name:"DT_RowIndex", orderable:false, searchable:false},
-        {data:"customer",name:"customer.customer_name"},
-        {data:"transaction_timestamp",name:"transaction_timestamp"},
-        // {data:"transaction_status",name:"transaction_status"},
-        {
-          data:"transaction_status",
-          name:"transaction_status",
-          render: function(data,type,row,name){
-            return '<span class="{{'+data+' != "complete" ? "bg-danger" : "bg-primary" }} rounded p-1">'+data+'</span>'
-          }
-        },
-        {
-          data:"id_transaction",
-          render: function(data,type,row){
-            return '<a href="/transaction/'+data+'/select-product" class="btn btn-warning"><i class="fas fa-edit"></i> Edit</a> <a href="/transaction/delete/'+data+'" class="btn btn-danger"><i class="fas fa-trash-alt"></i> Hapus</a>';
-          }
-        }
-      ]
-    });
+    $('.data-transaction').DataTable();
+    //   processing:true,
+    //   serverSide:true,
+    //   ajax:"{{route('transaction.transactionJson')}}",
+    //   columns:[
+    //     // {data:"DT_Row_Index",name:"DT_Row_Index", orderable:false, searchable:false},
+    //     {data:"DT_RowIndex",name:"DT_RowIndex", orderable:false, searchable:false},
+    //     {data:"customer",name:"customer.customer_name"},
+    //     {data:"transaction_timestamp",name:"transaction_timestamp"},
+    //     // {data:"transaction_status",name:"transaction_status"},
+    //     {
+    //       data:"transaction_status",
+    //       name:"transaction_status",
+    //       render: function(data,type,row,name){
+    //         return '<span class="warning rounded p-1">'+data+'</span>'
+    //       }
+    //     },
+    //     {
+    //       data:"id_transaction",
+    //       render: function(data,type,row){
+    //         return '<a href="/transaction/'+data+'/select-product" class="btn btn-warning"><i class="fas fa-edit"></i> Edit</a> <a href="/transaction/delete/'+data+'" class="btn btn-danger deleteButton"><i class="fas fa-trash-alt"></i> Hapus</a>';
+    //       }
+    //     }
+    //   ]
+    // });
     
   });
+$('#deleteButton').on("click",function(event){
+    event.preventDefault();
+    var url = $(this).attr('href');
+    console.log(url);
+    swal.fire({
+      title: 'Apakah Kamu yakin ingin menghapus data ini ?',
+      text: "Data yang terhapus tidak bisa di kembalikan!",
+      icon: 'warning',
+      // buttons: ["Cancel","Yakin!"],
+      showCancelButton: true,
+      // confirmButtonColor: '#3085d6',
+      // cancelButtonColor: '#d33',
+      confirmButtonText: 'Yakin !'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          window.location.href = url;
+        }
+  });
+});
 </script>
 @endpush
 <script>

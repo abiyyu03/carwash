@@ -34,8 +34,9 @@ class TransactionController extends Controller
 
     function transactionJson(Request $request)
     {
+        $transaction_data = $this->transaction->with('customer','employee')->where('transaction_status','pending');
         if($request->ajax()){
-            return Datatables::eloquent($this->transaction->with('customer','employee'))
+            return Datatables::eloquent($transaction_data)
                 ->addColumn('customer',function (Transaction $transaction){
                     return $transaction->customer->customer_name;
                 })
