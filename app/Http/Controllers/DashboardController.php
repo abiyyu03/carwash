@@ -17,8 +17,8 @@ class DashboardController extends Controller
 
     function getPendingTransaction()
     {
-        return Transaction::with('customer')
-                ->where('transaction_status','pending')
+        return Transaction::with('customer','employee')
+                ->where('transaction_status','=','pending')
                 ->get();
     }
     function getAllTransaction()

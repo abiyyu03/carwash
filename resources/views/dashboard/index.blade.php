@@ -71,6 +71,81 @@
           <!-- Left col -->
           <section class="col-lg-7 connectedSortable">
             <!-- Custom tabs (Charts with tabs)-->
+
+<!-- Map card -->
+            <div class="card bg-gradient-primary overflow-auto" style="max-height:500px">
+              <div class="card-header border-0">
+                <h3 class="card-title">
+                  <i class="fas fa-tasks mr-1"></i>
+                  Menunggu di proses
+                </h3>
+                <!-- card tools -->
+                <div class="card-tools">
+                  <button type="button" class="btn btn-primary btn-sm daterange" title="Date range">
+                    <i class="far fa-calendar-alt"></i>
+                  </button>
+                  <button type="button" class="btn btn-primary btn-sm" data-card-widget="collapse" title="Collapse">
+                    <i class="fas fa-minus"></i>
+                  </button>
+                </div>
+                <!-- /.card-tools -->
+              </div>
+              <div class="card-body">
+                <ul class="list-group list-group-light">
+                  @foreach($transactionPending_data as $transaction)
+                    @if($transaction->transaction_status === "pending")
+                    <a href="/transaction/{{ $transaction->id_transaction }}/select-product" class=" px-3 border-0 rounded-3 mb-2">
+                      <li class="list-group-item list-group-item-action d-flex justify-content-between list-group-item-warning align-items-center">
+                        <div>
+                          <div class="fw-bold text-dark">{{ $transaction->customer->customer_license_plate }}</div>
+                          <div class="text-muted">{{ $transaction->customer->customer_name }}</div>
+                        </div>
+                        <span class="badge rounded-pill badge-warning p-2">{{ $transaction->transaction_status }}</span>
+                      </li>
+                    </a>
+                    @endif
+                  @endforeach
+                  
+                  <!-- <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <div>
+                      <div class="fw-bold text-dark">Alex Ray</div>
+                      <div class="text-muted">alex.ray@gmail.com</div>
+                    </div>
+                    <span class="badge rounded-pill badge-primary">Onboarding</span>
+                  </li>
+                  <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <div>
+                      <div class="fw-bold text-dark">Kate Hunington</div>
+                      <div class="text-muted">kate.hunington@gmail.com</div>
+                    </div>
+                    <span class="badge rounded-pill badge-warning">Pending</span>
+                  </li> -->
+                </ul>
+              </div>
+              <!-- /.card-body-->
+              {{-- <div class="card-footer bg-transparent">
+                <div class="row">
+                  <div class="col-4 text-center">
+                    <div id="sparkline-1"></div>
+                    <div class="text-white">Visitors</div>
+                  </div>
+                  <!-- ./col -->
+                  <div class="col-4 text-center">
+                    <div id="sparkline-2"></div>
+                    <div class="text-white">Online</div>
+                  </div>
+                  <!-- ./col -->
+                  <div class="col-4 text-center">
+                    <div id="sparkline-3"></div>
+                    <div class="text-white">Sales</div>
+                  </div>
+                  <!-- ./col -->
+                </div>
+                <!-- /.row -->
+              </div> --}}
+            </div>
+            <!-- /.card -->
+
             <div class="card">
               <div class="card-header">
                 <h3 class="card-title">
@@ -440,77 +515,7 @@
           <!-- right col (We are only adding the ID to make the widgets sortable)-->
           <section class="col-lg-5 connectedSortable">
 
-            <!-- Map card -->
-            <div class="card bg-gradient-primary overflow-auto" style="max-height:500px">
-              <div class="card-header border-0">
-                <h3 class="card-title">
-                  <i class="fas fa-tasks mr-1"></i>
-                  Menunggu di proses
-                </h3>
-                <!-- card tools -->
-                <div class="card-tools">
-                  <button type="button" class="btn btn-primary btn-sm daterange" title="Date range">
-                    <i class="far fa-calendar-alt"></i>
-                  </button>
-                  <button type="button" class="btn btn-primary btn-sm" data-card-widget="collapse" title="Collapse">
-                    <i class="fas fa-minus"></i>
-                  </button>
-                </div>
-                <!-- /.card-tools -->
-              </div>
-              <div class="card-body">
-                <ul class="list-group list-group-light">
-                  @foreach($transactionPending_data as $transaction)
-                    <a href="#" class=" px-3 border-0 rounded-3 mb-2">
-                      <li class="list-group-item list-group-item-action d-flex justify-content-between list-group-item-warning align-items-center">
-                        <div>
-                          <div class="fw-bold text-dark">{{ $transaction->customer->customer_license_plate }}</div>
-                          <div class="text-muted">{{ $transaction->customer->customer_name }}</div>
-                        </div>
-                        <span class="badge rounded-pill badge-warning p-2">Pending</span>
-                      </li>
-                    </a>
-                  @endforeach
-                  
-                  <!-- <li class="list-group-item d-flex justify-content-between align-items-center">
-                    <div>
-                      <div class="fw-bold text-dark">Alex Ray</div>
-                      <div class="text-muted">alex.ray@gmail.com</div>
-                    </div>
-                    <span class="badge rounded-pill badge-primary">Onboarding</span>
-                  </li>
-                  <li class="list-group-item d-flex justify-content-between align-items-center">
-                    <div>
-                      <div class="fw-bold text-dark">Kate Hunington</div>
-                      <div class="text-muted">kate.hunington@gmail.com</div>
-                    </div>
-                    <span class="badge rounded-pill badge-warning">Pending</span>
-                  </li> -->
-                </ul>
-              </div>
-              <!-- /.card-body-->
-              <div class="card-footer bg-transparent">
-                <div class="row">
-                  <div class="col-4 text-center">
-                    <div id="sparkline-1"></div>
-                    <div class="text-white">Visitors</div>
-                  </div>
-                  <!-- ./col -->
-                  <div class="col-4 text-center">
-                    <div id="sparkline-2"></div>
-                    <div class="text-white">Online</div>
-                  </div>
-                  <!-- ./col -->
-                  <div class="col-4 text-center">
-                    <div id="sparkline-3"></div>
-                    <div class="text-white">Sales</div>
-                  </div>
-                  <!-- ./col -->
-                </div>
-                <!-- /.row -->
-              </div>
-            </div>
-            <!-- /.card -->
+            
 
             <!-- solid sales graph -->
             <div class="card bg-gradient-info">
