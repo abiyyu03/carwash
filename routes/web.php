@@ -54,8 +54,8 @@ Route::middleware('owner')->group(function(){
     Route::get('/inventory/delete/{id_inventory}',[InventoryController::class,'delete']);
     
     //Report
-    Route::get('/report/daily',[ReportController::class,'index']);
-    Route::get('/report/monthly',[ReportController::class,'index']);
+    Route::get('/report/daily',[ReportController::class,'dailyReport']);
+    Route::get('/report/monthly',[ReportController::class,'monthlyReport']);
 
     //Supplier
     Route::get('/supplier',[SupplierController::class,'index']);
