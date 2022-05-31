@@ -86,7 +86,7 @@
             </div>
             <div class="form-group">
                 <label for="inventory_usable" class="col-form-label">Penggunaan (khusus bahan steam)</label>
-                <input type="number" class="form-control" id="" name="inventory_usable" required>
+                <input type="number" class="form-control" id="" name="inventory_usable">
             </div>
             <!-- <div class="form-group">
                 <label for="inventory_usage" class="col-form-label">Takaran Barang</label>
