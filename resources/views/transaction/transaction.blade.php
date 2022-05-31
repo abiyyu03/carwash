@@ -30,8 +30,8 @@
                         <input type="hidden" name="transaction_id" value="{{request()->route('id_transaction')}}">
                         <div class="form-group">
                             <label for="product_category_id">Kategori Produk <sup class="text-danger">*</sup></label>
-                            <select name="product_category_id" id="product_category_id" class="form-control">
-                                <option>-</option>
+                            <select name="product_category_id" id="product_category_id" required class="form-control">
+                                <option value="">-</option>
                                 @foreach($productCategory_data as $productCategory)
                                 <option value="{{$productCategory->id_product_category}}" id="{{$productCategory->productType->product_type}}" >{{$productCategory->category_name}}</option>
                                 @endforeach
@@ -39,8 +39,8 @@
                         </div>
                         <div class="form-group">
                             <label for="product_id">Nama Produk <sup class="text-danger">*</sup></label>
-                            <select name="product_id" id="product_id" class="form-control product_id">
-                                <option disabled selected>-</option>
+                            <select name="product_id" id="product_id" class="form-control product_id" required>
+                                <option value="">-</option>
                             </select>
                         </div>
                         <div class="form-group" id="amount">
@@ -58,7 +58,7 @@
                         <div class="form-group" id="employee">
                             <label for="employee_id">Nama Karyawan</label>
                             <select name="employee_id[]" id="employee_id" class="form-control" multiple>
-                                <option>-</option>
+                                <option value="" disabled>-</option>
                                 @foreach($employee_data as $employee)
                                 <option value="{{$employee->id_employee}}">{{$employee->employee_fullname}}</option>
                                 @endforeach
@@ -257,7 +257,7 @@
                 },
                 success:function(data){
                     $('#product_id').empty();
-                    $('#product_id').append('<option selected disabled>pilih produk</option>');
+                    $('#product_id').append('<option selected value="" disabled>pilih produk</option>');
                     // for (var i = 0; i < data.length; i++) {
                     //     console.log(data[i]);
                     //     op+='<option value="'+data[i].id_product+'">'+data[i].product_name+'</option>';
