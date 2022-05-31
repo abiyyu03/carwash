@@ -63,18 +63,13 @@ class TransactionController extends Controller
     function createCustomerAndTransactionWithExistingCustomerData(Request $request)
     {
         // get data with spesific id 
-        $customer_data = $this->customer->find($request->id_customer);
-        
-        $employee_data = Employee::whereHas('user', function($query){ 
-            $query->where('user_id',Auth()->user()->id_user); 
-        })->first();
+        DB::transaction(function() use ($request){
+            //get existing customer data
+            $customer_data = $this->customer->find($request->id_customer);
 
-        $this->transaction->id_transaction = \Str::random(); //\Str::random();
-        $this->transaction->customer_id = $customer_data->id_customer;
-        $this->transaction->employee_id = (Auth()->user()->role->role_name == "owner") ? 0 : $employee_data->id_employee;
-        $this->transaction->transaction_timestamp = Carbon::now();
-        $this->transaction->save();
-
+            // Create transaction data
+            $this->saveTransaction($request->id_customer);
+        });
         return redirect()->to('transaction/'.$this->transaction->id_transaction.'/select-product');
     }
 
@@ -88,23 +83,10 @@ class TransactionController extends Controller
 
         DB::transaction(function() use ($request){
             // Create customer data
-            $this->customer->id_customer = \Str::random();
-            $this->customer->customer_name = $request->customer_name;
-            $this->customer->customer_contact = $request->customer_contact;
-            $this->customer->customer_license_plate = $request->customer_license_plate;
-            $this->customer->save();
+            $this->saveCustomer($request);
 
-            // get cashier's data to store in transcation
-            $employee_data = Employee::whereHas('user', function($query){ 
-                $query->where('user_id',Auth()->user()->id_user); 
-            })->first();
-
-            $this->transaction->id_transaction = \Str::random(); //\Str::random();
-            $this->transaction->customer_id = $this->customer->id_customer;
-            $this->transaction->employee_id = (Auth()->user()->role->role_name == "owner") ? 0 : $employee_data->id_employee ;
-            $this->transaction->transaction_timestamp = Carbon::now();
-            $this->transaction->save();
-
+            // Create transaction data
+            $this->saveTransaction($this->customer->id_customer);
         });
         return redirect()->to('transaction/'.$this->transaction->id_transaction.'/select-product');
         
@@ -113,50 +95,34 @@ class TransactionController extends Controller
     function storeTransactionDetail(Request $request)
     {
         $employee_data = $request->input('employee_id'); // get employee data who work in a transaction
-        $productCategory_data =  $this->productCategory->with('productType')->find($request->product_category_id);
-        $product_data =$this->product->with('productCategory')->find($request->product_id);
+        $productCategory_data =  $this->productCategory->with('productType')->find(
+            $request->product_category_id
+        );
+        $product_data = $this->product->with('productCategory')->find($request->product_id);
+        $productType = $productCategory_data->productType->product_type;
         
-        DB::transaction(function() use ($employee_data,$request,$productCategory_data,$product_data){
+        DB::transaction(function() use ($employee_data,$request,$productCategory_data,$productType,$product_data){
             //check are product or service
-            if($productCategory_data->productType->product_type == "produk")
+            if($productType === "produk")
             {
-                // $product_cart = Cart::session(Auth()->user()->id_user)->add([
-                //     'id' => 123,
-                //     'name' => 'apaan',
-                //     'price' => 1234,
-                //     'quantity' => 2,
-                //     'attributes' => [
-                //         'product_id' => $request->product_id
-                //     ]
-                // ]);
-                // dd($product_cart);
-
-                $this->transactionDetail->id_transaction_detail = rand();
-                $this->transactionDetail->product_id = $request->product_id;
-                $this->transactionDetail->transaction_detail_amount = $request->transaction_detail_amount;
-                $this->transactionDetail->transaction_detail_total = ($request->transaction_detail_amount  * $product_data->product_price); 
-                $this->transactionDetail->transaction_id = $request->transaction_id;
-                $this->transactionDetail->save();
+                //Save transaction detail       
+                $this->saveTransactionDetail($request->product_id);
                 
                 //subtract (kurangi) product's stock
                 $this->subtractProductStock(
-                    $this->transactionDetail->product_id, 
-                    $this->transactionDetail->transaction_detail_amount
+                    $request->product_id, 
+                    $request->transaction_detail_amount
                 );
             } else {
-                $this->transactionDetail->id_transaction_detail = rand();
-                $this->transactionDetail->product_id = $request->product_id;
-                $this->transactionDetail->transaction_detail_amount = $request->transaction_detail_amount;
-                $this->transactionDetail->transaction_detail_total = ($request->transaction_detail_amount * $product_data->product_price); 
-                $this->transactionDetail->transaction_id = $request->transaction_id;
-                $this->transactionDetail->save();
+                //Save transaction detail    
+                $this->saveTransactionDetail($request->product_id);
                 
                 $commission = ((40/100) * $product_data->product_price);
                 
                 // save employee data (siapa aja yang nyuci)
                 for ($i=0; $i < sizeof($employee_data); $i++) {
                     $this->workDetail->employee_id = $employee_data[$i];
-                    $this->workDetail->transaction_detail_id = $this->transactionDetail->id_transaction_detail;
+                    $this->workDetail->transaction_detail_id = $request->id_transaction_detail;
                     $this->workDetail->commission = $commission;
                     $this->workDetail->date = Carbon::today();
                     $this->workDetail->save();
@@ -208,9 +174,10 @@ class TransactionController extends Controller
             $workDetail_data = WorkDetail::whereHas('transactionDetail', function($query){ 
                 $query->where('transaction_detail_id',request()->route('id_transaction_detail')); 
             })->get();
+            $productType = $transactionDetail_data->product->productCategory->productType->product_type;
 
             //check if data is product
-            if($transactionDetail_data->product->productCategory->productType->product_type == "produk"){
+            if($productType == "produk"){
                 //rollback product stock
                 $product_data->product_stock += $transactionDetail_data->transaction_detail_amount;
                 $product_data->save();
@@ -283,5 +250,40 @@ class TransactionController extends Controller
         $product_data = $this->product->with('productCategory')->find($product_id);
         $product_data->product_stock -= $transaction_detail_amount;
         $product_data->save();
+    }
+
+    function saveTransactionDetail($product_id)
+    {
+        
+        $product_data = $this->product->with('productCategory')->find($product_id);
+        $this->transactionDetail->id_transaction_detail = request()->id_transaction_detail;
+        $this->transactionDetail->product_id = request()->product_id;
+        $this->transactionDetail->transaction_detail_amount = request()->transaction_detail_amount;
+        $this->transactionDetail->transaction_detail_total = (request()->transaction_detail_amount * $product_data->product_price); 
+        $this->transactionDetail->transaction_id = request()->transaction_id;
+        $this->transactionDetail->save();
+    }
+
+    function saveTransaction($id_customer)
+    {
+        $customer_data = $this->customer->find($id_customer);
+
+        // get cashier's data to store in transcation
+        $employee_data = Employee::whereHas('user', function($query){ $query->where('user_id',Auth()->user()->id_user); })->first();
+
+        $this->transaction->id_transaction = "JWL-".\Str::random(); //\Str::random();
+        $this->transaction->customer_id = $customer_data->id_customer;
+        $this->transaction->employee_id = (Auth()->user()->role->role_name == "owner") ? 0 : $employee_data->id_employee;
+        $this->transaction->transaction_timestamp = Carbon::now();
+        $this->transaction->save();
+    }
+
+    function saveCustomer(Request $request)
+    {
+        $this->customer->id_customer = \Str::random();
+        $this->customer->customer_name = $request->customer_name;
+        $this->customer->customer_contact = $request->customer_contact;
+        $this->customer->customer_license_plate = $request->customer_license_plate;
+        $this->customer->save();
     }
 }
