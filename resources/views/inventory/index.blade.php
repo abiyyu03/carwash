@@ -97,7 +97,7 @@
                 <input type="number" class="form-control" id="" name="inventory_capital_price" required>
             </div>
             <div class="modal-footer form-group">
-                <button type="submit" class="btn btn-info">Tambah Tipe</button>
+                <button type="submit" class="btn btn-info">Tambah Inventori</button>
             </div>
         </form>
       </div>
@@ -143,7 +143,7 @@
                 <input type="number" class="form-control" id="edit_inventory_capital_price" name="inventory_capital_price" required>
             </div>
             <div class="modal-footer form-group">
-                <button type="submit" class="btn btn-info">Edit Tipe</button>
+                <button type="submit" class="btn btn-info">Edit Inventori</button>
             </div>
         </form>
       </div>
