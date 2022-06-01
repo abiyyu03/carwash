@@ -139,7 +139,7 @@
             </div>
             <div class="form-group">
                 <label for="inventory_id">Penggunaan Inventori</label>
-                <select name="inventory_id[]" class="form-control" multiple>
+                <select name="inventory_id[]" id="inventory_id" class="form-control" multiple>
                   <option disabled>-</option>
                   @foreach($inventory_data as $inventory)
                   <option value="{{$inventory->id_inventory}}">{{$inventory->inventory_name}}</option>
@@ -192,7 +192,7 @@
             <div class="form-group">
                 <label for="product_category_id">Kategori Produk</label>
                 <select name="product_category_id" id="edit_product_category_id" class="form-control" required>
-                  <option disabled>-</option>
+                  <option disabled value="">-</option>
                   @foreach($productCategory_data as $productCategory)
                   <option value="{{$productCategory->id_product_category}}">{{$productCategory->category_name}}</option>
                   @endforeach
@@ -310,6 +310,7 @@ $(document).ready(function(){
     $('#detailModal').modal('show');
 
   });
+  $('#inventory_id').select2();
 
   table.on('preXhr.dt',function(e,settings,data){
       data.product_category_id = $('#product_category_id').val(); 

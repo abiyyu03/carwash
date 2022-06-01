@@ -27,6 +27,7 @@
                 <div class="card-body">
                     <form action="{{route('transaction.storeTransactionDetail')}}" method="POST">
                         @csrf
+                        <input type="hidden" name="id_transaction_detail" value="{{rand()}}">
                         <input type="hidden" name="transaction_id" value="{{request()->route('id_transaction')}}">
                         <div class="form-group">
                             <label for="product_category_id">Kategori Produk <sup class="text-danger">*</sup></label>
