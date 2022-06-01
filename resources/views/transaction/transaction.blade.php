@@ -40,7 +40,7 @@
                         </div>
                         <div class="form-group">
                             <label for="product_id">Nama Produk <sup class="text-danger">*</sup></label>
-                            <select name="product_id" id="product_id" class="form-control product_id" required>
+                            <select name="product_id" id="product_id" class="form-control product_id" style="width:100%" required>
                                 <option value="">-</option>
                             </select>
                         </div>
@@ -58,7 +58,7 @@
                         </div> 
                         <div class="form-group" id="employee">
                             <label for="employee_id">Nama Karyawan</label>
-                            <select name="employee_id[]" id="employee_id" class="form-control" multiple>
+                            <select name="employee_id[]" id="employee_id" class="form-control" style="width:100%" multiple>
                                 <option value="" disabled>-</option>
                                 @foreach($employee_data as $employee)
                                 <option value="{{$employee->id_employee}}">{{$employee->employee_fullname}}</option>
