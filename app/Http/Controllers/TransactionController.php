@@ -267,14 +267,15 @@ class TransactionController extends Controller
     function saveTransaction($id_customer)
     {
         $customer_data = $this->customer->find($id_customer);
-
+        $date = Carbon::now();
+        
         // get cashier's data to store in transcation
         $employee_data = Employee::whereHas('user', function($query){ $query->where('user_id',Auth()->user()->id_user); })->first();
 
-        $this->transaction->id_transaction = "JWL-".\Str::random(); //\Str::random();
+        $this->transaction->id_transaction = "jwl".$date->year.$date->month.$date->day.$date->hour.$date->minute.$date->second;
         $this->transaction->customer_id = $customer_data->id_customer;
         $this->transaction->employee_id = (Auth()->user()->role->role_name == "owner") ? 0 : $employee_data->id_employee;
-        $this->transaction->transaction_timestamp = Carbon::now();
+        $this->transaction->transaction_timestamp = $date;
         $this->transaction->save();
     }
 
