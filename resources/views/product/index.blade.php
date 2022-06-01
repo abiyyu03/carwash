@@ -139,7 +139,7 @@
             </div>
             <div class="form-group">
                 <label for="inventory_id">Penggunaan Inventori</label>
-                <select name="inventory_id[]" id="inventory_id" class="form-control" multiple>
+                <select name="inventory_id[]" id="inventory_id" class="form-control" style="width:100%" multiple>
                   <option disabled>-</option>
                   @foreach($inventory_data as $inventory)
                   <option value="{{$inventory->id_inventory}}">{{$inventory->inventory_name}}</option>
