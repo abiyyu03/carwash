@@ -77,7 +77,7 @@
               <div class="card-header border-0">
                 <h3 class="card-title">
                   <i class="fas fa-tasks mr-1"></i>
-                  Menunggu di proses
+                  {{(!count($transactionPending_data)) ? 'Tidak ada antrian' : 'Menunggu di proses'}}
                 </h3>
                 <!-- card tools -->
                 <div class="card-tools">
