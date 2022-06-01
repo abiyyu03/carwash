@@ -41,9 +41,10 @@ Route::middleware('owner')->group(function(){
     Route::get('/employee/commission',[CommissionController::class,'index']);
     Route::get('/employee/count/{id_employee}',[CommissionController::class,'setCommission']);
     Route::get('/employee/commissionJson',[EmployeeController::class,'commissionJson'])->name('commission.commissionJson');
+    Route::get('/employee/attendance',[AttendanceController::class,'index']);
     
     // Attendance
-    Route::get('/employee/attendance',[AttendanceController::class,'index']);
+    Route::get('/attendance/login',[AttendanceController::class,'login']);
     Route::get('/attendanceJson',[AttendanceController::class,'attendanceJson'])->name('attendance.attendanceJson');
 
     //Inventory

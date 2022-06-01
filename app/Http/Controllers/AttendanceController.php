@@ -8,6 +8,16 @@ use DataTables;
 
 class AttendanceController extends Controller
 {
+    function login()
+    {
+        return view('attendance.auth.login');
+    }
+
+    function loginProcess()
+    {
+        
+    }
+
     function index()
     {
         return view ('attendance.index');
