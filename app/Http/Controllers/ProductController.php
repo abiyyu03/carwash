@@ -57,12 +57,11 @@ class ProductController extends Controller
             $product_data = new Product();
             $product_data->product_name = $request->product_name;
             $product_data->product_code = $this->getProductCode($request);
-            $product_data->product_price = $request->product_price;
+            $product_data->product_price = $request->product_discount;
             $product_data->product_capital_price = $request->product_capital_price;
             $product_data->product_stock = $request->product_stock;
             $product_data->product_minimum_stock = $request->product_minimum_stock;
-            $product_data->product_discount = $request->product_discount;
-            // $product_data->product_image =  $storeProductImageAction->filename;
+            // $product_data->product_discount = $request->product_discount;
             $product_data->product_category_id = $request->product_category_id;
             $product_data->save();
 
@@ -96,14 +95,28 @@ class ProductController extends Controller
     function update(Request $request,$id_product)
     {
         $product_data = Product::findOrFail($id_product);
-        $product_data->product_name = $request->product_name; 
-        $product_data->product_code = $request->product_code; 
-        $product_data->product_stock = $request->product_stock; 
-        $product_data->product_price = $request->product_price; 
-        $product_data->product_category_id = $request->product_category_id; 
+        $product_data->product_name = $request->product_name;
+        $product_data->product_price = $request->product_price;
+        $product_data->product_capital_price = $request->product_capital_price;
+        $product_data->product_stock = $request->product_stock;
+        $product_data->product_minimum_stock = $request->product_minimum_stock;
+        $product_data->product_category_id = $request->product_category_id;
         $product_data->save();
         
         Alert::success('Sukses','Data produk berhasil diubah !');
+        return back();
+    }
+
+    function addProductDiscount(Request $request, $id_product)
+    {
+        $discount = ($request->product_discount / 100) * $request->product_price; // count percentage
+
+        $product_data = Product::findOrFail($id_product);
+        $product_data->product_price -= $discount;
+        $product_data->product_discount = $request->product_discount;
+        $product_data->save();
+        
+        Alert::success('Sukses','Diskon berhasil dibuat !');
         return back();
     }
 }

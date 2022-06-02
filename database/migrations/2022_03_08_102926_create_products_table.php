@@ -22,7 +22,7 @@ class CreateProductsTable extends Migration
             $table->integer('product_stock')->default(1);
             $table->integer('product_minimum_stock')->nullable();
             // $table->string('product_image')->nullable();
-            $table->integer('product_discount')->nullable();
+            $table->integer('product_discount')->default(0);
             $table->integer('product_category_id')
             ->references('id_product_category')
             ->on('product_categories')

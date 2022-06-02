@@ -5,8 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/dropdownProduct',[TransactionController::class,'dropdownProduct'])->name('dropdownProduct');
+Route::get('/getProductProduct',[TransactionController::class,'getProductProduct'])->name('getProductProduct');
 
-//owner only
+//owner only 
 Route::middleware('owner')->group(function(){
     //user (account)
     Route::get('/account',[UserController::class,'index']);
@@ -32,6 +33,7 @@ Route::middleware('owner')->group(function(){
     Route::get('/product/delete/{id_product}',[ProductController::class,'delete']);
     // Route::get('/product/edit/{id}',[ProductController::class,'edit']);
     Route::put('/product/update/{id_product}',[ProductController::class,'update'])->name('product.update');
+    Route::put('/product/discount/create/{id_product}',[ProductController::class,'addProductDiscount']);
     
     //Employee 
     Route::get('/employee',[EmployeeController::class,'index']);

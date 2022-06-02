@@ -82,6 +82,7 @@
               <!-- <td><a href="#" id="detailImage" data-toggle="modal" class="btn btn-primary" data-target="#detailModal" data-product-image="{{ $product->product_image }}"><i class="fas fa-image"></i> Tampilkan</a></td> -->
               <td>{{ $product->productCategory->category_name }}</td>
               <td><!-- <a href="#" id="detailButton" class="btn btn-primary"><i class="fas fa-info-circle"></i> Detail</a> -->
+              <a href="#" id="percentageButton" data-toggle="modal" data-target="#percentageModal" class="btn btn-primary"><i class="fas fa-percentage"></i> Diskon</a> 
               <a href="#" id="editButton" data-toggle="modal" data-target="#editModal" class="btn btn-warning"><i class="fas fa-edit"></i> Edit</a> 
               <a href="/product/delete/{{ $product->id_product }}" id="deleteButton" class="btn btn-danger deleteButton"><i class="fas fa-trash-alt"></i> Delete</a> </td>
             </tr>
@@ -126,10 +127,6 @@
             <div class="form-group">
               <label for="product_minimum_stock" class="col-form-label">Minimal Stok</label>
               <input type="number" class="form-control" id="product_minimum_stock" value="{{old('product_minimum_stock')}}" name="product_minimum_stock" required>
-            </div>
-            <div class="form-group">
-              <label for="product_discount" class="col-form-label">Diskon (Opsional)</label>
-              <input type="number" class="form-control" id="product_discount" value="{{old('product_discount')}}" name="product_discount">
             </div>
             <!-- <div class="form-group">
               <label for="image" class="col-form-label">Gambar Produk</label>
@@ -196,10 +193,10 @@
               <label for="product_minimum_stock" class="col-form-label">Minimal Stok</label>
               <input type="number" class="form-control" id="edit_product_minimum_stock" name="product_minimum_stock" required>
             </div>
-            <div class="form-group">
+            <!-- <div class="form-group">
               <label for="product_discount" class="col-form-label">Diskon (Opsional)</label>
               <input type="number" class="form-control" id="edit_product_discount" name="product_discount">
-            </div>
+            </div> -->
             <!-- <div class="form-group">
               <label for="image" class="col-form-label">Gambar Produk</label>
               <input type="file" class="form-control" id="edit_product_image" value="{{old('product_image')}}" name="product_image">
@@ -222,23 +219,33 @@
     </div>
   </div>
 </div>
-<!-- <div class="modal fade" id="detailModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="percentageModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Tambah Produk</h5>
+          <h5 class="modal-title" id="exampleModalLabel">Buat Diskon</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
         <div class="modal-body">
-          <img src="" id="detail_product_image">
-          <h1 id="detail_product_name"></h1>
+        <form action="" method="POST" id="percentageForm">
+            @csrf
+            {{method_field('PUT')}}
+            <input type="hidden" class="form-control disabled" id="percentage_product_price" name="product_price" readonly>
+            <div class="form-group">
+              <label for="product_discount" class="col-form-label">Diskon</label>
+              <input type="number" class="form-control" min=0 id="percentage_product_discount" name="product_discount">
+            </div>
+            <div class="modal-footer form-group">
+              <button type="submit" class="btn btn-info">Atur Diskon</button>
+            </div>
+          </form>
         </div>
       </div>
     </div>
   </div>
-</div> -->
+</div>
 @endsection
 @push('addon-scripts')
 <script type="text/javascript">
@@ -307,26 +314,26 @@ $(document).ready(function(){
     $('#edit_product_capital_price').val(data[4]);
     $('#edit_product_stock').val(data[5]);
     $('#edit_product_minimum_stock').val(data[6]);
-    $('#edit_product_discount').val(data[7]);
+    // $('#edit_product_discount').val(data[7]);
     $('#edit_product_category_id option:selected').val(data[8]);
     $('#editForm').attr('action','product/update/'+data[0]);
     $('#editModal').modal('show');
 
   });
 
-  // $('#detailImage').on("click",function(event){
-  //   event.preventDefault();
-  //   $tr = $(this).closest('tr');
-  //   if($($tr).hasClass('child')){
-  //     $tr = $tr.prev('.parent');
-  //   }
-  //   // console.log($('#detailImage').attr('href'));
-  //   console.log($('#detailImage').data('product-image'));
+  table.on("click",'#percentageButton',function(){
+    $tr = $(this).closest('tr');
+    if($($tr).hasClass('child')){
+      $tr = $tr.prev('.parent');
+    }
 
-  //   var data = table.row($tr).data();
-  //   $('#detailModal').modal('show');
+    var data = table.row($tr).data();
+    $('#percentage_product_price').val(data[3]);
+    $('#percentage_product_discount').val(data[7]);
+    $('#percentageForm').attr('action','product/discount/create/'+data[0]);
+    $('#percentageModal').modal('show');
 
-  // });
+  });
 
   $('#inventory_id').select2();
 
