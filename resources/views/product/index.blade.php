@@ -62,26 +62,29 @@
               <th>Harga Produk</th>
               <th>Harga Modal</th>
               <th>Stok Produk</th>
-              <th>Gambar</th>
+              <th>Stok Minimal Produk</th>
+              <th>Diskon (%)</th>
               <th>Kategori Produk</th>
               <th>Aksi</th>
             </tr>
           </thead>
           <tbody>
             @foreach($product_data as $product)
-              <tr>
-                <td>{{ $loop->iteration }}</td>
-                <td>{{ $product->product_name }}</td>
-                <td>{{ $product->product_code }}</td>
-                <td>{{ $product->product_price }}</td>
-                <td>{{ $product->product_capital_price }}</td>
-                <td>{{ $product->product_stock }}</td>
-                <td><a href="#" id="detailImage" data-toggle="modal" class="btn btn-primary" data-target="#detailModal" data-product-image="{{ $product->product_image }}"><i class="fas fa-image"></i> Tampilkan</a></td>
-                <td>{{ $product->productCategory->category_name }}</td>
-                <td><!-- <a href="#" id="detailButton" class="btn btn-primary"><i class="fas fa-info-circle"></i> Detail</a> -->
-                    <a href="#" id="editButton" data-toggle="modal" data-target="#editModal" class="btn btn-warning"><i class="fas fa-edit"></i> Edit</a> 
-                    <a href="/product/delete/{{ $product->id_product }}" id="deleteButton" class="btn btn-danger deleteButton"><i class="fas fa-trash-alt"></i> Delete</a> </td>
-              </tr>
+            <tr>
+              <td>{{ $loop->iteration }}</td>
+              <td>{{ $product->product_name }}</td>
+              <td>{{ $product->product_code }}</td>
+              <td>{{ $product->product_price }}</td>
+              <td>{{ $product->product_capital_price }}</td>
+              <td>{{ $product->product_stock }}</td>
+              <td>{{ $product->product_minimum_stock }}</td>
+              <td>{{ $product->product_discount }}</td>
+              <!-- <td><a href="#" id="detailImage" data-toggle="modal" class="btn btn-primary" data-target="#detailModal" data-product-image="{{ $product->product_image }}"><i class="fas fa-image"></i> Tampilkan</a></td> -->
+              <td>{{ $product->productCategory->category_name }}</td>
+              <td><!-- <a href="#" id="detailButton" class="btn btn-primary"><i class="fas fa-info-circle"></i> Detail</a> -->
+              <a href="#" id="editButton" data-toggle="modal" data-target="#editModal" class="btn btn-warning"><i class="fas fa-edit"></i> Edit</a> 
+              <a href="/product/delete/{{ $product->id_product }}" id="deleteButton" class="btn btn-danger deleteButton"><i class="fas fa-trash-alt"></i> Delete</a> </td>
+            </tr>
             @endforeach
           </tbody>
         </table>
@@ -104,10 +107,10 @@
               <label for="product_name" class="col-form-label">Nama Produk</label>
               <input type="text" class="form-control" id="product_name" value="{{old('product_name')}}" name="product_name">
             </div>
-            <div class="form-group">
+            <!-- <div class="form-group">
               <label for="product_code" class="col-form-label">Kode Produk</label>
               <input type="text" class="form-control" id="product_code" value="{{old('product_code')}}" name="product_code" required>
-            </div>
+            </div> -->
             <div class="form-group">
               <label for="product_price" class="col-form-label">Harga Jual</label>
               <input type="number" class="form-control" id="product_price" value="{{old('product_price')}}" name="product_price" required>
@@ -125,9 +128,13 @@
               <input type="number" class="form-control" id="product_minimum_stock" value="{{old('product_minimum_stock')}}" name="product_minimum_stock" required>
             </div>
             <div class="form-group">
+              <label for="product_discount" class="col-form-label">Diskon (Opsional)</label>
+              <input type="number" class="form-control" id="product_discount" value="{{old('product_discount')}}" name="product_discount">
+            </div>
+            <!-- <div class="form-group">
               <label for="image" class="col-form-label">Gambar Produk</label>
               <input type="file" class="form-control" id="product_image" value="{{old('product_image')}}" name="product_image">
-            </div>
+            </div> -->
             <div class="form-group">
                 <label for="product_category_id">Kategori Produk</label>
                 <select name="product_category_id" class="form-control" required>
@@ -140,7 +147,7 @@
             <div class="form-group">
                 <label for="inventory_id">Penggunaan Inventori</label>
                 <select name="inventory_id[]" id="inventory_id" class="form-control" style="width:100%" multiple>
-                  <option disabled>-</option>
+                  <option disabled value="">-</option>
                   @foreach($inventory_data as $inventory)
                   <option value="{{$inventory->id_inventory}}">{{$inventory->inventory_name}}</option>
                   @endforeach
@@ -171,19 +178,27 @@
             {{method_field('PUT')}}
             <div class="form-group">
               <label for="product_name" class="col-form-label">Nama Produk</label>
-              <input type="text" class="form-control" id="edit_product_name" value="{{old('product_name')}}" name="product_name">
+              <input type="text" class="form-control" id="edit_product_name" name="product_name">
             </div>
             <div class="form-group">
-              <label for="product_code" class="col-form-label">Kode Produk</label>
-              <input type="text" class="form-control" id="edit_product_code" value="{{old('product_code')}}" name="product_code" required>
+              <label for="product_price" class="col-form-label">Harga Jual</label>
+              <input type="number" class="form-control" id="edit_product_price" name="product_price" required>
             </div>
             <div class="form-group">
-              <label for="product_price" class="col-form-label">Harga Produk</label>
-              <input type="number" class="form-control" id="edit_product_price" value="{{old('product_price')}}" name="product_price" required>
+              <label for="product_capital_price" class="col-form-label">Harga Beli</label>
+              <input type="number" class="form-control" id="edit_product_capital_price" name="product_capital_price" required>
             </div>
             <div class="form-group">
               <label for="product_stock" class="col-form-label">Jumlah Stok</label>
-              <input type="number" class="form-control" id="edit_product_stock" value="{{old('product_stock')}}" name="product_stock" required>
+              <input type="number" class="form-control" id="edit_product_stock" name="product_stock" required>
+            </div>
+            <div class="form-group">
+              <label for="product_minimum_stock" class="col-form-label">Minimal Stok</label>
+              <input type="number" class="form-control" id="edit_product_minimum_stock" name="product_minimum_stock" required>
+            </div>
+            <div class="form-group">
+              <label for="product_discount" class="col-form-label">Diskon (Opsional)</label>
+              <input type="number" class="form-control" id="edit_product_discount" name="product_discount">
             </div>
             <!-- <div class="form-group">
               <label for="image" class="col-form-label">Gambar Produk</label>
@@ -207,7 +222,7 @@
     </div>
   </div>
 </div>
-<div class="modal fade" id="detailModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<!-- <div class="modal fade" id="detailModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
@@ -218,12 +233,12 @@
         </div>
         <div class="modal-body">
           <img src="" id="detail_product_image">
-          <!-- <h1 id="detail_product_name"></h1> -->
+          <h1 id="detail_product_name"></h1>
         </div>
       </div>
     </div>
   </div>
-</div>
+</div> -->
 @endsection
 @push('addon-scripts')
 <script type="text/javascript">
@@ -284,32 +299,35 @@ $(document).ready(function(){
     }
 
     var data = table.row($tr).data();
-    // console.log(data);
+    console.log(data);
 
     $('#edit_product_name').val(data[1]);
     $('#edit_product_code').val(data[2]);
     $('#edit_product_price').val(data[3]);
-    $('#edit_product_stock').val(data[4]);
-    $('#edit_product_image').val(data[5]);
-    // $('#edit_product_category_id').val(data[6]);
+    $('#edit_product_capital_price').val(data[4]);
+    $('#edit_product_stock').val(data[5]);
+    $('#edit_product_minimum_stock').val(data[6]);
+    $('#edit_product_discount').val(data[7]);
+    $('#edit_product_category_id option:selected').val(data[8]);
     $('#editForm').attr('action','product/update/'+data[0]);
     $('#editModal').modal('show');
 
   });
 
-  $('#detailImage').on("click",function(event){
-    event.preventDefault();
-    $tr = $(this).closest('tr');
-    if($($tr).hasClass('child')){
-      $tr = $tr.prev('.parent');
-    }
-    // console.log($('#detailImage').attr('href'));
-    console.log($('#detailImage').data('product-image'));
+  // $('#detailImage').on("click",function(event){
+  //   event.preventDefault();
+  //   $tr = $(this).closest('tr');
+  //   if($($tr).hasClass('child')){
+  //     $tr = $tr.prev('.parent');
+  //   }
+  //   // console.log($('#detailImage').attr('href'));
+  //   console.log($('#detailImage').data('product-image'));
 
-    var data = table.row($tr).data();
-    $('#detailModal').modal('show');
+  //   var data = table.row($tr).data();
+  //   $('#detailModal').modal('show');
 
-  });
+  // });
+
   $('#inventory_id').select2();
 
   table.on('preXhr.dt',function(e,settings,data){

@@ -40,7 +40,7 @@ class ProductController extends Controller
         //validate produk_data
         $product_data = $request->validate([
             'product_name' => ['required'],
-            'product_code' => ['required'],
+            // 'product_code' => ['required'],
             'product_price' => ['required'],
             'product_stock' => ['required'],
             // 'product_image' => ['required'],
@@ -49,19 +49,20 @@ class ProductController extends Controller
 
         DB::transaction(function() use ($request, $storeProductImageAction){
             //upload product image
-            if($request->file('product_image') != NULL)
-            {
-                $storeProductImageAction->executeProduct($request);
-            }
+            // if($request->file('product_image') != NULL)
+            // {
+            //     $storeProductImageAction->executeProduct($request);
+            // }
 
             $product_data = new Product();
             $product_data->product_name = $request->product_name;
-            $product_data->product_code = $request->product_code;
+            $product_data->product_code = $this->getProductCode($request);
             $product_data->product_price = $request->product_price;
             $product_data->product_capital_price = $request->product_capital_price;
             $product_data->product_stock = $request->product_stock;
             $product_data->product_minimum_stock = $request->product_minimum_stock;
-            $product_data->product_image =  $storeProductImageAction->filename;
+            $product_data->product_discount = $request->product_discount;
+            // $product_data->product_image =  $storeProductImageAction->filename;
             $product_data->product_category_id = $request->product_category_id;
             $product_data->save();
 
@@ -87,9 +88,9 @@ class ProductController extends Controller
         return redirect()->back();
     }
 
-    function edit($id_product)
+    function getProductCode(Request $request)
     {
-        
+        return strtoupper(substr($request->product_name,0,2)).$request->product_stock.$request->product_category_id;
     }
 
     function update(Request $request,$id_product)
