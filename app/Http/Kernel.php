@@ -67,6 +67,7 @@ class Kernel extends HttpKernel
         'cashier' => \App\Http\Middleware\isCashier::class,
         'supervisor' => \App\Http\Middleware\isSupervisor::class,
         'employee' => \App\Http\Middleware\isEmployee::class,
-        'role' => \App\Http\Middleware\CheckRole::class
+        'role' => \App\Http\Middleware\EnsureUserHasRole::class,
+        'attendance' => \App\Http\Middleware\AttendanceAuthentication::class
     ];
 }
