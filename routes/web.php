@@ -47,6 +47,8 @@ Route::get('/getProductProduct',[TransactionController::class,'getProductProduct
     //product 
     Route::get('/product',[ProductController::class,'index'])
         ->middleware('role:supervisor,owner');
+    Route::get('/product/category/{product_category_id}',[ProductController::class,'indexes'])
+        ->middleware('role:supervisor,owner');
     Route::get('/productJson',[ProductController::class,'productJson'])
         ->name('product.productJson')
         ->middleware('role:supervisor,owner');
@@ -59,6 +61,9 @@ Route::get('/getProductProduct',[TransactionController::class,'getProductProduct
     Route::put('/product/update/{id_product}',[ProductController::class,'update'])
         ->name('product.update')
         ->middleware('role:supervisor,owner');
+    // Route::get('/product/productCategoryFilter',[ProductController::class,'productCategoryFilter'])
+    //     ->name('product.productCategoryFilter')
+    //     ->middleware('role:supervisor,owner');
     Route::put('/product/discount/create/{id_product}',[ProductController::class,'addProductDiscount'])
         ->middleware('role:supervisor,owner');
     
@@ -86,8 +91,8 @@ Route::get('/getProductProduct',[TransactionController::class,'getProductProduct
         ->middleware('role:supervisor,owner');
     
     // Attendance
-    Route::get('/attendanceJson',[AttendanceController::class,'attendanceJson'])
-        ->name('attendance.attendanceJson')
+    Route::get('/employee/attendance',[AttendanceController::class,'index'])
+        ->name('attendance.index')
         ->middleware('role:supervisor,owner');
     
     //Inventory
@@ -109,6 +114,11 @@ Route::get('/getProductProduct',[TransactionController::class,'getProductProduct
     Route::get('/report/daily',[ReportController::class,'dailyReport'])
         ->middleware('role:supervisor,owner');
     Route::get('/report/monthly',[ReportController::class,'monthlyReport'])
+        ->middleware('role:supervisor,owner');
+    Route::get('/report',[ReportController::class,'summaryReport'])
+        ->middleware('role:supervisor,owner');
+    Route::get('/report/all',[ReportController::class,'reportAll'])
+        ->name('report.all')
         ->middleware('role:supervisor,owner');
     
     //Transaction Detail

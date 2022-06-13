@@ -4,7 +4,8 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>AdminLTE 3 | Dashboard</title>
-
+  <uses-permission android:name="android.permission.CAMERA" />
+  <uses-permission android:name="android.permission.CAMERA2" />
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
   <!-- Font Awesome -->
@@ -24,7 +25,7 @@
   <!-- overlayScrollbars -->
   <link rel="stylesheet" href="{{url('plugins/overlayScrollbars/css/OverlayScrollbars.min.css')}}">
   <!-- Daterange picker -->
-  <link rel="stylesheet" href="{{url('plugins/daterangepicker/daterangepicker.css')}}">
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
   <!-- summernote -->
   <link rel="stylesheet" href="{{url('plugins/summernote/summernote-bs4.min.css')}}">
 
@@ -72,14 +73,13 @@
   <script src="{{url('plugins/chart.js/Chart.min.js')}}"></script>
   <!-- Sparkline -->
   <script src="{{url('plugins/sparklines/sparkline.js')}}"></script>
-  <!-- JQVMap -->
-  <!-- <script src="{{url('plugins/jqvmap/jquery.vmap.min.js')}}"></script>
-  <script src="{{url('plugins/jqvmap/maps/jquery.vmap.usa.js')}}"></script> -->
   <!-- jQuery Knob Chart -->
   <script src="{{url('plugins/jquery-knob/jquery.knob.min.js')}}"></script>
   <!-- daterangepicker -->
-  <script src="{{url('plugins/moment/moment.min.js')}}"></script>
-  <script src="{{url('plugins/daterangepicker/daterangepicker.js')}}"></script>
+  {{-- <script src="{{url('plugins/moment/moment.min.js')}}"></script>
+  <script src="{{url('plugins/daterangepicker/daterangepicker.js')}}"></script> --}}
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
   <!-- Tempusdominus Bootstrap 4 -->
   <script src="{{url('plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js')}}"></script>
   <!-- Summernote -->
@@ -89,9 +89,6 @@
   <!-- AdminLTE App -->
   <script src="{{url('dist/js/adminlte.js')}}"></script>
   <!-- AdminLTE for demo purposes -->
-  <script src="{{url('dist/js/demo.js')}}"></script>
-  <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-  <script src="{{url('dist/js/pages/dashboard.js')}}"></script>
 
   <!-- View's javascript -->
   

@@ -115,9 +115,9 @@ class TransactionController extends Controller
                 );
             } else {
                 //Save transaction detail    
-                $this->saveTransactionDetail($request->product_id);
-                
                 $commission = ((40/100) * $product_data->product_price);
+
+                $this->saveTransactionDetail($request->product_id);
                 
                 // save employee data (siapa aja yang nyuci)
                 for ($i=0; $i < sizeof($employee_data); $i++) {
@@ -162,10 +162,18 @@ class TransactionController extends Controller
     {
         $product_data = $this->product->select(['product_name','id_product','product_category_id','product_price'])
                     ->where('product_category_id',$request->id)
+                    ->where('product_stock','>','product_minimum_stock')
                     ->get();
         return response()->json($product_data);
     }
     
+    function getProductProduct(Request $request)
+    {
+        $product_data = $this->product->select(['product_name','id_product','product_price'])
+                    ->find($request->id);
+        return response()->json($product_data);
+    
+    }
     function deleteTransactionDetail($id_transaction_detail)
     {
         DB::transaction(function() use ($id_transaction_detail){
@@ -209,6 +217,11 @@ class TransactionController extends Controller
         //and print struct
 
         //1 update status and grandtotal in transaction, print receipt
+
+        // $transactionDetail_data = TransactionDetail::where('transaction_id',$id_transaction)->get();
+        // $transactionDetail_data->transaction_detail_total = (request()->transaction_detail_amount * $product_data->product_price);
+        // $transactionDetail_data->save();
+
         $transaction_data = $this->transaction->with('customer','employee')->find($id_transaction);
         $transaction_data->transaction_status = "complete";
         $transaction_data->transaction_grandtotal = $this->getTotal($id_transaction);
@@ -227,7 +240,7 @@ class TransactionController extends Controller
                 $transaction_data = $this->transaction->find($id_transaction);
                 $transaction_data->delete();
             });
-        } else {   
+        } else {
             Alert::error('Gagal','Hapus detail data transaksinya dahulu !');
             return redirect()->back();
         }
@@ -254,7 +267,6 @@ class TransactionController extends Controller
 
     function saveTransactionDetail($product_id)
     {
-        
         $product_data = $this->product->with('productCategory')->find($product_id);
         $this->transactionDetail->id_transaction_detail = request()->id_transaction_detail;
         $this->transactionDetail->product_id = request()->product_id;

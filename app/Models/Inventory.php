@@ -13,11 +13,11 @@ class Inventory extends Model
     // public $incrementing = false;
     protected $fillable = ['inventory_name','inventory_amount','inventory_usable',
                         'inventory_unit','inventory_code','inventory_usage',
-                        'inventory_capital_price','supplier_id'];
+                        'inventory_capital_price'];
 
-    function supplier()
+    function inventoryDetails()
     {
-        return $this->belongsTo('App\Models\Supplier','supplier_id');
+        return $this->hasMany('App\Models\InventoryDetail');
     }
 
     function products()

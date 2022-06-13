@@ -37,4 +37,9 @@ class Employee extends Model
     {
         return $this->hasMany('App\Models\Attendance');
     }
+
+    function commission()
+    {
+        return $this->hasOne('App\Models\Commission');
+    }
 }

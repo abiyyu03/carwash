@@ -20,13 +20,11 @@ class CreateEmployeesTable extends Migration
                 ->on('users')
                 ->onDelete('cascade');
             $table->string('employee_fullname');
-            $table->string('employee_nickname');
             $table->string('employee_nik');
             $table->string('employee_photo');
             $table->date('employee_birthdate');
             $table->string('employee_gender');
             $table->string('employee_contact');
-            $table->string('employee_email');
             $table->text('employee_address');
             $table->timestamps();
         });

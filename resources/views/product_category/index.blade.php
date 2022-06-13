@@ -47,7 +47,7 @@
                     <td>{{$productCategory->category_name}}</td>
                     <td>{{$productCategory->productType->product_type}}</td>
                     <td><a href="{{$productCategory->id_product_category}}" id="editButton" data-toggle="modal" data-target="#editModal" class="btn btn-warning" data="{{$productCategory->id_product_category}}"><i class="fas fa-edit"></i> Edit</a> 
-                    <a href="/product_category/edit/{{$productCategory->id_product_category}}" class="btn btn-danger"><i class="fas fa-trash-alt"></i> Delete</a></td>
+                    <a href="/product-category/delete/{{$productCategory->id_product_category}}" id="deleteButton" class="btn btn-danger"><i class="fas fa-trash-alt"></i> Delete</a></td>
                   </tr>
                 @endforeach
               </tbody>
@@ -128,23 +128,25 @@
 <script src="{{ asset('js/productCategory.min.js') }}"></script>
 @endsection
 <script>
-  
-    
-    // var id = $(this).attr('data');
-    // console.log(id);
-    // $.ajax({
-    //   url:"/product_category/edit/"+id,
-    //   type:"GET",
-    //   dataType:"JSON",
-    //   // data: [
-    //   //   id:id_product_category,
-    //   //   category_name:category_name,
-    //   //   product_type_id:product_type_id
-    //   // ],
-    //   success: function (data) {
-    //     console.log(data);
-    //     $('#edit_category_name').val(data.category_name);
-    //     $('#edit_product_type_id').val(data.product_type_id);
-    //   }
-    // });
+  $(document).ready(function(){
+    $('#deleteButton').on("click",function(event){
+    event.preventDefault();
+    var url = $(this).attr('href');
+    console.log(url);
+    swal.fire({
+      title: 'Apakah Kamu yakin ingin menghapus data ini ?',
+      text: "Data yang terhapus tidak bisa di kembalikan!",
+      icon: 'warning',
+      // buttons: ["Cancel","Yakin!"],
+      showCancelButton: true,
+      // confirmButtonColor: '#3085d6',
+      // cancelButtonColor: '#d33',
+      confirmButtonText: 'Yakin !'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          window.location.href = url;
+        }
+    });
+  });
+  })
 </script>

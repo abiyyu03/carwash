@@ -21,18 +21,12 @@ class CreateProductsTable extends Migration
             $table->integer('product_capital_price'); //harga modal
             $table->integer('product_stock')->default(1);
             $table->integer('product_minimum_stock')->nullable();
-            // $table->string('product_image')->nullable();
             $table->integer('product_discount')->default(0);
             $table->integer('product_category_id')
-            ->references('id_product_category')
-            ->on('product_categories')
-            ->onDelete('cascade');
-            $table->integer('supplier_id')
-            ->references('id_supplier')
-            ->on('suppliers')
-            ->onDelete('cascade')
-            ->nullable();
-            // $table->bool('is_active')->default(true);
+                ->references('id_product_category')
+                ->on('product_categories')
+                ->onDelete('cascade');
+            $table->string('is_active')->default('0');
             $table->timestamps();
         });
     }

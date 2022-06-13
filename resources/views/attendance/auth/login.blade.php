@@ -31,7 +31,7 @@
             </p>
         </div>
         @endif
-      <form action="{{route('logins.login')}}" method="post">
+      <form action="{{route('attendance.login')}}" method="post">
       @csrf
         <div class="input-group mb-3">
           <input type="email" class="form-control" placeholder="Email" name="email">

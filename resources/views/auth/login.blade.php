@@ -19,7 +19,7 @@
   <!-- /.login-logo -->
   <div class="card card-outline card-info">
     <div class="card-header text-center">
-      <a href="/cashier" class="h1"><b>Jiwalu </b>Carwash</a>
+      <a href="/" class="h1"><b>Jiwalu </b>Carwash</a>
     </div>
     <div class="card-body">
       @if($message = Session::get('message'))
@@ -56,6 +56,9 @@
             <button type="submit" class="btn bg-info form-control">Masuk</button>
           </div> 
           <!-- /.col -->
+        </div>
+        <div class="text-center mt-2">
+          <a href="/register" class="text-info">Registrasi</a>
         </div>
         @include('sweetalert::alert')
       </form>

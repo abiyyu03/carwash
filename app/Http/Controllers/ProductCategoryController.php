@@ -3,7 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\{ProductCategory, ProductType};
+use Illuminate\Support\Facades\DB;
+use App\Models\{ProductCategory, ProductType, Product};
 use DataTables;
 use Alert;
 
@@ -50,10 +51,27 @@ class ProductCategoryController extends Controller
     {
         $productCategory_data = ProductCategory::findOrFail($id_product_category); 
         $productCategory_data->category_name = $request->get('category_name');
-        $productCategory_data->product_type_id = $request->get('product_type_id');
+        // $productCategory_data->product_type_id = $request->get('product_type_id');
         $productCategory_data->save();
 
         Alert::success('Sukses','Data Kategori berhasil diubah!');
         return redirect()->back();
+    }
+
+    function delete(Request $request, $id_product_category)
+    {
+        $productWhereHas_data = Product::where('product_category_id',$request->route('id_product_category'))->first();
+        if(!$productWhereHas_data){
+            DB::transaction(function() use ($id_product_category){
+                $productCategory_data = ProductCategory::findOrFail($id_product_category); 
+                $productCategory_data->delete();
+            });
+        } else {
+            Alert::error('Error','Hapus Data Produk Terlebih dahulu !');
+            return back();
+        }
+        
+        Alert::success('Sukses','Data Produk Kategori berhasil dihapus !');
+        return back();
     }
 }

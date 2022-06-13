@@ -27,7 +27,7 @@
       <!-- small box -->
       <div class="small-box bg-info">
         <div class="inner">
-          <h4 class="font-weight-bold">Rp. 0</h4>
+          <h4 class="font-weight-bold">Rp. {{ $total }}</h4>
           <p>Total Penjualan</p>
         </div>
       </div>
@@ -52,8 +52,8 @@
       <div class="small-box bg-success">
         <div class="inner">
           <!-- <h4>53<sup style="font-size: 20px">%</sup></h4> -->
-          <h4 class="font-weight-bold">Rp. 0</h4>
-          <p>Produk</p>
+          <h4 class="font-weight-bold">{{ $soldProduct }}</h4>
+          <p>Produk terjual</p>
         </div>
       </div>
     </div>
@@ -77,9 +77,16 @@
           <a href="" class="btn bg-maroon ml-2"><i class="fas fa-table"></i> PDF</a> --}}
         </div>
         <div class="form-group">
-          <input type="date" name="" class="form-control" id="">
-          <input type="date" name="" class="form-control ml-2" id="">
-          <button type="submit" class="btn bg-info ml-2"><i class="fas fa-calendar"></i> Filter</button>
+          <div class="input-group">
+            <div class="input-group-append">
+              <div class="input-group-text bg-light">
+                <span class="fas fa-calendar"></span> 
+              </div>
+            </div>
+            <input type="date" name="from_date" class="form-control" id="from_date" >
+            <input type="date" name="to_date" class="form-control ml-2" id="to_date" >
+            <button type="button" class="btn bg-info ml-2" id="filter"><i class="fas fa-calendar"></i> Filter</button>
+          </div>
         </div>
       </div>
     </div>
@@ -96,16 +103,6 @@
               <th>Total</th>
             </tr>
           </thead>
-          <tbody>
-            @foreach($transactionDetail_data as $transactionDetail)
-            <tr>
-              <td>{{ $loop->iteration }}</td>
-              <td>{{ $transactionDetail->product->product_name }}</td>
-              <td>{{ $transactionDetail->transaction_detail_amount }}</td>
-              <td>{{ $transactionDetail->transaction_detail_total }}</td>
-            </tr>
-            @endforeach
-          </tbody>
         </table>
       </div>
     </div>
@@ -115,7 +112,48 @@
 @push('addon-scripts')      
 <script type="text/javascript">
   $(document).ready(function () {
-    $('.data-report').DataTable();
-  });
+    loadData();
+    function loadData(from_date = '', to_date = '') { 
+      $('.data-report').DataTable({
+        processing:true,
+        serverSide:true,
+        ajax:{
+          url:"{{route('report.all')}}",
+         data:{from_date:from_date,to_date:to_date}
+        },
+        columns:[
+          {data:"DT_RowIndex",name:"DT_RowIndex", orderable:false, searchable:false},
+          {data:"product",name:"product.product_name"},
+          {data:"transaction_detail_amount",name:"transaction_detail_amount"},
+          {data:"transaction_detail_total",name:"transaction_detail_total"}
+        ]
+      });
+    }
+    $('#filter').click(function(){
+      var from_date = $('#from_date').val();
+      var to_date = $('#to_date').val();
+      if(from_date != '' && to_date != '')
+      {
+        $('.data-report').DataTable().destroy();
+        loadData(from_date,to_date);
+      } else {
+        alert('Both Date is required');
+      }
+    });
+    // $('#from_date').daterangepicker({
+    //   opens: 'left'
+    // }, function(start, end, label) {
+    //   var from_date = start.format('YYYY-MM-DD'); 
+    //   var to_date = end.format('YYYY-MM-DD');
+    //   if(from_date != '' && to_date != '')
+    //   {
+    //     $('.data-report').DataTable().destroy();
+    //     loadData(from_date,to_date);
+    //   } else {
+    //     alert('Both Date is required');
+    //   }
+    // });
+
+});
 </script>
 @endpush

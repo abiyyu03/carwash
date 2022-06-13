@@ -42,21 +42,29 @@
           <thead>
             <tr>
               <th>#</th>
+              <th>Nama Barang</th>
+              <th>Harga Barang</th>
+              <th>Jumlah Barang</th>
+              <th>Nama Item / Produk</th>
               <th>Nama / Nama Toko</th>
-              <th>Alamat</th>
-              <th>Kontak</th>
+              <th>Kontak Toko</th>
               <th>Aksi</th>
             </tr>
           </thead>
           <tbody>
-            @foreach($supplier_data as $supplier)
+            @foreach($inventoryDetail_data as $inventoryDetail)
             <tr>
               <td>{{ $loop->iteration }}</td>
-              <td>{{ $supplier->supplier_name }}</td>
-              <td>{{ $supplier->supplier_address }}</td>
-              <td>{{ $supplier->supplier_contact }}</td>
-              <td><a href="#" id="editButton" data-toggle="modal" data-target="#editModal" class="btn btn-warning"><i class="fas fa-edit"></i> Edit</a> 
-                    <a href="/supplier/delete/{{ $supplier->id_supplier }}" id="deleteButton" class="btn btn-danger deleteButton"><i class="fas fa-trash-alt"></i> Delete</a> </td>
+              <td>{{ $inventoryDetail->inventory_detail_name }}</td>
+              <td>{{ $inventoryDetail->inventory_detail_price }}</td>
+              <td>{{ $inventoryDetail->inventory_detail_amount }}</td>
+              <td>{{ ($inventoryDetail->inventory != NULL) ? @$inventoryDetail->inventory->inventory_name : @$inventoryDetail->product->product_name }}</td>
+              <td>{{ $inventoryDetail->supplier_name }}</td>
+              <td>{{ $inventoryDetail->supplier_contact }}</td>
+              <td>
+                <a href="#" id="editButton" data-toggle="modal" data-target="#editModal" class="btn btn-warning"><i class="fas fa-edit"></i> Edit</a> 
+                <a href="/supplier/delete/{{ $inventoryDetail->id_inventory_detail }}" id="deleteButton" class="btn btn-danger deleteButton"><i class="fas fa-trash-alt"></i> Delete</a> 
+              </td>
             </tr>
             @endforeach
           </tbody>
@@ -81,8 +89,34 @@
               <input type="text" class="form-control" id="supplier_name" value="{{old('supplier_name')}}" name="supplier_name" required>
             </div>
             <div class="form-group">
-              <label for="supplier_address" class="col-form-label">Alamat Supplier <sup class="text-danger">*</sup></label>
-              <input type="text" class="form-control" id="supplier_address" value="{{old('supplier_address')}}" name="supplier_address" required>
+              <label for="inventory_detail_name" class="col-form-label">Nama Barang <sup class="text-danger">*</sup></label>
+              <input type="text" class="form-control" id="inventory_detail_name" value="{{old('inventory_detail_name')}}" name="inventory_detail_name" required>
+            </div>
+            <div class="form-group">
+              <label for="inventory_detail_amount" class="col-form-label">Jumlah Barang <sup class="text-danger">*</sup></label>
+              <input type="text" class="form-control" id="inventory_detail_amount" value="{{old('inventory_detail_amount')}}" name="inventory_detail_amount" required>
+            </div>
+            <div class="form-group">
+              <label for="inventory_detail_price" class="col-form-label">Harga Barang <sup class="text-danger">*</sup></label>
+              <input type="number" class="form-control" id="inventory_detail_price" value="{{old('inventory_detail_price')}}" name="inventory_detail_price" required>
+            </div>
+            <div class="form-group">
+              <label for="inventory_id" class="col-form-label">Nama Inventory <sup class="text-danger">*</sup></label>
+              <select name="inventory_id" id="" class="form-control">
+                <option value="">-</option>
+                @foreach($inventory_data as $inventory)
+                  <option value="{{ $inventory->id_inventory }}">{{ $inventory->inventory_name }}</option>
+                @endforeach
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="product_id" class="col-form-label">Nama Produk <sup class="text-danger">*</sup></label>
+              <select name="product_id" id="" class="form-control">
+                <option value="">-</option>
+                @foreach($product_data as $product)
+                  <option value="{{ $product->id_product }}">{{ $product->product_name }}</option>
+                @endforeach
+              </select>
             </div>
             <div class="form-group">
               <label for="supplier_contact" class="col-form-label">Kontak Supplier <sup class="text-danger">*</sup></label>
@@ -116,8 +150,16 @@
               <input type="text" class="form-control" id="edit_supplier_name" value="{{old('supplier_name')}}" name="supplier_name" required>
             </div>
             <div class="form-group">
-              <label for="supplier_address" class="col-form-label">Alamat Supplier <sup class="text-danger">*</sup></label>
-              <input type="text" class="form-control" id="edit_supplier_address" value="{{old('supplier_address')}}" name="supplier_address" required>
+              <label for="inventory_detail_name" class="col-form-label">Nama Barang <sup class="text-danger">*</sup></label>
+              <input type="text" class="form-control" id="edit_inventory_detail_name" value="{{old('inventory_detail_name')}}" name="inventory_detail_name" required>
+            </div>
+            <div class="form-group">
+              <label for="inventory_detail_amount" class="col-form-label">Jumlah Barang <sup class="text-danger">*</sup></label>
+              <input type="text" class="form-control" id="edit_inventory_detail_amount" value="{{old('inventory_detail_amount')}}" name="inventory_detail_amount" required>
+            </div>
+            <div class="form-group">
+              <label for="inventory_detail_price" class="col-form-label">Harga Barang <sup class="text-danger">*</sup></label>
+              <input type="number" class="form-control" id="edit_inventory_detail_price" value="{{old('inventory_detail_price')}}" name="inventory_detail_price" required>
             </div>
             <div class="form-group">
               <label for="supplier_contact" class="col-form-label">Kontak Supplier <sup class="text-danger">*</sup></label>
@@ -132,5 +174,51 @@
     </div>
   </div>
 </div>
-<script src="{{ asset('js/supplier.min.js') }}"></script>
+<!-- <script src="{{ asset('js/supplier.min.js') }}"></script> -->
 @endsection
+@push('addon-scripts')
+<script>
+  $(document).ready(function(){
+    $('.data-supplier').DataTable();
+    $('.deleteButton').on("click",function(event){
+        event.preventDefault();
+        var url = $(this).attr('href');
+        console.log(url);
+        swal.fire({
+            title: 'Apakah Kamu yakin ingin menghapus data ini ?',
+            text: "Data yang terhapus tidak bisa di kembalikan!",
+            icon: 'warning',
+            // buttons: ["Cancel","Yakin!"],
+            showCancelButton: true,
+            // confirmButtonColor: '#3085d6',
+            // cancelButtonColor: '#d33',
+            confirmButtonText: 'Yakin !'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = url;
+            }
+        });
+    });
+    
+    var table = $('.data-supplier').DataTable();
+    table.on("click",'#editButton',function(){
+        $tr = $(this).closest('tr');
+        if($($tr).hasClass('child')){
+            $tr = $tr.prev('.parent');
+        }
+        
+        var data = table.row($tr).data();
+        // console.log(data);
+        
+        $('#edit_inventory_detail_name').val(data[1]);
+        $('#edit_inventory_detail_price').val(data[2]);
+        $('#edit_inventory_detail_amount').val(data[3]);
+        $('#edit_supplier_name').val(data[5]);
+        $('#edit_supplier_contact').val(data[6]);
+        $('#editForm').attr('action','supplier/update/'+data[0]);
+        $('#editModal').modal('show');
+        
+    });
+  });
+</script>
+@endpush

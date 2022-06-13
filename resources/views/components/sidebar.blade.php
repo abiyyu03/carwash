@@ -41,29 +41,6 @@
                     </li>
                     @if(Auth()->user()->role->role_name == "owner" || Auth()->user()->role->role_name == "supervisor")
                     <li class="nav-item">
-                        <a href="#" class="nav-link  {{ request()->segment(1) == 'product' ? 'active' : '' }}">
-                            <i class="nav-icon fas fa-boxes"></i>
-                            <p>
-                                Produk
-                                <i class="fas fa-angle-left right"></i>
-                            </p>
-                        </a>
-                        <ul class="nav nav-treeview">
-                            <li class="nav-item">
-                                <a href="/product_category" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Kategori Produk</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="/product" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Produk</p>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="nav-item">
                         <a href="#" class="nav-link">
                             <i class="nav-icon fas fa-users"></i>
                             <p>
@@ -113,6 +90,29 @@
                         </ul>
                     </li>
                     <li class="nav-item">
+                        <a href="#" class="nav-link  {{ request()->segment(1) == 'product' ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-boxes"></i>
+                            <p>
+                                Produk
+                                <i class="fas fa-angle-left right"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="/product_category" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Kategori Produk</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="/product" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Produk</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
                         <a href="#" class="nav-link">
                             <i class="nav-icon fas fa-copy"></i>
                             <p>
@@ -121,6 +121,18 @@
                             </p>
                         </a>
                         <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="/report" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Ringkasan Laporan</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="/report/all" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Semua Penjualan Produk</p>
+                                </a>
+                            </li>
                             <li class="nav-item">
                                 <a href="/report/daily" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
@@ -131,6 +143,23 @@
                                 <a href="/report/monthly" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>Laporan Bulanan</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="nav-icon fas fa-money-check"></i>
+                            <p>
+                                Pengeluaran
+                                <i class="fas fa-angle-left right"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="/invoice" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Fix Cost</p>
                                 </a>
                             </li>
                         </ul>
@@ -167,12 +196,6 @@
                                     <p>Account</p>
                                 </a>
                             </li>
-                            <li class="nav-item">
-                                <a href="pages/tables/data.html" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Role Manager</p>
-                                </a>
-                            </li>
                         </ul>
                     </li>
                     <li class="nav-item">
@@ -190,38 +213,10 @@
                                     <p>Daftar Invoice</p>
                                 </a>
                             </li>
-                            <li class="nav-item">
-                                <a href="pages/tables/data.html" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Role Manager</p>
-                                </a>
-                            </li>
                         </ul>
                     </li>
-                    {{-- <li class="nav-item">
-                        <a href="#" class="nav-link">
-                            <i class="nav-icon fas fa-percent"></i>
-                            <p>
-                                Promo
-                                <i class="fas fa-angle-left right"></i>
-                            </p>
-                        </a>
-                        <ul class="nav nav-treeview">
-                            <li class="nav-item">
-                                <a href="/invoice" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Daftar Promo</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="pages/tables/data.html" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Role Manager</p>
-                                </a>
-                            </li>
-                        </ul>
-                    </li> --}}
                     @endif
+                    
                     <li class="nav-item">
                         <a href="/config" class="nav-link {{ request()->segment(1) == 'config' ? 'active' : '' }}">
                             <i class="nav-icon fas fa-cog"></i>
@@ -229,20 +224,6 @@
                                 Pengaturan
                             </p>
                         </a>
-                        <!-- <ul class="nav nav-treeview">
-                            <li class="nav-item">
-                                <a href="/invoice" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Daftar Invoice</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="pages/tables/data.html" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Role Manager</p>
-                                </a>
-                            </li>
-                        </ul> -->
                     </li>
                 </ul>
             </nav>

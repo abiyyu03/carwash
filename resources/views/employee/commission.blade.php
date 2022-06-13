@@ -22,13 +22,68 @@
 @section('content')
 <!-- create data -->
 <div class="container-fluid">
-    <div class="card">
-      <div class="card-body">
-        <div class="form-control">
-
+  <div class="row">
+    <div class="col-lg-3 col-6">
+      <!-- small box -->
+      <div class="small-box bg-info">
+        <div class="inner">
+          <h4 class="font-weight-bold">{{count($workDetail_data)}}</h4>
+          <p>Total Karyawan</p>
         </div>
       </div>
     </div>
+    <!-- ./col -->
+    <div class="col-lg-3 col-6">
+      <!-- small box -->
+      <div class="small-box bg-success">
+        <div class="inner">
+          <!-- <h4>53<sup style="font-size: 20px">%</sup></h4> -->
+          <h4 class="font-weight-bold">Rp. {{ $totalCommission }}</h4>
+          <p>Total Komisi</p>
+        </div>
+        {{-- <div class="icon">
+          <i class="ion ion-ios-box-outline"></i>
+        </div> --}}
+      </div>
+    </div>
+    <!-- ./col -->
+    <div class="col-lg-3 col-6">
+      <!-- small box -->
+      <div class="small-box bg-success">
+        <div class="inner">
+          <!-- <h4>53<sup style="font-size: 20px">%</sup></h4> -->
+          <h4 class="font-weight-bold">Rp. 0</h4>
+          <p>Produk terjual</p>
+        </div>
+      </div>
+    </div>
+    <!-- ./col -->
+    <div class="col-lg-3 col-6">
+      <!-- small box -->
+      <div class="small-box bg-success">
+        <div class="inner">
+          <!-- <h4>53<sup style="font-size: 20px">%</sup></h4> -->
+          <h4 class="font-weight-bold">Rp. 0</h4>
+          <p>Produk</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="card mt-3">
+    <div class="card-body">
+      <div class="form-inline justify-content-between">
+        <div class="form-group ">
+          {{-- <a href="" class="btn bg-maroon ml-2"><i class="fas fa-table"></i> Excel</a>
+          <a href="" class="btn bg-maroon ml-2"><i class="fas fa-table"></i> PDF</a> --}}
+        </div>
+        <div class="form-group">
+          <input type="date" name="" class="form-control" id="">
+          <input type="date" name="" class="form-control ml-2" id="">
+          <button type="submit" class="btn bg-info ml-2"><i class="fas fa-calendar"></i> Filter</button>
+        </div>
+      </div>
+    </div>
+  </div>
     <div class="card mt-3">
         <div class="card-body">
           <div class="table-responsive">
@@ -44,16 +99,14 @@
                 </tr>
               </thead>
               <tbody>
-                @foreach($arr as $employee)
-                @if($employee['date'] == date('Y-m-d'))
+                @foreach($workDetail_data as $workDetail) 
                 <tr>
                   <td>{{ $loop->iteration }}</td>
-                  <td>{{ $employee['name'] }}</td>
-                  <td>{{ $employee['nip'] }}</td>
-                  <td>{{ $employee['date'] }}</td>
-                  <td>{{ $employee['commission'] }}</td>
-                </tr>
-                @endif
+                  <td>{{ $workDetail->employee->employee_fullname}}</td>
+                  <td>{{ $workDetail->employee->id_employee }}</td>
+                  <td>{{ $workDetail->date}}</td>
+                  <td>{{ $workDetail->commission }}</td>
+                </tr> 
                 @endforeach
               </tbody>
             </table>

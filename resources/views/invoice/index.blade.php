@@ -42,18 +42,6 @@
                 </tr>
               </thead>
               <tbody>
-                @foreach($inventory_data as $inventory)
-                <tr>
-                  <td>{{ $loop->iteration }}</td>
-                  <td>{{ $inventory->inventory_name }}</td>
-                  <td>{{ $inventory->inventory_code }}</td>
-                  <td>{{ $inventory->inventory_unit }}</td>
-                  <td>{{ $inventory->inventory_capital_price }}</td>
-                  <td>{{ $inventory->inventory_usage }}</td>
-                  <td><a href="#" id="editButton" data-toggle="modal" data-target="#editModal" class="btn btn-warning"><i class="fas fa-edit"></i> Edit</a> 
-                      <a href="/inventory/delete/{{ $inventory->id_inventory }}" id="deleteButton" class="btn btn-danger deleteButton"><i class="fas fa-trash-alt"></i> Hapus</a></td>
-                </tr>
-                @endforeach
               </tbody>
             </table>
           </div>
@@ -80,10 +68,10 @@
                 <label for="inventory_code" class="col-form-label">Kode Barang</label>
                 <input type="text" class="form-control" id="" name="inventory_code" required>
             </div>
-            {{-- <div class="form-group">
+            <div class="form-group">
                 <label for="inventory_unit" class="col-form-label">Jumlah Barang</label>
                 <input type="text" class="form-control" id="" name="inventory_unit" required>
-            </div> --}}
+            </div>
             <div class="form-group">
                 <label for="inventory_usable" class="col-form-label">Penggunaan (khusus bahan steam)</label>
                 <input type="number" class="form-control" id="" name="inventory_usable">
@@ -92,10 +80,10 @@
                 <label for="inventory_usage" class="col-form-label">Takaran Barang</label>
                 <input type="number" class="form-control" id="" name="inventory_usage" required>
             </div> -->
-            {{-- <div class="form-group">
+            <div class="form-group">
                 <label for="inventory_capital_price" class="col-form-label">Harga modal</label>
                 <input type="number" class="form-control" id="" name="inventory_capital_price" required>
-            </div> --}}
+            </div>
             <div class="modal-footer form-group">
                 <button type="submit" class="btn btn-info">Tambah Inventori</button>
             </div>

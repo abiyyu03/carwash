@@ -18,7 +18,7 @@ class CreateAttendancesTable extends Migration
             $table->integer('employee_id')->references('id_employee')->on('employees');
             $table->date('attendance_date');
             $table->time('attendance_time');
-            $table->string('attendance_status');
+            $table->enum('attendance_status',['present','absent','late'])->default('absent');
             $table->string('photo');
             $table->timestamps();
         });

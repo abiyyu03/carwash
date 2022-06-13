@@ -22,7 +22,7 @@
 @section('content')
 <div class="container-fluid">
   <div class="row">
-      <div class="col-md-6">
+      <div class="col-md-12">
         <div class="card">
             <div class="card-header bg-info">
                 <h2 class="card-title" ><i class="fas fa-users"></i> Pengaturan Akun</h2>
@@ -50,7 +50,7 @@
             </div>
         </div>
       </div>
-      <div class="col-md-6">
+      <!-- <div class="col-md-6">
       <div class="card">
             <div class="card-header bg-info">
                 <h2 class="card-title" ><i class="fas fa-palette"></i> Tampilan Aplikasi</h2>
@@ -70,7 +70,7 @@
                 </form>
             </div>
         </div>
-      </div>
+      </div> -->
   </div>
 </div>
 @endsection

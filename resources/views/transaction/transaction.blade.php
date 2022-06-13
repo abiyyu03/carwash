@@ -6,8 +6,8 @@
         <div class="card">
             <div class="card-body">
                 <div class="d-flex justify-content-between">
-                    <a href="/transaction" class="btn bg-warning"><i class="fas fa-arrow-left"></i> Kembali</a>
-                    <h1 class="m-0">{{ $transaction_data->customer->customer_license_plate }} - {{ $transaction_data->customer->customer_name}}</h1>
+                    <a href="/transaction" class="btn bg-warning"><i class="fas fa-arrow-circle-left"></i> Kembali</a>
+                    <h3 class="m-0">{{ $transaction_data->customer->customer_license_plate }} - {{ $transaction_data->customer->customer_name}}</h3>
                     <a href="/transaction/delete/{{ $transaction_data->id_transaction }}" class="btn bg-danger"><i class="fas fa-trash"></i> Hapus Transaksi</a>
                 </div>
             </div>
@@ -22,7 +22,7 @@
         <div class="col-md-4">
             <div class="card">
                 <div class="card-header bg-info text-center">
-                    <h4><i class="fas fa-cart-arrow-down text-white"></i> Masukan Produk</h4>
+                    <h5><i class="fas fa-cart-arrow-down text-white"></i> Masukan produk</h5>
                 </div>
                 <div class="card-body">
                     <form action="{{route('transaction.storeTransactionDetail')}}" method="POST">
@@ -31,7 +31,7 @@
                         <input type="hidden" name="transaction_id" value="{{request()->route('id_transaction')}}">
                         <div class="form-group">
                             <label for="product_category_id">Kategori Produk <sup class="text-danger">*</sup></label>
-                            <select name="product_category_id" id="product_category_id" required class="form-control">
+                            <select name="product_category_id" id="product_category_id" required class="form-control" {{($transaction_data->transaction_status !== 'pending') ? 'disabled' : ''}}>
                                 <option value="">-</option>
                                 @foreach($productCategory_data as $productCategory)
                                 <option value="{{$productCategory->id_product_category}}" id="{{$productCategory->productType->product_type}}" >{{$productCategory->category_name}}</option>
@@ -40,7 +40,7 @@
                         </div>
                         <div class="form-group">
                             <label for="product_id">Nama Produk <sup class="text-danger">*</sup></label>
-                            <select name="product_id" id="product_id" class="form-control product_id" style="width:100%" required>
+                            <select name="product_id" id="product_id" class="form-control product_id" style="width:100%" required  {{($transaction_data->transaction_status !== 'pending') ? 'disabled' : ''}}>
                                 <option value="">-</option>
                             </select>
                         </div>
@@ -66,7 +66,7 @@
                             </select>
                         </div>
                         <div class="form-group mt-4" >
-                            <button type="submit" class="btn bg-info form-control"><i class="fas fa-plus"></i> Tambah</button>
+                            <button type="submit" class="btn bg-info form-control" {{($transaction_data->transaction_status !== 'pending') ? 'disabled' : ''}}><i class="fas fa-plus"></i> Tambah</button>
                         </div>
                     </form>
                 </div>
@@ -75,7 +75,7 @@
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header bg-info text-center">
-                    <h4><i class="fas fa-shopping-basket text-white"></i> Detail Transaksi</h4>
+                    <h5><i class="fas fa-shopping-basket text-white"></i> Detail Transaksi</h5>
                 </div>
                 <div class="card-body p-0">
                     <div class="table-responsive">
@@ -96,7 +96,7 @@
                                     <td>{{ $transactionDetail->product->product_name }}</td>
                                     <td>{{ $transactionDetail->transaction_detail_amount }}</td>
                                     <td>{{ $transactionDetail->transaction_detail_total }}</td>
-                                    <td><a href="/transaction/detail/delete/{{ $transactionDetail->id_transaction_detail }}" class="btn btn-danger"><i class="fas fa-times"> </i> Hapus</a></td>
+                                    <td><a href="/transaction/detail/delete/{{ $transactionDetail->id_transaction_detail }}" class="btn btn-danger {{($transaction_data->transaction_status !== 'pending') ? 'disabled' : ''}}"><i class="fas fa-times"> </i> Hapus</a></td>
                                 </tr>
                                 @endforeach
                             </tbody>
@@ -123,13 +123,20 @@
           </button>
         </div> -->
         <div class="modal-body">
-            <div class="container bg-light">
+            @if($transaction_data->transaction_status === 'pending')
+            <div class="form-group">
+                <label for="product_name" class="col-form-label">Uang Cash</label>
+                <input type="hidden" class="form-control" value="{{ $getTotal }}" id="product_total">
+                <input type="text" class="form-control" id="cash">
+            </div>
+            @endif
+            <div class="container bg-light px-3" id="printArea">
                 <div class="header">
                     <div class="mx-auto text-center">
                         <!-- <div class="img-brand mt-2">
                             <img src="jiwalu-logo.png" width="60px" alt="" id="img-brand">
                         </div> -->
-                        <div class="info-brand">
+                        <div class="info-brand" style="margin:auto">
                             <p class="mb-0 lead font-weight-bold">Jiwalu Carwash</p>
                             <p class="small">Jalan Pancasila, Depok, Jawabarat, 21342</p>
                         </div>
@@ -164,31 +171,25 @@
                                 </tr>
                                 @endforeach
                             </tbody>
-                            <!-- <tr>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td colspan="3"></td>
-                            </tr> -->
                         </table>
                         <div class="result text-left">
                             <hr>
                             <p class="text-center">Perhitungan</p>
                             <table class="table">
                                 <tr>
-                                    <td class="small">Harga Jual</td>
+                                    <td class="small">Uang Cash</td>
                                     <td class="small"> : </td>
-                                    <td class="small"><span class="font-weight-bold">Rp.{{ $getTotal }}</td>
+                                    <td class="small font-weight-bold">Rp. <span id="cashes">0</span></td>
                                 </tr>
                                 <tr>
-                                    <td class="small">PPN</td>
+                                    <td class="small">Kembalian</td>
                                     <td class="small"> : </td>
-                                    <td class="small"><span class="font-weight-bold">Rp. 1000</td>
+                                    <td class="small font-weight-bold">Rp. <span id="payback">0</span></td>
                                 </tr>
                                 <tr>
                                     <td class="small">Grand Total</td>
                                     <td class="small"> : </td>
-                                    <td class="small"><span class="font-weight-bold">Rp. 55000</td>
+                                    <td class="small font-weight-bold"><span>Rp. {{ $getTotal }}</td>
                                 </tr>
                         </table>
                         </div>
@@ -200,10 +201,12 @@
                     <i class="fas fa-times"></i>
                     Tutup
                 </a>
-                <a href="/transaction/{{ request()->route('id_transaction') }}/finish" class="btn btn-info">
+                @if($transaction_data->transaction_status === 'pending')
+                <a href="/transaction/{{$transaction_data->id_transaction}}/finish" onclick="printDiv()" id="finishPay" class="btn btn-info disabled">
                     <i class="fas fa-check-circle"></i>
                     Selesaikan Pembayaran
                 </a>
+                @endif
             </div>
         </div>
       </div>
@@ -220,11 +223,8 @@
         $('#employee_id').select2();
         $('#product_id').select2();
         var i = 1;
-        // $('#amount').css("display","none");
-        // $('#employee').css("display","none");
             $('#amount').hide();
             $('#employee').hide();
-        // $('#transaction_detail_amount').css('text-align','center')
         // transaction detail amount
         $('#btn-plus').on('click', function(){
             $('#transaction_detail_amount').val(++i);
@@ -258,6 +258,7 @@
                 },
                 success:function(data){
                     $('#product_id').empty();
+                    $('#product_price').val("");
                     $('#product_id').append('<option selected value="" disabled>pilih produk</option>');
                     // for (var i = 0; i < data.length; i++) {
                     //     console.log(data[i]);
@@ -265,10 +266,47 @@
                     // }
                     $.each(data,function(key, product_id){
                         $('#product_id').append('<option value="'+product_id.id_product+'">'+product_id.product_name+' - Rp.'+product_id.product_price+'</option>');
+                        // $('#product_price').val(product_id.product_price);
                     });
                 },
             });
         });
+        $('#product_id').on('change',function(){
+            var product_id = $(this).val();
+
+            $.ajax({
+                type:'get',
+                url:'{!!URL::to('getProductProduct')!!}',
+                dataType:'json',
+                data:{
+                    id:product_id
+                },
+                success:function(data){
+                    $('#product_price').val("Rp. "+data.product_price);
+                },
+            });
+        });
+
+        $('#cash').on('keyup',function(){
+            $("#payback").text($("#cash").val() - $("#product_total").val());
+            $("#cashes").text($("#cash").val());
+            $("#finishPay").attr("class","btn btn-info");
+        });
+
     });
+    function printDiv()
+    {
+        let divContents = document.getElementById("printArea").innerHTML;
+        let a = window.open('','','height=600, width=500');
+        a.document.write('<html>');
+        a.document.write('<head>');
+        a.document.write('<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">');
+        a.document.write('</head>');
+        a.document.write('<body class="p-4">');
+        a.document.write(divContents);
+        a.document.write('</body></html>');
+        a.document.close();
+        // a.print();
+    }
 </script>
 @endpush

@@ -12,7 +12,7 @@ class TransactionDetail extends Model
     protected $primaryKey = "id_transaction_detail";
     public $incrementing = false;
     // protected $casts = ['id'=>'integer'];
-    protected $fillable = ['transaction_detail_amount','transaction_detail_price','transaction_detail_total','transaction_id','product_id'];
+    protected $fillable = ['transaction_detail_amount','transaction_detail_price','transaction_detail_date','transaction_detail_total','transaction_id','product_id'];
 
     function transaction()
     {

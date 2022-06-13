@@ -20,7 +20,7 @@ class InventoryController extends Controller
         $inventory_data = Inventory::get();
         return Datatables::of($inventory_data)->addIndexColumn()->make(true);
             // ->addColumn('productCategory',function (Product $product){
-            //     return $product->productCategory->category_name;
+            //     return $product->productCategozzry->category_name;
             // })
             // ->toJson();
     }
@@ -31,10 +31,10 @@ class InventoryController extends Controller
         $inventory_data = new inventory();
         $inventory_data->inventory_name = $request->inventory_name;
         $inventory_data->inventory_code = $request->inventory_code;
-        $inventory_data->inventory_capital_price = $request->inventory_capital_price;
+        // $inventory_data->inventory_capital_price = $request->inventory_capital_price;
         $inventory_data->inventory_usable = $request->inventory_usable;
         $inventory_data->inventory_usage = $inventory_data->inventory_usable;
-        $inventory_data->inventory_unit = 100;//$request->inventory_unit;
+        // $inventory_data->inventory_unit = 100;//$request->inventory_unit;
         // Inventory::create($inventory_data);
         $inventory_data->save();
 

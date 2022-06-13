@@ -30,14 +30,40 @@
   </div>
 @endif
 <div class=" d-flex justify-content-end">
-    <a class="btn bg-info" href="#" data-toggle="modal" data-target="#exampleModal">
-        <i class="fas fa-exchange-alt"></i>
-        Buat Transaksi
-    </a>
+  <a class="btn bg-info" href="#" data-toggle="modal" data-target="#exampleModal">
+    <i class="fas fa-exchange-alt"></i>
+    Buat Transaksi
+  </a>
 </div>
 <div class="card mt-3">
   <div class="card-body">
-    filter
+    <div class="row d-flex justify-content-between">
+      <div class="col-md-4">
+        <div class="input-group">
+          <div class="input-group-append">
+            <div class="input-group-text bg-light">
+              <span class="fas fa-calendar"></span> 
+            </div>
+          </div>
+          <input type="text" name="from_date" class="form-control" id="from_date" readonly>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="input-group">
+          <div class="input-group-append">
+            <div class="input-group-text bg-light">
+              <span class="fas fa-filter"></span> 
+              Status Transaksi
+            </div>
+          </div>
+          <select name="" id="" class="form-control">
+            <option value="">Semua</option>
+            <option value="pending">Pending</option>
+            <option value="complete">Complete</option>
+          </select>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 <div class="card mt-3">
@@ -49,23 +75,23 @@
             <tr>
               <th>#</th>
               <th>Nama Customer</th>
-              <th>Waktu Transaksi</th>
+              <th>Tanggal Transaksi</th>
+              <th>Jam Transaksi</th>
               <th>Status Transaksi</th>
               <th>Aksi</th>
             </tr>
           </thead>
           <tbody>
             @foreach($transaction_data as $transaction)
-            @if($transaction->transaction_status == "pending")
             <tr>
               <td>{{ $loop->iteration }}</td>
               <td>{{ $transaction->customer->customer_name }}</td>
-              <td>{{ \Carbon\Carbon::parse($transaction->transaction_timestamp)->isoFormat('dddd, D MMMM Y - HH:mm') }}</td>
+              <td>{{ \Carbon\Carbon::parse($transaction->transaction_timestamp)->isoFormat('dddd, D MMMM Y') }}</td>
+              <td>{{ \Carbon\Carbon::parse($transaction->transaction_timestamp)->isoFormat('HH:mm') }}</td> 
               <td>{{ $transaction->transaction_status }}</td>
-              <td><a href="/transaction/{{ $transaction->id_transaction}}/select-product" class="btn btn-warning"><i class="fas fa-edit"></i> Edit</a> 
+              <td><a href="/transaction/{{ $transaction->id_transaction}}/select-product" class="btn btn-primary"><i class="fas fa-eye"></i> Lihat</a> 
                   <a href="/transaction/delete/{{ $transaction->id_transaction}}" class="btn btn-danger" id="deleteButton"><i class="fas fa-trash-alt"></i> Hapus</a></td>
             </tr>
-            @endif
             @endforeach
           </tbody>
         </table>
@@ -120,7 +146,7 @@
                 <!-- better use select with search bar -->
                 <select name="id_customer" class="form-control" required>
                     <!-- <option>-</option> -->
-                    <option value="" disabled>-</option>
+                    <option value="">-</option>
                     @foreach($customer_data as $customer)
                       <option value="{{ $customer->id_customer }}">{{ $customer->customer_name }}</option>
                     @endforeach
@@ -167,7 +193,36 @@ $(document).ready(function(){
     //     }
     //   ]
     // });
-    
+    // loadData();
+    // function loadData(from_date = '', to_date = '') { 
+    //   $('.data-report').DataTable({
+    //     processing:true,
+    //     serverSide:true,
+    //     ajax:{
+    //       url:"{{route('report.all')}}",
+    //      data:{from_date:from_date,to_date:to_date}
+    //     },
+    //     columns:[
+    //       {data:"DT_RowIndex",name:"DT_RowIndex", orderable:false, searchable:false},
+    //       {data:"product",name:"product.product_name"},
+    //       {data:"transaction_detail_amount",name:"transaction_detail_amount"},
+    //       {data:"transaction_detail_total",name:"transaction_detail_total"}
+    //     ]
+    //   });
+    // }
+  });
+  $('#from_date').daterangepicker({
+    opens: 'left'
+  }, function(start, end, label) {
+    var from_date = start.format('YYYY-MM-DD'); 
+    var to_date = end.format('YYYY-MM-DD');
+    if(from_date != '' && to_date != '')
+    {
+      $('.data-report').DataTable().destroy();
+      loadData(from_date,to_date);
+    } else {
+      alert('Both Date is required');
+    }
   });
 $('#deleteButton').on("click",function(event){
     event.preventDefault();

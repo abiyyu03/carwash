@@ -41,13 +41,17 @@
         asd
       </div>
       <div class="">
-        <select name="product_category_id" id="product_category_id" class="form-control" required>
+        <select name="product_category_id" class="form-control" required>
           <option disabled>-</option>
           @foreach($productCategory_data as $productCategory)
-            <option value="{{$productCategory->id_product_category}}" >{{$productCategory->category_name}}</option>
+          <option value="{{$productCategory->id_product_category}}" >{{$productCategory->category_name}}</option>
           @endforeach
         </select>
-      </div>
+        <form action="/product/category/{{$productCategory->id_product_category}}" method="POST">
+          @csrf
+          <button class="btn-info btn" type="submit" name="submit_filter" id="filter"><i class="fas fa-filter"></i> Filter</button>
+        </div>
+      </form>
     </div>
   </div>
   <div class="card">
@@ -102,8 +106,17 @@
           </button>
         </div>
         <div class="modal-body">
-          <form action="{{route('product.store')}}" method="POST" enctype="multipart/form-data">
+          <form action="{{route('product.store')}}" method="POST">
             @csrf
+            <div class="form-group">
+                <label for="product_category_id">Kategori Produk</label>
+                <select name="product_category_id" id="product_category_id" class="form-control" required>
+                  <option value="">-</option>
+                  @foreach($productCategory_data as $productCategory)
+                  <option value="{{$productCategory->id_product_category}}">{{$productCategory->category_name}}</option>
+                  @endforeach
+                </select>
+            </div>
             <div class="form-group">
               <label for="product_name" class="col-form-label">Nama Produk</label>
               <input type="text" class="form-control" id="product_name" value="{{old('product_name')}}" name="product_name">
@@ -116,15 +129,15 @@
               <label for="product_price" class="col-form-label">Harga Jual</label>
               <input type="number" class="form-control" id="product_price" value="{{old('product_price')}}" name="product_price" required>
             </div>
-            <div class="form-group">
+            {{-- <div class="form-group">
               <label for="product_capital_price" class="col-form-label">Harga Beli</label>
               <input type="number" class="form-control" id="product_capital_price" value="{{old('product_capital_price')}}" name="product_capital_price" required>
-            </div>
-            <div class="form-group">
+            </div> --}}
+            {{-- <div class="form-group product">
               <label for="product_stock" class="col-form-label">Jumlah Stok</label>
               <input type="number" class="form-control" id="product_stock" value="{{old('product_stock')}}" name="product_stock" required>
-            </div>
-            <div class="form-group">
+            </div> --}}
+            <div class="form-group product">
               <label for="product_minimum_stock" class="col-form-label">Minimal Stok</label>
               <input type="number" class="form-control" id="product_minimum_stock" value="{{old('product_minimum_stock')}}" name="product_minimum_stock" required>
             </div>
@@ -132,17 +145,8 @@
               <label for="image" class="col-form-label">Gambar Produk</label>
               <input type="file" class="form-control" id="product_image" value="{{old('product_image')}}" name="product_image">
             </div> -->
-            <div class="form-group">
-                <label for="product_category_id">Kategori Produk</label>
-                <select name="product_category_id" class="form-control" required>
-                  <option disabled>-</option>
-                  @foreach($productCategory_data as $productCategory)
-                  <option value="{{$productCategory->id_product_category}}">{{$productCategory->category_name}}</option>
-                  @endforeach
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="inventory_id">Penggunaan Inventori</label>
+            <div class="form-group service">
+                <label for="inventory_id">Penggunaan Inventori (Jika tipe produk adalah cuci steam)</label>
                 <select name="inventory_id[]" id="inventory_id" class="form-control" style="width:100%" multiple>
                   <option disabled value="">-</option>
                   @foreach($inventory_data as $inventory)
@@ -181,14 +185,14 @@
               <label for="product_price" class="col-form-label">Harga Jual</label>
               <input type="number" class="form-control" id="edit_product_price" name="product_price" required>
             </div>
-            <div class="form-group">
+            {{-- <div class="form-group">
               <label for="product_capital_price" class="col-form-label">Harga Beli</label>
               <input type="number" class="form-control" id="edit_product_capital_price" name="product_capital_price" required>
-            </div>
-            <div class="form-group">
+            </div> --}}
+            {{-- <div class="form-group">
               <label for="product_stock" class="col-form-label">Jumlah Stok</label>
               <input type="number" class="form-control" id="edit_product_stock" name="product_stock" required>
-            </div>
+            </div> --}}
             <div class="form-group">
               <label for="product_minimum_stock" class="col-form-label">Minimal Stok</label>
               <input type="number" class="form-control" id="edit_product_minimum_stock" name="product_minimum_stock" required>
@@ -204,7 +208,7 @@
             <div class="form-group">
                 <label for="product_category_id">Kategori Produk</label>
                 <select name="product_category_id" id="edit_product_category_id" class="form-control" required>
-                  <option disabled value="">-</option>
+                  <option value="">-</option>
                   @foreach($productCategory_data as $productCategory)
                   <option value="{{$productCategory->id_product_category}}">{{$productCategory->category_name}}</option>
                   @endforeach
@@ -297,6 +301,7 @@ $(document).ready(function(){
     });
   });
 
+
   var table = $('.data-product').DataTable();
   // $('#editButton').on("click",function(){
   table.on("click",'#editButton',function(){
@@ -311,8 +316,8 @@ $(document).ready(function(){
     $('#edit_product_name').val(data[1]);
     $('#edit_product_code').val(data[2]);
     $('#edit_product_price').val(data[3]);
-    $('#edit_product_capital_price').val(data[4]);
-    $('#edit_product_stock').val(data[5]);
+    // $('#edit_product_capital_price').val(data[4]);
+    // $('#edit_product_stock').val(data[5]);
     $('#edit_product_minimum_stock').val(data[6]);
     // $('#edit_product_discount').val(data[7]);
     $('#edit_product_category_id option:selected').val(data[8]);
@@ -335,14 +340,8 @@ $(document).ready(function(){
 
   });
 
-  $('#inventory_id').select2();
-
-  table.on('preXhr.dt',function(e,settings,data){
-      data.product_category_id = $('#product_category_id').val(); 
-  });
-  $('#product_category_id').change(function(){
-    table.DataTable().ajax.reload();
-    return false;
+  $("#filter").on("change",click(){
+    
   });
 });
 </script>

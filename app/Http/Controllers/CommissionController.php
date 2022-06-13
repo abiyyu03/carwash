@@ -9,51 +9,46 @@ use Carbon\Carbon;
 
 class CommissionController extends Controller
 {
-    function index()
+    function __construct()
     {
         date_default_timezone_set('Asia/Jakarta');
-        $commission_data = $this->getCommission();
-        $employee_data = Employee::pluck('employee_fullname');
-        $employee_data2 = Employee::pluck('id_employee');
-        $employee_data3 = WorkDetail::pluck('date');
-        // dd($employee_data3);
-        // dd(Carbon::today()->isoFormat('Y-MM-D'));
-        $arr = [];
-        for ($i=0; $i < count($employee_data); $i++) { 
-            $arr[] = [
-                'nip' => $employee_data2[$i],
-                'name' => $employee_data[$i],
-                // 'created_at' => $employee_data3[$i],
-                'date' => @$employee_data3[$i],
-                'commission' => $commission_data[$i]
-            ];
-        }
-        // $employee_data = Employee::pluck('employee_fullname')->where('employee_fullname','Fitrah')->map(function($employee_fullname, $index) use ($commission_data){
-        //     return [
-        //         $employee_fullname,
-        //         $commission_data[$index]
-        //     ];
-        // });
-        
-        // for ($i=0; $i < count($arr); $i++) { 
-        //     $hihi[] = [
-        //         0 => $merged[$i]['nip'],
-        //         1 => $merged[$i]['name'],
-        //         2 => $merged[$i]['commission'],
-        //     ];
-        // }
-        // dd($hihi);
-        return view('employee.commission',compact('arr'));
     }
 
-    function getCommission()
+    function index()
     {
-        $commission = [];
-        $employee_data = Employee::with('user')->get();
-        foreach ($employee_data as $employee) {
-            $commission[] = $this->setCommission($employee->id_employee);
+        $totalCommission = $this->getTotalCommission();
+        $workDetail_data = WorkDetail::with('employee')->groupBy('employee_id')
+                ->selectRaw('employee_id, sum(commission) as commission')
+                ->get();
+        // $employee_data = Employee::pluck('employee_fullname');
+        // $employee_data2 = Employee::pluck('id_employee');
+        // $employee_data3 = WorkDetail::pluck('date');
+        // // dd($employee_data3);
+        // // dd(Carbon::today()->isoFormat('Y-MM-D'));
+        // $arr = [];
+        // for ($i=0; $i < count($employee_data); $i++) { 
+        //     $arr[] = [
+        //         'nip' => $employee_data2[$i],
+        //         'name' => $employee_data[$i],
+        //         // 'created_at' => $employee_data3[$i],
+        //         'date' => @$employee_data3[$i],
+        //         'commission' => $commission_data[$i]
+        //     ];
+        // }
+        
+        return view('employee.commission',compact('workDetail_data','totalCommission'));
+    }
+
+    function getTotalCommission()
+    {
+        $total = 0;
+        $workDetail_data = WorkDetail::groupBy('employee_id')
+                ->selectRaw('employee_id, sum(commission) as commission')
+                ->get();
+        foreach ($workDetail_data as $workDetail) {
+            $total += $workDetail->commission;
         }
-        return $commission;
+        return $total;
     }
 
     function setCommission($id_employee)
