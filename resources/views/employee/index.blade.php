@@ -6,12 +6,12 @@
   <div class="container-fluid">
     <div class="row mb-2">
       <div class="col-sm-6">
-        <h1 class="m-0">Karyawan</h1>
+        <h1 class="m-0">Daftar Karyawan</h1>
       </div><!-- /.col -->
       <div class="col-sm-6">
         <ol class="breadcrumb float-sm-right">
-          <li class="breadcrumb-item"><a href="#">Home</a></li>
-          <li class="breadcrumb-item active">Dashboard v1</li>
+          <li class="breadcrumb-item active">Karyawan</li>
+          <li class="breadcrumb-item active">Daftar Karyawan</li>
         </ol>
       </div><!-- /.col -->
     </div><!-- /.row -->
@@ -56,7 +56,7 @@
                     <td>{{ $employee->employee_fullname }}</td>
                     <td>{{ $employee->employee_nik }}</td>
                     <td>{{ $employee->employee_gender }}</td>
-                    <td>{{ $employee->employee_birthdate }}</td>
+                    <td>{{ with(new \Carbon\Carbon($employee->employee_birthdate))->isoFormat('dddd, D MMMM Y')}}</td>
                     <td>{{ $employee->employee_contact }}</td>
                     <td class="d-none">{{ $employee->employee_email }}</td>
                     <td class="d-none">{{ $employee->employee_address }}</td>
@@ -90,10 +90,6 @@
                 <input type="text" class="form-control" value="{{old('employee_fullname')}}" id="employee_fullname" name="employee_fullname" required>
             </div>
             <div class="form-group">
-                <label for="employee_nickname" class="col-form-label">Nama Panggilan</label>
-                <input type="text" class="form-control" value="{{old('employee_nickname')}}" id="employee_nickname" name="employee_nickname" required>
-            </div>
-            <div class="form-group">
                 <label for="employee_nik" class="col-form-label">NIK</label>
                 <input type="text" class="form-control" value="{{old('employee_nik')}}" id="employee_nik" name="employee_nik" required>
             </div>
@@ -115,7 +111,7 @@
             </div>
             <div class="form-group">
                 <label for="employee_photo" class="col-form-label">Pas Foto</label>
-                <input type="file" accept="image/jpg,image/jpeg,image/png" class="form-control" value="{{old('employee_photo')}}" id="employee_photo" name="employee_photo" required>
+                <input type="file" accept="image/jpg,image/jpeg,image/png" class="form-control" value="{{old('employee_photo')}}" id="employee_photo" name="employee_photo">
             </div>
             <div class="form-group">
                 <label for="employee_address" class="col-form-label">Alamat</label>
@@ -130,7 +126,7 @@
                 <input type="password" class="form-control" value="{{old('password')}}" id="password" name="password" required>
             </div>
             <div class="form-group">
-                <label for="role_id" class="col-form-label">Password</label>
+                <label for="role_id" class="col-form-label">Role Karyawan</label>
                 <!-- <input type="role_id" class="form-control" value="{{old('role_id')}}" id="role_id" name="role_id" required> -->
                 <select class="form-control" name="role_id">
                   <option>-</option>
@@ -167,10 +163,6 @@
                 <input type="text" class="form-control" value="{{old('employee_fullname')}}" id="edit_employee_fullname" name="employee_fullname" required>
             </div>
             <div class="form-group">
-                <label for="employee_nickname" class="col-form-label">Nama Panggilan</label>
-                <input type="text" class="form-control" value="{{old('employee_nickname')}}" id="edit_employee_nickname" name="employee_nickname" required>
-            </div>
-            <div class="form-group">
                 <label for="employee_nik" class="col-form-label">NIK</label>
                 <input type="text" class="form-control" value="{{old('employee_nik')}}" id="edit_employee_nik" name="employee_nik" required>
             </div>
@@ -192,7 +184,7 @@
             </div>
             <div class="form-group">
                 <label for="employee_photo" class="col-form-label">Pas Foto</label>
-                <input type="file" accept="image/jpg,image/jpeg,image/png" class="form-control" value="{{old('employee_photo')}}" id="edit_employee_photo" name="employee_photo" required>
+                <input type="file" accept="image/jpg,image/jpeg,image/png" class="form-control" value="{{old('employee_photo')}}" id="edit_employee_photo" name="employee_photo">
             </div>
             <div class="form-group">
                 <label for="employee_address" class="col-form-label">Alamat</label>
@@ -202,19 +194,6 @@
                 <label for="employee_email" class="col-form-label">Email</label>
                 <input type="email" class="form-control" value="{{old('employee_email')}}" id="edit_employee_email" name="employee_email" required>
             </div>
-            <!-- <div class="form-group">
-                <label for="password" class="col-form-label">Password</label>
-                <input type="password" class="form-control" value="{{old('password')}}" id="password" name="password" required>
-            </div>
-            <div class="form-group">
-                <label for="role_id" class="col-form-label">Password</label>
-                <select class="form-control" name="role_id">
-                  <option>-</option>
-                  @foreach($role_data as $role)
-                    <option value="{{$role->id_role}}">{{$role->role_name}}</option>
-                  @endforeach
-                </select>
-            </div> -->
             <div class="modal-footer form-group">
                 <button type="submit" class="btn bg-info">Edit Data</button>
             </div>

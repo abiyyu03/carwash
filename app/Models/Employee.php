@@ -22,24 +22,9 @@ class Employee extends Model
     {
         return $this->belongsTo('App\Models\User','user_id');
     }
-
-    function transactions()
-    {
-        return $this->hasMany('App\Models\Transaction');
-    }
     
-    function workDetails()
+    function attendanceStatus()
     {
-        return $this->hasMany('App\Models\WorkDetail');
-    }
-
-    function attendances()
-    {
-        return $this->hasMany('App\Models\Attendance');
-    }
-
-    function commission()
-    {
-        return $this->hasOne('App\Models\Commission');
+        return $this->hasMany('App\Models\AttendanceStatus');
     }
 }

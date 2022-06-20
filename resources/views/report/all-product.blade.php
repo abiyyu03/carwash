@@ -6,7 +6,7 @@
   <div class="container-fluid">
     <div class="row mb-2">
       <div class="col-sm-6">
-        <h1 class="m-0">Laporan Harian</h1>
+        <h1 class="m-0">Laporan Penjualan Produk</h1>
       </div><!-- /.col -->
       <div class="col-sm-6">
         <ol class="breadcrumb float-sm-right">
@@ -27,8 +27,8 @@
       <!-- small box -->
       <div class="small-box bg-info">
         <div class="inner">
-          <h4 class="font-weight-bold">Rp. {{ $total }}</h4>
-          <p>Total Penjualan</p>
+          <h4 class="font-weight-bold" id="getTotal">0</h4>
+          <p>Jumlah Penjualan Produk</p>
         </div>
       </div>
     </div>
@@ -52,7 +52,7 @@
       <div class="small-box bg-success">
         <div class="inner">
           <!-- <h4>53<sup style="font-size: 20px">%</sup></h4> -->
-          <h4 class="font-weight-bold">{{ $soldProduct }}</h4>
+          <h4 class="font-weight-bold">{{ count($transactionDetail_data) }}</h4>
           <p>Produk terjual</p>
         </div>
       </div>
@@ -63,8 +63,8 @@
       <div class="small-box bg-success">
         <div class="inner">
           <!-- <h4>53<sup style="font-size: 20px">%</sup></h4> -->
-          <h4 class="font-weight-bold">Rp. 0</h4>
-          <p>Produk</p>
+          <h4 class="font-weight-bold">{{ count($transaction_data) }}</h4>
+          <p>Transaksi</p>
         </div>
       </div>
     </div>
@@ -118,12 +118,12 @@
         processing:true,
         serverSide:true,
         ajax:{
-          url:"{{route('report.all')}}",
+          url:"{{route('report.allProduct')}}",
          data:{from_date:from_date,to_date:to_date}
         },
         columns:[
           {data:"DT_RowIndex",name:"DT_RowIndex", orderable:false, searchable:false},
-          {data:"product",name:"product.product_name"},
+          {data:"product_name",name:"product_name"},
           {data:"transaction_detail_amount",name:"transaction_detail_amount"},
           {data:"transaction_detail_total",name:"transaction_detail_total"}
         ]
@@ -140,6 +140,18 @@
         alert('Both Date is required');
       }
     });
+    // $.ajax({
+    //   url:"/report/getTotal",
+    //   type:"GET",
+    //   dataType:"json",
+    //   data:{total:total},
+    //   success:function(data){
+    //     if(data) {
+    //       $('#getTotal').text(data.success);
+    //       // $("#ajaxform")[0].reset();
+    //     }
+    //   },
+    // });
     // $('#from_date').daterangepicker({
     //   opens: 'left'
     // }, function(start, end, label) {

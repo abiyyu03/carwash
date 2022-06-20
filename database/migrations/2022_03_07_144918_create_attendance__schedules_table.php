@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateOutcomesTable extends Migration
+class CreateAttendanceSchedulesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,9 @@ class CreateOutcomesTable extends Migration
      */
     public function up()
     {
-        Schema::create('outcomes', function (Blueprint $table) {
-            $table->id('id_outcomes');
-            $table->string('needs');
-            $table->integer('quantity')->default(1);
-            $table->integer('expense_balance');
+        Schema::create('attendance_schedules', function (Blueprint $table) {
+            $table->id('id_attendance_schedule');
+            $table->date('attendance_date');
             $table->timestamps();
         });
     }
@@ -29,6 +27,6 @@ class CreateOutcomesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('outcomes');
+        Schema::dropIfExists('attendance_schedules');
     }
 }

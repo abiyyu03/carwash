@@ -22,34 +22,86 @@
 @section('content')
 <div class="container-fluid">
   <div class="row">
-      <div class="col-md-12">
-        <div class="card">
-            <div class="card-header bg-info">
-                <h2 class="card-title" ><i class="fas fa-users"></i> Pengaturan Akun</h2>
-            </div>
-            <div class="card-body">
-                <form action="{{route('user.update',Auth()->user()->id_user)}}" method="POST">
-                    @csrf
-                    {{method_field('PUT')}}
-                    <div class="form-group">
-                        <label for="customer_name">Nama Lengkap</label>
-                        <input type="text" name="name" value="{{ Auth()->user()->name }}" class="form-control" required>
+    <div class="col-md-12">
+      <div class="card">
+          <div class="card-header bg-info">
+              <h2 class="card-title" ><i class="fas fa-cog"></i> Pengaturan Aplikasi</h2>
+          </div>
+          <div class="card-body">
+              <form action="{{route('user.update',Auth()->user()->id_user)}}" method="POST">
+                  @csrf
+                  {{method_field('PUT')}}
+                  <div class="form-group">
+                    <label for="customer_name"></label>
+                    <div class="input-group">
+                      <input type="number" name="commission_percentage" id="commission_percentage" value="" class="form-control" required>
+                      <div class="input-group-append">
+                        <div class="input-group-text bg-light">
+                          <span class="fas fa-percentage mr-1"></span>
+                          Persentasi Komisi Karyawan
+                        </div>
+                      </div>
                     </div>
-                    <div class="form-group">
-                        <label for="email">Email</label>
-                        <input type="email" disabled name="email" value="{{ Auth()->user()->email }}" class="form-control" required>
+                  </div>
+                  <div class="form-group">
+                    <label for="customer_name"></label>
+                    <div class="input-group">
+                      <input type="text" placeholder="00:00" name="attendance_start" id="attendance_start" value="" class="form-control" required>
+                      <div class="input-group-append">
+                        <div class="input-group-text bg-light">
+                          <span class="fas fa-hourglass-start mr-1"></span>
+                          Mulai Presensi Karyawan
+                        </div>
+                      </div>
                     </div>
-                    <div class="form-group">
-                        <label for="password">Password</label>
-                        <input type="password" name="password" class="form-control" required>
+                  </div>
+                  <div class="form-group">
+                    <label for="customer_name"></label>
+                    <div class="input-group">
+                      <input type="text" placeholder="00:00" name="attendance_end" id="attendance_end" value="" class="form-control" required>
+                      <div class="input-group-append">
+                        <div class="input-group-text bg-light">
+                          <span class="fas fa-hourglass-end mr-1"></span>
+                          Selesai Presensi Karyawan
+                        </div>
+                      </div>
                     </div>
-                    <div class="form-group d-flex justify-content-end">
-                        <button class="bg-info btn" type="submit"><i class="fas fa-check"></i> Perbarui</button>
-                    </div>
-                </form>
-            </div>
-        </div>
+                  </div>
+                  <div class="form-group d-flex justify-content-end">
+                      <button class="bg-info btn" type="submit"><i class="fas fa-check-circle"></i> Terapkan</button>
+                  </div>
+              </form>
+          </div>
       </div>
+    </div>
+    <div class="col-md-12">
+      <div class="card">
+          <div class="card-header bg-info">
+              <h2 class="card-title" ><i class="fas fa-users"></i> Pengaturan Akun</h2>
+          </div>
+          <div class="card-body">
+              <form action="{{route('user.update',Auth()->user()->id_user)}}" method="POST">
+                  @csrf
+                  {{method_field('PUT')}}
+                  <div class="form-group">
+                      <label for="customer_name">Nama Lengkap</label>
+                      <input type="text" name="name" value="{{ Auth()->user()->name }}" class="form-control" required>
+                  </div>
+                  <div class="form-group">
+                      <label for="email">Email</label>
+                      <input type="email" disabled name="email" value="{{ Auth()->user()->email }}" class="form-control" required>
+                  </div>
+                  <div class="form-group">
+                      <label for="password">Password</label>
+                      <input type="password" name="password" class="form-control" required>
+                  </div>
+                  <div class="form-group d-flex justify-content-end">
+                      <button class="bg-info btn" type="submit"><i class="fas fa-check"></i> Perbarui</button>
+                  </div>
+              </form>
+          </div>
+      </div>
+    </div>
       <!-- <div class="col-md-6">
       <div class="card">
             <div class="card-header bg-info">

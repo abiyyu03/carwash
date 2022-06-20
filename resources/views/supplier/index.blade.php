@@ -6,7 +6,7 @@
   <div class="container-fluid">
     <div class="row mb-2">
       <div class="col-sm-6">
-        <h1 class="m-0">Supplier</h1>
+        <h1 class="m-0">Belanja Produk / Inventory</h1>
       </div><!-- /.col -->
       <div class="col-sm-6">
         <ol class="breadcrumb float-sm-right">
@@ -102,14 +102,14 @@
             </div>
             <div class="form-group">
               <label for="inventory_id" class="col-form-label">Nama Inventory <sup class="text-danger">*</sup></label>
-              <select name="inventory_id" id="" class="form-control">
+              <select name="inventory_or_product_id" id="" class="form-control">
                 <option value="">-</option>
-                @foreach($inventory_data as $inventory)
-                  <option value="{{ $inventory->id_inventory }}">{{ $inventory->inventory_name }}</option>
+                @foreach($inventory_product as $item)
+                  <option value="{{ $item->id_product }}">{{ $item->product_name }}</option>
                 @endforeach
               </select>
             </div>
-            <div class="form-group">
+            {{-- <div class="form-group">
               <label for="product_id" class="col-form-label">Nama Produk <sup class="text-danger">*</sup></label>
               <select name="product_id" id="" class="form-control">
                 <option value="">-</option>
@@ -117,7 +117,7 @@
                   <option value="{{ $product->id_product }}">{{ $product->product_name }}</option>
                 @endforeach
               </select>
-            </div>
+            </div> --}}
             <div class="form-group">
               <label for="supplier_contact" class="col-form-label">Kontak Supplier <sup class="text-danger">*</sup></label>
               <input type="text" class="form-control" id="supplier_contact" name="supplier_contact">{{old('supplier_contact')}}</textarea>

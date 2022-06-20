@@ -28,21 +28,36 @@ class TransactionController extends Controller
     function index()
     {
         $customer_data = $this->customer->get();
-        $transaction_data = $this->transaction->with('customer','employee')->get();
+        $transaction_data = Transaction::with('customer','employee')->get();
         return view('transaction.index',compact('transaction_data','customer_data'));
     }
 
     function transactionJson(Request $request)
     {
-        $transaction_data = $this->transaction->with('customer','employee')->where('transaction_status','pending');
         if($request->ajax()){
-            return Datatables::eloquent($transaction_data)
+            if(!empty($request->status)){
+                $transaction_data = $this->transaction->with('customer','employee')
+                    ->where('transaction_status',$request->status)
+                    ->get();
+            } else {
+                $transaction_data = $this->transaction->with('customer','employee')->get();
+            }
+            return DataTables::of($transaction_data)
                 ->addColumn('customer',function (Transaction $transaction){
                     return $transaction->customer->customer_name;
                 })
-                ->editColumn('transaction_timestamp', function(Transaction $transaction){
-                    return $transaction->transaction_timestamp ? with(new Carbon($transaction->transaction_timestamp))->isoFormat('dddd, D MMMM Y || HH:mm')/*->diffForHumans()*/ : '';
+                ->editColumn('transaction_date', function(Transaction $transaction){
+                    return $transaction->created_at ? with(new Carbon($transaction->created_at))->isoFormat('dddd, D MMMM Y')/*->diffForHumans()*/ : '';
                 })
+                ->editColumn('transaction_time', function(Transaction $transaction){
+                    return $transaction->created_at ? with(new Carbon($transaction->created_at))->isoFormat('HH:mm')/*->diffForHumans()*/ : '';
+                })
+                ->editColumn('action', function(Transaction $transaction){
+                    return '<a href="/transaction/'.$transaction->id_transaction.'/select-product" class="btn btn-primary"><i class="fas fa-eye"></i> Lihat</a> 
+                    <a href="/transaction/delete/'.$transaction->id_transaction.'" class="btn btn-info receiptButton" id="receiptButton"><i class="fas fa-receipt"></i> Struk</a>
+                    <a href="/transaction/delete/'.$transaction->id_transaction.'" class="btn btn-danger" id="deleteButton"><i class="fas fa-trash-alt"></i> Hapus</a>';
+                })
+                ->rawColumns(['action'])
                 ->addIndexColumn()
                 ->toJson();
         }
@@ -54,7 +69,7 @@ class TransactionController extends Controller
         $transaction_data = $this->transaction->with('customer','employee')->find($id_transaction);
         $transactionWhereHas_data = $this->transactionDetail->whereHas('transaction', function($query){ $query->where('transaction_id',request()->route('id_transaction')); })->get();
         $productCategory_data =  $this->productCategory->with('productType')->get();
-        $getTotal = $this->getTotal($id_transaction);
+        $getTotal = $this->getTransactionTotal($id_transaction);
 
         return view('transaction.transaction',compact('employee_data','transaction_data','productCategory_data','transactionWhereHas_data','getTotal'));
     }
@@ -117,7 +132,9 @@ class TransactionController extends Controller
                 //Save transaction detail    
                 $commission = ((40/100) * $product_data->product_price);
 
-                $this->saveTransactionDetail($request->product_id);
+                $this->saveTransactionDetail(
+                    $request->product_id
+                );
                 
                 // save employee data (siapa aja yang nyuci)
                 for ($i=0; $i < sizeof($employee_data); $i++) {
@@ -158,22 +175,7 @@ class TransactionController extends Controller
         }
     }
 
-    function dropdownProduct(Request $request)
-    {
-        $product_data = $this->product->select(['product_name','id_product','product_category_id','product_price'])
-                    ->where('product_category_id',$request->id)
-                    ->where('product_stock','>','product_minimum_stock')
-                    ->get();
-        return response()->json($product_data);
-    }
     
-    function getProductProduct(Request $request)
-    {
-        $product_data = $this->product->select(['product_name','id_product','product_price'])
-                    ->find($request->id);
-        return response()->json($product_data);
-    
-    }
     function deleteTransactionDetail($id_transaction_detail)
     {
         DB::transaction(function() use ($id_transaction_detail){
@@ -217,14 +219,10 @@ class TransactionController extends Controller
         //and print struct
 
         //1 update status and grandtotal in transaction, print receipt
-
-        // $transactionDetail_data = TransactionDetail::where('transaction_id',$id_transaction)->get();
-        // $transactionDetail_data->transaction_detail_total = (request()->transaction_detail_amount * $product_data->product_price);
-        // $transactionDetail_data->save();
-
+        $commissionTotal = 0;
         $transaction_data = $this->transaction->with('customer','employee')->find($id_transaction);
         $transaction_data->transaction_status = "complete";
-        $transaction_data->transaction_grandtotal = $this->getTotal($id_transaction);
+        $transaction_data->transaction_grandtotal = $this->getTransactionTotal($id_transaction);
         $transaction_data->save();
 
         Alert::success('Sukses','Transaksi complete !');
@@ -233,8 +231,8 @@ class TransactionController extends Controller
 
     function deleteTransaction($id_transaction, Request $request)
     {
-        $transactionDetailWhereHas_data = $this->transactionDetail->where('transaction_id',$request->route('id_transaction'))->first();
-        if(!$transactionDetailWhereHas_data){
+        $transactionDetail_data = $this->transactionDetail->where('transaction_id',$request->route('id_transaction'))->first();
+        if(!$transactionDetail_data){
             DB::transaction(function() use ($id_transaction, $request){
                 //delete transaction data and its detail transaction
                 $transaction_data = $this->transaction->find($id_transaction);
@@ -248,7 +246,7 @@ class TransactionController extends Controller
         return redirect()->to('/transaction');
     }
 
-    function getTotal($id_transaction)
+    function getTransactionTotal($id_transaction)
     {
         $total = 0;
         $transactionDetail_data = $this->transactionDetail->select(['transaction_id','transaction_detail_total'])->where('transaction_id',$id_transaction)->get();
@@ -273,6 +271,7 @@ class TransactionController extends Controller
         $this->transactionDetail->transaction_detail_amount = request()->transaction_detail_amount;
         $this->transactionDetail->transaction_detail_total = (request()->transaction_detail_amount * $product_data->product_price); 
         $this->transactionDetail->transaction_id = request()->transaction_id;
+        // $this->transactionDetail->employeeWork_total = $employeeWork_total;
         $this->transactionDetail->save();
     }
 
@@ -298,5 +297,21 @@ class TransactionController extends Controller
         $this->customer->customer_contact = $request->customer_contact;
         $this->customer->customer_license_plate = $request->customer_license_plate;
         $this->customer->save();
+    }
+
+    function dropdownProduct(Request $request)
+    {
+        $product_data = $this->product->select(['product_name','id_product','product_category_id','product_price'])
+                    ->where('product_category_id',$request->id)
+                    ->where('product_stock','>','product_minimum_stock')
+                    ->get();
+        return response()->json($product_data);
+    }
+    
+    function getProductProduct(Request $request)
+    {
+        $product_data = $this->product->select(['product_name','id_product','product_price'])
+                    ->find($request->id);
+        return response()->json($product_data);
     }
 }

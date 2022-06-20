@@ -6,7 +6,7 @@
   <div class="container-fluid">
     <div class="row mb-2">
       <div class="col-sm-6">
-        <h1 class="m-0">Laporan Harian</h1>
+        <h1 class="m-0">Laporan Transaksi Harian</h1>
       </div><!-- /.col -->
       <div class="col-sm-6">
         <ol class="breadcrumb float-sm-right">
@@ -27,8 +27,8 @@
       <!-- small box -->
       <div class="small-box bg-info">
         <div class="inner">
-          <h4 class="font-weight-bold">Rp. {{ $total }}</h4>
-          <p>Total Penjualan</p>
+          <h4 class="font-weight-bold" id="getTotal">Rp.{{ $getTransactionTotal }}</h4>
+          <p>Laba Bersih</p>
         </div>
       </div>
     </div>
@@ -39,7 +39,7 @@
         <div class="inner">
           <!-- <h4>53<sup style="font-size: 20px">%</sup></h4> -->
           <h4 class="font-weight-bold">Rp. 0</h4>
-          <p>Laba Bersih</p>
+          <p>Laba Kotor</p>
         </div>
         {{-- <div class="icon">
           <i class="ion ion-ios-box-outline"></i>
@@ -52,7 +52,7 @@
       <div class="small-box bg-success">
         <div class="inner">
           <!-- <h4>53<sup style="font-size: 20px">%</sup></h4> -->
-          <h4 class="font-weight-bold">{{ $soldProduct }}</h4>
+          <h4 class="font-weight-bold">0</h4>
           <p>Produk terjual</p>
         </div>
       </div>
@@ -63,8 +63,8 @@
       <div class="small-box bg-success">
         <div class="inner">
           <!-- <h4>53<sup style="font-size: 20px">%</sup></h4> -->
-          <h4 class="font-weight-bold">Rp. 0</h4>
-          <p>Produk</p>
+          <h4 class="font-weight-bold">0</h4>
+          <p>Transaksi</p>
         </div>
       </div>
     </div>
@@ -77,9 +77,16 @@
           <a href="" class="btn bg-maroon ml-2"><i class="fas fa-table"></i> PDF</a> --}}
         </div>
         <div class="form-group">
-          <input type="date" name="" class="form-control" id="">
-          <input type="date" name="" class="form-control ml-2" id="">
-          <button type="submit" class="btn bg-info ml-2"><i class="fas fa-calendar"></i> Filter</button>
+          <div class="input-group">
+            <div class="input-group-append">
+              <div class="input-group-text bg-light">
+                <span class="fas fa-calendar"></span> 
+              </div>
+            </div>
+            <input type="date" name="from_date" class="form-control" id="from_date" >
+            <input type="date" name="to_date" class="form-control ml-2" id="to_date" >
+            <button type="button" class="btn bg-info ml-2" id="filter"><i class="fas fa-calendar"></i> Filter</button>
+          </div>
         </div>
       </div>
     </div>
@@ -91,21 +98,14 @@
           <thead>
             <tr>
               <th>#</th>
-              <th>Nama produk</th>
-              <th>Jumlah</th>
-              <th>Total</th>
+              <th>Nama Pelanggan</th>
+              <th>Plat Nomor</th>
+              <th>Kasir</th>
+              <th>Tanggal Transaksi</th>
+              <th>Waktu Transaksi</th>
+              <th>Grand Total</th>
             </tr>
           </thead>
-          <tbody>
-            @foreach($transactionDetail_data as $transactionDetail)
-            <tr>
-              <td>{{ $loop->iteration }}</td>
-              <td>{{ $transactionDetail->product->product_name }}</td>
-              <td>{{ $transactionDetail->transaction_detail_amount }}</td>
-              <td>{{ $transactionDetail->transaction_detail_total }}</td>
-            </tr>
-            @endforeach
-          </tbody>
         </table>
       </div>
     </div>
@@ -115,7 +115,64 @@
 @push('addon-scripts')      
 <script type="text/javascript">
   $(document).ready(function () {
-    $('.data-report').DataTable();
-  });
+    loadData();
+    function loadData(from_date = '', to_date = '') { 
+      $('.data-report').DataTable({
+        processing:true,
+        serverSide:true,
+        ajax:{
+          url:"{{route('report.daily')}}",
+         data:{from_date:from_date,to_date:to_date}
+        },
+        columns:[
+          {data:"DT_RowIndex",name:"DT_RowIndex", orderable:false, searchable:false},
+          {data:"customer_name",name:"customer_name.customer_name"},
+          {data:"customer_license_plate",name:"customer_license_plate.customer_license_plate"},
+          {data:"employee",name:"employee.employee_fullname"},
+          {data:"transaction_date",name:"transaction_date"},
+          {data:"transaction_time",name:"transaction_time"},
+          {data:"transaction_grandtotal",name:"transaction_grandtotal"}
+        ],
+      });
+    }
+    $('#filter').click(function(){
+      var from_date = $('#from_date').val();
+      var to_date = $('#to_date').val();
+      if(from_date != '' && to_date != '')
+      {
+        $('.data-report').DataTable().destroy();
+        loadData(from_date,to_date);
+      } else {
+        alert('Both Date is required');
+      }
+    });
+
+    // $.ajax({
+    //   url:"/report/getTotal",
+    //   type:"GET",
+    //   dataType:"json",
+    //   data:{total:total},
+    //   success:function(data){
+    //     if(data) {
+    //       $('#getTotal').text(data.success);
+    //       // $("#ajaxform")[0].reset();
+    //     }
+    //   },
+    // });
+    // $('#from_date').daterangepicker({
+    //   opens: 'left'
+    // }, function(start, end, label) {
+    //   var from_date = start.format('YYYY-MM-DD'); 
+    //   var to_date = end.format('YYYY-MM-DD');
+    //   if(from_date != '' && to_date != '')
+    //   {
+    //     $('.data-report').DataTable().destroy();
+    //     loadData(from_date,to_date);
+    //   } else {
+    //     alert('Both Date is required');
+    //   }
+    // });
+
+});
 </script>
 @endpush

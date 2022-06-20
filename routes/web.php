@@ -61,12 +61,17 @@ Route::get('/getProductProduct',[TransactionController::class,'getProductProduct
     Route::put('/product/update/{id_product}',[ProductController::class,'update'])
         ->name('product.update')
         ->middleware('role:supervisor,owner');
-    // Route::get('/product/productCategoryFilter',[ProductController::class,'productCategoryFilter'])
-    //     ->name('product.productCategoryFilter')
-    //     ->middleware('role:supervisor,owner');
     Route::put('/product/discount/create/{id_product}',[ProductController::class,'addProductDiscount'])
         ->middleware('role:supervisor,owner');
-    
+        
+    //outcome
+    Route::get('/outcome',[OutcomeController::class,'index'])
+        ->name('outcome.index')
+        ->middleware('role:supervisor,owner');
+    Route::post('/outcome',[OutcomeController::class,'store'])
+        ->name('outcome.store')
+        ->middleware('role:supervisor,owner');
+
     //Employee 
     Route::get('/employee',[EmployeeController::class,'index'])
         ->middleware('role:supervisor,owner');
@@ -87,7 +92,12 @@ Route::get('/getProductProduct',[TransactionController::class,'getProductProduct
     Route::get('/employee/commissionJson',[EmployeeController::class,'commissionJson'])
         ->name('commission.commissionJson')
         ->middleware('role:supervisor,owner');
+    Route::get('/employee/attendanceJson',[AttendanceController::class,'attendanceJson'])
+        ->name('attendance.attendanceJson')
+        ->middleware('role:supervisor,owner');
     Route::get('/employee/attendance',[AttendanceController::class,'index'])
+        ->middleware('role:supervisor,owner');
+    Route::get('/employee/attendance/report/pdf',[AttendanceController::class,'printPDFReport'])
         ->middleware('role:supervisor,owner');
     
     // Attendance
@@ -112,59 +122,50 @@ Route::get('/getProductProduct',[TransactionController::class,'getProductProduct
     
     //Report
     Route::get('/report/daily',[ReportController::class,'dailyReport'])
+        ->name('report.daily')
         ->middleware('role:supervisor,owner');
     Route::get('/report/monthly',[ReportController::class,'monthlyReport'])
         ->middleware('role:supervisor,owner');
-    Route::get('/report',[ReportController::class,'summaryReport'])
+    Route::get('/report/summary',[ReportController::class,'summaryReport'])
         ->middleware('role:supervisor,owner');
-    Route::get('/report/all',[ReportController::class,'reportAll'])
-        ->name('report.all')
+    Route::get('/report/getTotal',[ReportController::class,'getTotal'])
+        ->middleware('role:supervisor,owner');
+    Route::get('/report/product/all',[ReportController::class,'reportAllProduct'])
+        ->name('report.allProduct')
+        ->middleware('role:supervisor,owner');
+    Route::get('/report/monthly',[ReportController::class,'monthlyReport'])
+        ->name('report.monthly')
         ->middleware('role:supervisor,owner');
     
     //Transaction Detail
-    Route::get('/supplier',[InventoryDetailController::class,'index'])
-        ->middleware('role:supervisor,owner');
-    Route::post('/supplier/store',[InventoryDetailController::class,'store'])->name('supplier.store')
-        ->middleware('role:supervisor,owner');
-    Route::get('/supplier/delete/{id_supplier}',[InventoryDetailController::class,'delete'])
-        ->middleware('role:supervisor,owner');
-    Route::put('/supplier/update/{id_supplier}',[InventoryDetailController::class,'update'])
-        ->name('supplier.update')
-        ->middleware('role:supervisor,owner');
+    Route::get('/supplier',[InventoryDetailController::class,'index'])->middleware('role:supervisor,owner');
+    Route::post('/supplier/store',[InventoryDetailController::class,'store'])->name('supplier.store')->middleware('role:supervisor,owner');
+    Route::get('/supplier/delete/{id_supplier}',[InventoryDetailController::class,'delete'])->middleware('role:supervisor,owner');
+    Route::put('/supplier/update/{id_supplier}',[InventoryDetailController::class,'update'])->name('supplier.update')->middleware('role:supervisor,owner');
     
     //invoice
-    Route::get('/invoice',[InvoiceController::class,'index'])
-        ->middleware('role:supervisor,owner');
-    Route::get('/',[DashboardController::class,'index'])
-        ->middleware('role:cashier,supervisor,owner');
+    Route::get('/invoice',[InvoiceController::class,'index'])->middleware('role:supervisor,owner');
+    Route::get('/',[DashboardController::class,'index'])->middleware('role:cashier,supervisor,owner');
     
     //transaction
-    Route::get('/transaction',[TransactionController::class,'index'])
-        ->middleware('role:cashier,role:cashier,supervisor,owner');
-    Route::get('/transaction/delete/{id_transaction}',[TransactionController::class,'deleteTransaction'])
-        ->middleware('role:cashier,role:cashier,supervisor,owner');
-    Route::get('/transactionJson',[TransactionController::class,'transactionJson'])
-        ->name('transaction.transactionJson')
-        ->middleware('role:cashier,role:cashier,supervisor,owner');
-    Route::post('/transaction/checkout/create-new',[TransactionController::class,'createCustomerAndTransactionWithNewCustomerData'])
-        ->name('transaction.create')
-        ->middleware('role:cashier,role:cashier,supervisor,owner');
-    Route::post('/transaction/checkout/use-existing',[TransactionController::class,'createCustomerAndTransactionWithExistingCustomerData'])
-        ->name('transaction.useExisting')
-        ->middleware('role:cashier,role:cashier,supervisor,owner');
+    Route::get('/transaction',[TransactionController::class,'index'])->middleware('role:cashier,supervisor,owner');
+    Route::get('/transaction/delete/{id_transaction}',[TransactionController::class,'deleteTransaction'])->middleware('role:cashier,supervisor,owner');
+    Route::get('/transactionJson',[TransactionController::class,'transactionJson'])->name('transaction.transactionJson')->middleware('role:cashier,supervisor,owner');
+    Route::post('/transaction/checkout/create-new',[TransactionController::class,'createCustomerAndTransactionWithNewCustomerData'])->name('transaction.create')->middleware('role:cashier,supervisor,owner');
+    Route::post('/transaction/checkout/use-existing',[TransactionController::class,'createCustomerAndTransactionWithExistingCustomerData'])->name('transaction.useExisting')->middleware('role:cashier,supervisor,owner');
     
     // Transaction Detail
     Route::post('/transaction/detail/store',[TransactionController::class,'storeTransactionDetail'])
         ->name('transaction.storeTransactionDetail')
-        ->middleware('role:cashier,role:cashier,supervisor,owner');
+        ->middleware('role:cashier,supervisor,owner');
     Route::get('/transaction/detail/delete/{id_transaction_detail}',[TransactionController::class,'deleteTransactionDetail'])
-        ->middleware('role:cashier,role:cashier,supervisor,owner');
+        ->middleware('role:cashier,supervisor,owner');
     Route::get('/transaction/{id_transaction}/select-product',[TransactionController::class,'checkout'])
-        ->middleware('role:cashier,role:cashier,supervisor,owner');
+        ->middleware('role:cashier,supervisor,owner');
     Route::get('/transaction/{id_transaction}/finish',[TransactionController::class,'processTransaction'])
-        ->middleware('role:cashier,role:cashier,supervisor,owner');
+        ->middleware('role:cashier,supervisor,owner');
     Route::get('/transaction/getTotal/{id_transaction}',[TransactionController::class,'getTotal'])
-        ->middleware('role:cashier,role:cashier,supervisor,owner');
+        ->middleware('role:cashier,supervisor,owner');
     
     // config
     Route::get('/config',[ConfigController::class,'index']);

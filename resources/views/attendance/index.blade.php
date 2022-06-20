@@ -73,8 +73,8 @@
     <div class="card-body">
       <div class="form-inline justify-content-between">
         <div class="form-group ">
-          {{-- <a href="" class="btn bg-maroon ml-2"><i class="fas fa-table"></i> Excel</a>
-          <a href="" class="btn bg-maroon ml-2"><i class="fas fa-table"></i> PDF</a> --}}
+          <a href="" class="btn bg-info ml-2"><i class="fas fa-table"></i> Excel</a>
+          <a href="" class="btn bg-primary ml-2"><i class="fas fa-table"></i> PDF</a>
         </div>
         <div class="form-group">
           <div class="input-group">
@@ -100,11 +100,12 @@
               <thead>
                 <tr>
                   <th>#</th>
-                  {{-- <th>Nama Karyawan</th> --}}
+                  <th>Nama Karyawan</th> 
                   <th>Tanggal Absensi</th>
-                  <th>Waktu Absensi</th>
-                  <th>Status</th>
+                  <th>Absensi Masuk</th>
+                  <th>Absensi Keluar</th>
                   <th>Foto</th>
+                  <th>Status</th>
                   <th>Aksi</th>
                 </tr>
               </thead>
@@ -130,17 +131,17 @@ $(document).ready(function(){
     processing:true,
     serverSide:true,
     ajax:{
-      url:"{{route('attendance.index')}}",
+      url:"{{route('attendance.attendanceJson')}}",
       data:{from_date:from_date,to_date:to_date}
     },
     columns:[
-      // {data:"DT_Row_Index",name:"DT_Row_Index", orderable:false, searchable:false},
       {data:"DT_RowIndex",name:"DT_RowIndex", orderable:false, searchable:false},
-      // {data:"employee_fullname",name:"employee_fullname"},
-      {data:"attendance_date",name:"attendance_date"},
-      {data:"attendance_time",name:"attendance_time"},
-      {data:"attendance_status",name:"attendance_status"},
+      {data:"employee",name:"employee.employee_fullname"},
+      {data:"schedule",name:"schedule.attendance_date"},
+      {data:"start",name:"start.attendance_start"},
+      {data:"leave",name:"leave.attendance_leave"},
       {data:"photo",name:"photo"},
+      {data:"attendance_status",name:"attendance_status"},
       {
         data:"id_employee",
         render: function(data,type,row){
@@ -149,15 +150,7 @@ $(document).ready(function(){
       }
       ]
     });
-    }
-      // {
-      //   data:"image",
-      //   name:"image",
-      //   render: function(data,type,row){
-      //     return '<img src="img/product/'+data+'">';
-      //   }
-      // },
-      // {data:"productCategory",name:"productCategory.category_name"}
+  }
       
     $('#filter').click(function(){
       var from_date = $('#from_date').val();

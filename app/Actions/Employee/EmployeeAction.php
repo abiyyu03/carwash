@@ -21,18 +21,19 @@ class EmployeeAction
         $this->storeUserAction->execute($request);
         
         //save image 
-        $this->storeEmployeeImage->executeEmployee($request);
+        if($request->photo != NULL)
+            $this->storeEmployeeImage->executeEmployee($request);
 
         $this->employee->id_employee = $this->generateIdEmployee();
         $this->employee->user_id = $this->storeUserAction->user->id_user;
         $this->employee->employee_fullname = $request->employee_fullname;
-        $this->employee->employee_nickname = $request->employee_nickname;
+        // $this->employee->employee_nickname = $request->employee_nickname;
         $this->employee->employee_nik = $request->employee_nik;
         $this->employee->employee_gender = $request->employee_gender;
         $this->employee->employee_birthdate = $request->employee_birthdate;
         $this->employee->employee_photo = $this->storeEmployeeImage->filename;
         $this->employee->employee_contact = $request->employee_contact;
-        $this->employee->employee_email = $request->employee_email;
+        // $this->employee->employee_email = $request->employee_email;
         $this->employee->employee_address = $request->employee_address;
         $this->employee->save();
     }

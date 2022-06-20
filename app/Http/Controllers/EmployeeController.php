@@ -28,7 +28,7 @@ class EmployeeController extends Controller
     function index()
     {
       $employee_data = $this->employee_data->get();
-      $role_data = Role::get();
+      $role_data = Role::where('role_name','!=','owner')->get();
       return view('employee.index',compact('role_data','employee_data'));
     }
 
@@ -36,7 +36,7 @@ class EmployeeController extends Controller
     {
         $employee_data = $request->validate([
             'employee_fullname' => ['required'],
-            'employee_nickname' => ['required'],
+            // 'employee_nickname' => ['required'],
             // 'employee_nik' => ['required'],
             'employee_gender' => ['required'],
             // 'employee_birthdate' => ['required'],

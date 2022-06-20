@@ -42,6 +42,7 @@
   </div>
     <div class="card mt-3">
         <div class="card-body">
+        <p>Ringkasan Laporan <span>Hari Ini</span></p>
           <div class="row">
             <div class="col-sm-12 col-md-4 table-responsive">
               <table class="table table-bordered table-striped">
@@ -55,16 +56,26 @@
                   <tr>
                     <td>
                       <div class="d-flex justify-content-between">
-                        <p class="mb-0">Pendapatan Kotor</p>
+                        <p class="mb-0">Laba Kotor</p>
+                        <p class="mb-0">Rp. {{ $getTransactionTotal }}</p>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <div class="d-flex justify-content-between">
+                        <p class="mb-0">Laba bersih</p>
                         <p class="mb-0">Rp.300000</p>
                       </div>
                     </td>
                   </tr>
                   <tr>
-                    <td>asldkasjl</td>
-                  </tr>
-                  <tr>
-                    <td>asldkasjl</td>
+                    <td>
+                      <div class="d-flex justify-content-between">
+                        <p class="mb-0">Pendapatan Kotor</p>
+                        <p class="mb-0">Rp.300000</p>
+                      </div>
+                    </td>
                   </tr>
                 </tbody>
               </table>
@@ -79,10 +90,11 @@
                 </thead>
                 <tbody>
                   <tr>
-                    <td>asldkasjl</td>
+                    <td>Pengeluaran Hari Ini</td>
+                    <p class="mb-0">Rp.300000</p>
                   </tr>
                   <tr>
-                    <td>asldkasjl</td>
+                    <td>Pengeluaran Bulan Ini</td>
                   </tr>
                   <tr>
                     <td>asldkasjl</td>
@@ -94,7 +106,7 @@
               <table class="table table-bordered table-striped">
                 <thead>
                   <tr>
-                    <th class="bg-info">Laba Kotor</th>
+                    <th class="bg-info">Laporan Karyawan</th>
                     <!-- <th>Aksi</th> -->
                   </tr>
                 </thead>
@@ -102,16 +114,26 @@
                   <tr>
                     <td>
                       <div class="d-flex justify-content-between">
-                        <p>asdasdasd</p>
-                        <p>asdasdasd</p>
+                        <p class="mb-0">Karyawan masuk</p>
+                        <p class="mb-0 font-weight-bold">20</p>
                       </div>
                     </td>
                   </tr>
                   <tr>
-                    <td>asldkasjl</td>
+                    <td>
+                      <div class="d-flex justify-content-between">
+                        <p class="mb-0">Karyawan tidak masuk</p>
+                        <p class="mb-0 font-weight-bold">20</p>
+                      </div>
+                    </td>
                   </tr>
                   <tr>
-                    <td>asldkasjl</td>
+                    <td>
+                      <div class="d-flex justify-content-between">
+                        <p class="mb-0">Komisi karyawan</p>
+                        <p class="mb-0 font-weight-bold">Rp. 20.000</p>
+                      </div>
+                    </td>
                   </tr>
                 </tbody>
               </table>

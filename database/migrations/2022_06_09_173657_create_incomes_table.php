@@ -15,8 +15,8 @@ class CreateIncomesTable extends Migration
     {
         Schema::create('incomes', function (Blueprint $table) {
             $table->id('id_incomes');
-            $table->integer('net_income');
-            $table->integer('gross_income');
+            $table->integer('net_income'); //laba bersih
+            $table->integer('gross_income'); //laba kotor
             $table->date('date')->default(date('Y-m-d'));
             $table->timestamps();
         });

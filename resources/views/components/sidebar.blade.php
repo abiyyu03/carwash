@@ -80,8 +80,10 @@
                             <li class="nav-item">
                                 <a href="/supplier" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
-                                    <p>Daftar Supplier</p>
+                                    <p>Daftar Perbelanjaan</p>
                                 </a>
+                            </li>
+                            <li class="nav-item">
                                 <a href="/inventory" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>Daftar Inventory</p>
@@ -122,13 +124,13 @@
                         </a>
                         <ul class="nav nav-treeview">
                             <li class="nav-item">
-                                <a href="/report" class="nav-link">
+                                <a href="/report/summary" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>Ringkasan Laporan</p>
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="/report/all" class="nav-link">
+                                <a href="/report/product/all" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>Semua Penjualan Produk</p>
                                 </a>
@@ -149,17 +151,23 @@
                     </li>
                     <li class="nav-item">
                         <a href="#" class="nav-link">
-                            <i class="nav-icon fas fa-money-check"></i>
+                            <i class="nav-icon fas fa-wallet"></i>
                             <p>
-                                Pengeluaran
+                                Keuangan
                                 <i class="fas fa-angle-left right"></i>
                             </p>
                         </a>
                         <ul class="nav nav-treeview">
                             <li class="nav-item">
-                                <a href="/invoice" class="nav-link">
+                                <a href="/outcome" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
-                                    <p>Fix Cost</p>
+                                    <p>pengeluaran</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="/outcome" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>pemasukan</p>
                                 </a>
                             </li>
                         </ul>

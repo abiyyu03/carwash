@@ -3,71 +3,75 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\{Attendance, Employee};
+use App\Models\{AttendanceStart, AttendanceLeave, AttendanceSchedule, AttendanceStatus, Employee};
 use DataTables;
+use PDF;
 use Alert;
 
 class AttendanceController extends Controller
 {
-    // function login()
-    // {
-    //     if(!Auth()->check())
-    //     {
-    //         return view('attendance.auth.login');
-    //     } else {
-    //         Alert::warning('Warning','Silahkan Logout dahulu di akun sebelumnya');
-    //         return redirect()->to('/attendance/login');
-    //     }
-
-    // }
-
-    // function loginProcess(Request $request)
-    // {
-    //     $data = $request->only('email','password');
-    //     if(Auth()->attempt($data))
-    //     {
-    //         //check roles
-    //         // if(Auth()->user()->role->role_name !== 'owner'){
-    //             return redirect()->to('/attendance');
-    //         // }
-    //     } 
-    //     //back if wrong username or password
-    //     Alert::warning('Warning','Username atau Password salah');
-    //     return redirect()->back();
-    // }
-
-    // function logoutAttendance()
-    // {
-    //     Auth()->guard('attendance')->logout();
-    //     // return redirect()->to('/);
-    // }
-
-    // function attendance()
-    // {
-    //     return view('attendance.attendance');
-    // }
-
-    // function index()
-    // {
-    //     return view ('attendance.index');
-    // }
-
     function index()
+    {
+        return view ('attendance.index');
+    }
+
+    function attendanceJson()
     {
         if(request()->ajax()){
             if(!empty(request()->form_date))
             {
-                $attendance_data = Attendance::with('employee')
-                    ->whereBetween('attendance_date',[request()->form_date, request()->to_date])
-                    ->get();
+                $attendance_data = AttendanceStatus::with('attendanceStart','attendanceLeave','attendanceSchedule','employee')
+                // ->whereBetween('attendance_date',[request()->form_date, request()->to_date])
+                ->get();
             } else {
-                $attendance_data = Attendance::with('employee')->get();
+                $attendance_data = AttendanceStatus::with('attendanceStart','attendanceLeave','attendanceSchedule','employee')->get();
             }
             return DataTables::of($attendance_data)
-                        ->addIndexColumn()
-                        ->toJson();
+                ->addIndexColumn()
+                ->addColumn('start',function (AttendanceStatus $attendanceStatus){
+                    return $attendanceStatus->attendanceStart->attendance_start;
+                })
+                ->addColumn('leave',function (AttendanceStatus $attendanceStatus){
+                    return $attendanceStatus->attendanceLeave->attendance_leave;
+                })
+                ->addColumn('schedule',function (AttendanceStatus $attendanceStatus){
+                    return \Carbon\Carbon::parse($attendanceStatus->attendanceSchedule->attendance_date)->isoFormat('dddd, D MMMM Y');
+                })
+                ->addColumn('employee',function (AttendanceStatus $attendanceStatus){
+                    return $attendanceStatus->employee->employee_fullname;
+                })
+                // ->editColumn('schedule', function(AttendanceStatus $attendanceStatus){
+                //     return $attendanceStatus->attendanceSchedule->attendance_date ? with(new Carbon($attendanceStatus->attendanceSchedule->attendance_date))->isoFormat('dddd, D MMMM Y')/*->diffForHumans()*/ : '';
+                // })
+                ->toJson();
         }
-        return view('attendance.index');
+        // return view('attendance.index');
+    }
+
+    function printPDFReport()
+    {
+        // return $this->attendanceJson();
+        $attendance_data = AttendanceStatus::with('attendanceStart','attendanceLeave','attendanceSchedule','employee')->get();
+        return DataTables::of($attendance_data)
+                ->addIndexColumn()
+                ->addColumn('start',function (AttendanceStatus $attendanceStatus){
+                    return $attendanceStatus->attendanceStart->attendance_start;
+                })
+                ->addColumn('leave',function (AttendanceStatus $attendanceStatus){
+                    return $attendanceStatus->attendanceLeave->attendance_leave;
+                })
+                ->addColumn('schedule',function (AttendanceStatus $attendanceStatus){
+                    return \Carbon\Carbon::parse($attendanceStatus->attendanceSchedule->attendance_date)->isoFormat('dddd, D MMMM Y');
+                })
+                ->addColumn('employee',function (AttendanceStatus $attendanceStatus){
+                    return $attendanceStatus->employee->employee_fullname;
+                })
+                // ->editColumn('schedule', function(AttendanceStatus $attendanceStatus){
+                //     return $attendanceStatus->attendanceSchedule->attendance_date ? with(new Carbon($attendanceStatus->attendanceSchedule->attendance_date))->isoFormat('dddd, D MMMM Y')/*->diffForHumans()*/ : '';
+                // })
+                ->toJson();
+        // $pdf = PDF::loadView('attendance.report', $data);
+        // return $pdf->download('invoice.pdf');
     }
 
 

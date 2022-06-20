@@ -39,14 +39,7 @@
   <div class="card-body">
     <div class="row d-flex justify-content-between">
       <div class="col-md-4">
-        <div class="input-group">
-          <div class="input-group-append">
-            <div class="input-group-text bg-light">
-              <span class="fas fa-calendar"></span> 
-            </div>
-          </div>
-          <input type="text" name="from_date" class="form-control" id="from_date" readonly>
-        </div>
+
       </div>
       <div class="col-md-4">
         <div class="input-group">
@@ -56,7 +49,7 @@
               Status Transaksi
             </div>
           </div>
-          <select name="" id="" class="form-control">
+          <select name="" id="status" class="form-control">
             <option value="">Semua</option>
             <option value="pending">Pending</option>
             <option value="complete">Complete</option>
@@ -82,17 +75,18 @@
             </tr>
           </thead>
           <tbody>
-            @foreach($transaction_data as $transaction)
+            {{-- @foreach($transaction_data as $transaction)
             <tr>
               <td>{{ $loop->iteration }}</td>
               <td>{{ $transaction->customer->customer_name }}</td>
-              <td>{{ \Carbon\Carbon::parse($transaction->transaction_timestamp)->isoFormat('dddd, D MMMM Y') }}</td>
-              <td>{{ \Carbon\Carbon::parse($transaction->transaction_timestamp)->isoFormat('HH:mm') }}</td> 
+              <td>{{ \Carbon\Carbon::parse($transaction->created_at)->isoFormat('dddd, D MMMM Y') }}</td>
+              <td>{{ \Carbon\Carbon::parse($transaction->created_at)->isoFormat('HH:mm') }}</td> 
               <td>{{ $transaction->transaction_status }}</td>
               <td><a href="/transaction/{{ $transaction->id_transaction}}/select-product" class="btn btn-primary"><i class="fas fa-eye"></i> Lihat</a> 
-                  <a href="/transaction/delete/{{ $transaction->id_transaction}}" class="btn btn-danger" id="deleteButton"><i class="fas fa-trash-alt"></i> Hapus</a></td>
-            </tr>
-            @endforeach
+                <a href="/transaction/delete/{{ $transaction->id_transaction}}" class="btn btn-info" id="deleteButton"><i class="fas fa-receipt"></i> Struk</a>
+                <a href="/transaction/delete/{{ $transaction->id_transaction}}" class="btn btn-danger" id="deleteButton"><i class="fas fa-trash-alt"></i> Hapus</a></td>
+              </tr>
+              @endforeach --}}
           </tbody>
         </table>
       </div>
@@ -168,49 +162,121 @@
 @push('addon-scripts')
 <script>
 $(document).ready(function(){
-    $('.data-transaction').DataTable();
-    //   processing:true,
-    //   serverSide:true,
-    //   ajax:"{{route('transaction.transactionJson')}}",
-    //   columns:[
-    //     // {data:"DT_Row_Index",name:"DT_Row_Index", orderable:false, searchable:false},
-    //     {data:"DT_RowIndex",name:"DT_RowIndex", orderable:false, searchable:false},
-    //     {data:"customer",name:"customer.customer_name"},
-    //     {data:"transaction_timestamp",name:"transaction_timestamp"},
-    //     // {data:"transaction_status",name:"transaction_status"},
-    //     {
-    //       data:"transaction_status",
-    //       name:"transaction_status",
-    //       render: function(data,type,row,name){
-    //         return '<span class="warning rounded p-1">'+data+'</span>'
-    //       }
-    //     },
-    //     {
-    //       data:"id_transaction",
-    //       render: function(data,type,row){
-    //         return '<a href="/transaction/'+data+'/select-product" class="btn btn-warning"><i class="fas fa-edit"></i> Edit</a> <a href="/transaction/delete/'+data+'" class="btn btn-danger deleteButton"><i class="fas fa-trash-alt"></i> Hapus</a>';
-    //       }
-    //     }
-    //   ]
-    // });
-    // loadData();
-    // function loadData(from_date = '', to_date = '') { 
-    //   $('.data-report').DataTable({
-    //     processing:true,
-    //     serverSide:true,
-    //     ajax:{
-    //       url:"{{route('report.all')}}",
-    //      data:{from_date:from_date,to_date:to_date}
-    //     },
-    //     columns:[
-    //       {data:"DT_RowIndex",name:"DT_RowIndex", orderable:false, searchable:false},
-    //       {data:"product",name:"product.product_name"},
-    //       {data:"transaction_detail_amount",name:"transaction_detail_amount"},
-    //       {data:"transaction_detail_total",name:"transaction_detail_total"}
-    //     ]
-    //   });
-    // }
-  });
+  loadData();
+  function loadData(status = '') { 
+    $('.data-transaction').DataTable({
+      processing:true,
+      serverSide:true,
+      ajax:{
+        url:"{{route('transaction.transactionJson')}}",
+        data:{status:status}
+      },
+      columns:[
+        {data:"DT_RowIndex",name:"DT_RowIndex", orderable:false, searchable:false},
+        {data:"customer",name:"customer.customer_name"},
+        {data:"transaction_date",name:"transaction_date"},
+        {data:"transaction_time",name:"transaction_time"},
+        {data:"transaction_status",name:"transaction_status"},
+        {
+          data:"action",
+          name:"action"
+        }
+      ],
+      drawCallback: function(settings){
+          $('#deleteButton').on("click",function(e){
+          e.preventDefault();
+          var url = $(this).attr('href');
+          console.log(url);
+          swal.fire({
+            title: 'Apakah Kamu yakin ingin menghapus data ini ?',
+            text: "Data yang terhapus tidak bisa di kembalikan!",
+            icon: 'warning',
+            // buttons: ["Cancel","Yakin!"],
+            showCancelButton: true,
+            // confirmButtonColor: '#3085d6',
+            // cancelButtonColor: '#d33',
+            confirmButtonText: 'Yakin !'
+          }).then((result) => {
+            if (result.isConfirmed) {
+              window.location.href = url;
+            }
+          });
+        });
+      }
+    });
+  }
+  $('#status').change(function(){
+      var status = $('#status').val();
+      if(status != '')
+      {
+        $('.data-transaction').DataTable().destroy();
+        // loadData(from_date,to_date);
+        loadData(status);
+      } else {
+        $('.data-transaction').DataTable().destroy();
+        loadData();
+      }
+    });
+    $('#receiptButton').on("click",function(e){
+          e.preventDefault();
+          var url = $(this).attr('href');
+          console.log(url);
+          swal.fire({
+            title: 'Apakah Kamu yakin ingin menghapus data ini ?',
+            text: "Data yang terhapus tidak bisa di kembalikan!",
+            icon: 'warning',
+            // buttons: ["Cancel","Yakin!"],
+            showCancelButton: true,
+            // confirmButtonColor: '#3085d6',
+            // cancelButtonColor: '#d33',
+            confirmButtonText: 'Yakin !'
+          }).then((result) => {
+            if (result.isConfirmed) {
+              window.location.href = url;
+            }
+          });
+        });
+    $('#filter').click(function(){
+      var from_date = $('#from_date').val();
+      var to_date = $('#to_date').val();
+      if(from_date != '' && to_date != '')
+      {
+        $('.data-report').DataTable().destroy();
+        loadData(from_date,to_date);
+      } else {
+        alert('Both Date is required');
+      }
+    });
+  
+  // $('.receiptButton').on('click', 'button', table, function () {
+  //   const data = table.row($(this).parents('tr')).data();
+  //   //alert('Edit user: ' + data.id);
+    
+  //   Swal.fire({
+  //     title: 'Emin Misiniz?',
+  //     text: "Mülk sonsuza dek silinecektir!",
+  //     type: 'warning',
+  //     showCancelButton: true,
+  //     confirmButtonColor: '#3085d6',
+  //     cancelButtonColor: '#d33',
+  //     confirmButtonText: 'Evet, silinsin!',
+  //     cancelButtonText: 'Hayır, vazgeç!'
+  //   }).then(function (result) {
+  //     if (result.value) {
+  //       $.ajax({
+  //         url: "sil.php",
+  //         type: "POST",
+  //         contentType: 'application/json',
+  //         dataType: 'json',
+  //         data: JSON.stringify(data)
+  //       }).done(function (result) {
+  //         alert('done');
+  //         //location.reload();
+  //       });
+  //     }
+  //   }
+  //   )
+  // });
   $('#from_date').daterangepicker({
     opens: 'left'
   }, function(start, end, label) {
@@ -224,31 +290,11 @@ $(document).ready(function(){
       alert('Both Date is required');
     }
   });
-$('#deleteButton').on("click",function(event){
-    event.preventDefault();
-    var url = $(this).attr('href');
-    console.log(url);
-    swal.fire({
-      title: 'Apakah Kamu yakin ingin menghapus data ini ?',
-      text: "Data yang terhapus tidak bisa di kembalikan!",
-      icon: 'warning',
-      // buttons: ["Cancel","Yakin!"],
-      showCancelButton: true,
-      // confirmButtonColor: '#3085d6',
-      // cancelButtonColor: '#d33',
-      confirmButtonText: 'Yakin !'
-      }).then((result) => {
-        if (result.isConfirmed) {
-          window.location.href = url;
-        }
-  });
 });
 </script>
 @endpush
 <script>
-$("#licence_plate").select2();
-  let tambah = document.getElementById('tambah-data');
-
+  $("#licence_plate").select2();
   function clickTambah()
   {
     $("#licence_plate").hide();
@@ -264,4 +310,3 @@ $("#licence_plate").select2();
     $("#clickExisting").hide();
   }
 </script>
-

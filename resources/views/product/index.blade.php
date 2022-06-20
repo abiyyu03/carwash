@@ -10,8 +10,8 @@
       </div><!-- /.col -->
       <div class="col-sm-6">
         <ol class="breadcrumb float-sm-right">
-          <li class="breadcrumb-item"><a href="#">Home</a></li>
-          <li class="breadcrumb-item active">Dashboard v1</li>
+          <li class="breadcrumb-item active">Produk</li>
+          <li class="breadcrumb-item active">Daftar Produk</li>
         </ol>
       </div><!-- /.col -->
     </div><!-- /.row -->
@@ -86,9 +86,12 @@
               <!-- <td><a href="#" id="detailImage" data-toggle="modal" class="btn btn-primary" data-target="#detailModal" data-product-image="{{ $product->product_image }}"><i class="fas fa-image"></i> Tampilkan</a></td> -->
               <td>{{ $product->productCategory->category_name }}</td>
               <td><!-- <a href="#" id="detailButton" class="btn btn-primary"><i class="fas fa-info-circle"></i> Detail</a> -->
-              <a href="#" id="percentageButton" data-toggle="modal" data-target="#percentageModal" class="btn btn-primary"><i class="fas fa-percentage"></i> Diskon</a> 
-              <a href="#" id="editButton" data-toggle="modal" data-target="#editModal" class="btn btn-warning"><i class="fas fa-edit"></i> Edit</a> 
-              <a href="/product/delete/{{ $product->id_product }}" id="deleteButton" class="btn btn-danger deleteButton"><i class="fas fa-trash-alt"></i> Delete</a> </td>
+              @if(Auth()->user()->role->role_name == "owner")
+                <a href="#" id="percentageButton" data-toggle="modal" data-target="#percentageModal" class="btn btn-primary"><i class="fas fa-percentage"></i> Diskon</a> 
+                <a href="#" id="editButton" data-toggle="modal" data-target="#editModal" class="btn btn-warning"><i class="fas fa-edit"></i> Edit</a> 
+                <a href="/product/delete/{{ $product->id_product }}" id="deleteButton" class="btn btn-danger deleteButton"><i class="fas fa-trash-alt"></i> Delete</a> 
+              @endif
+              </td>
             </tr>
             @endforeach
           </tbody>
@@ -126,7 +129,7 @@
               <input type="text" class="form-control" id="product_code" value="{{old('product_code')}}" name="product_code" required>
             </div> -->
             <div class="form-group">
-              <label for="product_price" class="col-form-label">Harga Jual</label>
+              <label for="product_price" class="col-form-label">Harga</label>
               <input type="number" class="form-control" id="product_price" value="{{old('product_price')}}" name="product_price" required>
             </div>
             {{-- <div class="form-group">
@@ -139,7 +142,7 @@
             </div> --}}
             <div class="form-group product">
               <label for="product_minimum_stock" class="col-form-label">Minimal Stok</label>
-              <input type="number" class="form-control" id="product_minimum_stock" value="{{old('product_minimum_stock')}}" name="product_minimum_stock" required>
+              <input type="number" class="form-control" id="product_minimum_stock" value="{{old('product_minimum_stock')}}" name="product_minimum_stock">
             </div>
             <!-- <div class="form-group">
               <label for="image" class="col-form-label">Gambar Produk</label>
@@ -182,7 +185,7 @@
               <input type="text" class="form-control" id="edit_product_name" name="product_name">
             </div>
             <div class="form-group">
-              <label for="product_price" class="col-form-label">Harga Jual</label>
+              <label for="product_price" class="col-form-label">Harga</label>
               <input type="number" class="form-control" id="edit_product_price" name="product_price" required>
             </div>
             {{-- <div class="form-group">
@@ -195,7 +198,7 @@
             </div> --}}
             <div class="form-group">
               <label for="product_minimum_stock" class="col-form-label">Minimal Stok</label>
-              <input type="number" class="form-control" id="edit_product_minimum_stock" name="product_minimum_stock" required>
+              <input type="number" class="form-control" id="edit_product_minimum_stock" name="product_minimum_stock">
             </div>
             <!-- <div class="form-group">
               <label for="product_discount" class="col-form-label">Diskon (Opsional)</label>
@@ -205,7 +208,7 @@
               <label for="image" class="col-form-label">Gambar Produk</label>
               <input type="file" class="form-control" id="edit_product_image" value="{{old('product_image')}}" name="product_image">
             </div> -->
-            <div class="form-group">
+            {{-- <div class="form-group">
                 <label for="product_category_id">Kategori Produk</label>
                 <select name="product_category_id" id="edit_product_category_id" class="form-control" required>
                   <option value="">-</option>
@@ -213,7 +216,7 @@
                   <option value="{{$productCategory->id_product_category}}">{{$productCategory->category_name}}</option>
                   @endforeach
                 </select>
-            </div>
+            </div> --}}
             <div class="modal-footer form-group">
               <button type="submit" class="btn btn-info">Edit Produk</button>
             </div>
@@ -326,11 +329,11 @@ $(document).ready(function(){
 
   });
 
-  table.on("click",'#percentageButton',function(){
+   table.on("click",'#percentageButton',function(){
     $tr = $(this).closest('tr');
     if($($tr).hasClass('child')){
       $tr = $tr.prev('.parent');
-    }
+    };
 
     var data = table.row($tr).data();
     $('#percentage_product_price').val(data[3]);
@@ -339,10 +342,7 @@ $(document).ready(function(){
     $('#percentageModal').modal('show');
 
   });
-
-  $("#filter").on("change",click(){
-    
-  });
+  $('#inventory_id').select2();
 });
 </script>
 @endpush

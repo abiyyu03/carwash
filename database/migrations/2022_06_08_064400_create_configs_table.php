@@ -16,9 +16,9 @@ class CreateConfigsTable extends Migration
     {
         Schema::create('configs', function (Blueprint $table) {
             $table->id('id_config');
+            $table->string('carwash_name');
+            $table->text('carwash_address');
             $table->integer('commission_percentage')->default(40);
-            $table->time('attendance_start')->default(Carbon::now()->isoFormat('HH:mm'));
-            $table->time('attendance_end')->default(Carbon::now()->isoFormat('HH:mm'));
             $table->timestamps();
         });
     }
