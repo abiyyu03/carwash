@@ -19,6 +19,7 @@ class CreateCustomersTable extends Migration
             $table->string('customer_contact')->nullable();
             $table->string('customer_license_plate')->unique()->nullable();
             $table->string('customer_vehicle')->nullable();
+            $table->integer('customer_attend')->default(0);
             $table->timestamps();
         });
     }

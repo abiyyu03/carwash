@@ -19,6 +19,7 @@ class CreateConfigsTable extends Migration
             $table->string('carwash_name');
             $table->text('carwash_address');
             $table->integer('commission_percentage')->default(40);
+            $table->integer('ppn_percentage')->default(5);
             $table->timestamps();
         });
     }

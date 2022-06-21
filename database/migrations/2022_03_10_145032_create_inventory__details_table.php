@@ -21,13 +21,18 @@ class CreateInventoryDetailsTable extends Migration
             $table->integer('product_id')
                 ->references('id_product')
                 ->on('products')
-                ->onDelete('cascade')->nullable();
+                ->onDelete('cascade')
+                ->nullable();
             $table->integer('inventory_id')
                 ->references('id_inventory')
                 ->on('inventories')
-                ->onDelete('cascade')->nullable();
-            $table->string('supplier_name')->nullable();
-            $table->string('supplier_contact')->nullable();
+                ->onDelete('cascade')
+                ->nullable();
+            $table->integer('supplier_id')
+                ->references('id_supplier')
+                ->on('suppliers')
+                ->onDelete('cascade')
+                ->nullable();
             $table->timestamps();
         });
     }

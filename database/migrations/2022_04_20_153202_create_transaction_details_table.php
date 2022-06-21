@@ -15,9 +15,8 @@ class CreateTransactionDetailsTable extends Migration
     {
         Schema::create('transaction_details', function (Blueprint $table) {
             $table->id('id_transaction_detail');
-            $table->integer('transaction_detail_amount')->default(1);
-            $table->date('transaction_detail_date')
-                ->default(date('Y-m-d'));
+            $table->integer('transaction_detail_amount')->nullable();
+            $table->date('transaction_detail_date')->default(date('Y-m-d'));
             $table->integer('transaction_detail_total');
             $table->string('transaction_id')
                 ->references('id_transaction')

@@ -21,7 +21,7 @@ class CreateProductsTable extends Migration
             $table->integer('product_capital_price')->nullable(); //di isi saat belanja
             $table->integer('product_stock')->nullable(); //di isi saat belanja
             $table->integer('product_minimum_stock')->nullable(); 
-            $table->integer('product_discount')->default(0);
+            // $table->integer('product_discount')->default(0);
             $table->integer('product_category_id')
                 ->references('id_product_category')
                 ->on('product_categories')
