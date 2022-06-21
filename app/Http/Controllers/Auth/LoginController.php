@@ -23,14 +23,6 @@ class LoginController extends Controller
         $data = $request->only('email','password');
         if(Auth()->attempt($data))
         {
-            //check roles
-            // if(Auth()->user()->role->role_name == 'owner'){
-            //     return redirect()->to('/');
-            // }elseif(Auth()->user()->role->role_name == 'cashier'){
-            //     return redirect()->to('/');
-            // }elseif(Auth()->user()->role->role_name == 'supervisor'){
-            //     return redirect()->to('/');
-            // }
             return redirect()->to('/');
         } 
         //back if wrong username or password

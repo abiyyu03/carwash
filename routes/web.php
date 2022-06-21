@@ -3,7 +3,14 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Http\Request;
+ 
 
+/**
+ * This is Route area
+ * the middleware can see in every end of route
+ * every route is group by feature
+ */
 Route::get('/dropdownProduct',[TransactionController::class,'dropdownProduct'])
     ->name('dropdownProduct');
     // ->middleware('role:supervisor,owner');
@@ -13,6 +20,7 @@ Route::get('/getProductProduct',[TransactionController::class,'getProductProduct
 
 //owner only 
 // Route::middleware('owner')->group(function(){
+    
     //user (account)
     Route::get('/account',[UserController::class,'index'])
         ->middleware('role:supervisor,owner');
@@ -183,8 +191,10 @@ Route::middleware('attendance')->group(function(){
 Route::get('/login',[Auth\LoginController::class,'login']);
 Route::get('/owner/login',[Auth\LoginController::class,'login']);
 Route::post('/login',[Auth\LoginController::class,'login_process'])->name('logins.login');
-Route::get('/register',[Auth\RegisterController::class,'index']);
-Route::post('/register',[Auth\RegisterController::class,'store'])->name('registers.register');
+// Route::get('/register',[Auth\RegisterController::class,'index']);
+// Route::post('/register',[Auth\RegisterController::class,'store'])->name('registers.register');
 Route::get('/logout',[Auth\LoginController::class,'logout']);
-Route::get('/attendance/login',[AttendanceController::class,'login']);
-Route::post('/attendance/login',[AttendanceController::class,'loginProcess'])->name('attendance.login');
+Route::get('/forgot-password',[Auth\ResetPasswordController::class,'getResetPassword'])->name('password.request');
+Route::post('/forgot-password', [Auth\ResetPasswordController::class,'sendResetPassword'])->name('password.email');
+Route::get('/reset-password/{token}',[Auth\ResetPasswordController::class,'getResetPasswordToken'])->name('password.reset');
+Route::post('/reset-password',[Auth\ResetPasswordController::class,'processResetPassword'])->name('password.update');
