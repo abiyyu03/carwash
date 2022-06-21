@@ -27,6 +27,7 @@ class CreateProductsTable extends Migration
                 ->on('product_categories')
                 ->onDelete('cascade');
             $table->string('is_active')->default('0');
+            $table->string('is_promo')->default('0');
             $table->timestamps();
         });
     }

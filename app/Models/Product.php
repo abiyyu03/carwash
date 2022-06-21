@@ -11,7 +11,7 @@ class Product extends Model
     protected $table = "products";
     protected $primaryKey = "id_product";
     protected $fillable = ['product_name','product_code','product_price',
-                        'product_stock','product_discount','product_category_id',
+                        'product_stock','product_category_id',
                         'product_minimum_stock','product_capital_price' ];
 
     function productCategory()
@@ -32,5 +32,10 @@ class Product extends Model
     function inventories()
     {
         return $this->belongsToMany('App\Models\Inventory','inventory_product','product_id','inventory_id'); // //withPivot('inventory_id');
+    }
+
+    function productPromo()
+    {
+        return $this->hasOne('App\Models\ProductPromo');
     }
 }
