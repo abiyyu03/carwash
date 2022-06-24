@@ -74,8 +74,8 @@
       <div class="form-inline justify-content-between">
         <div class="form-inline justify-content-between">
           <div class="form-group ">
-            <a href="" class="btn bg-info ml-2"><i class="fas fa-file-excel"></i> Excel</a>
-            <a href="/report/summary/pdf" class="btn bg-info ml-2"><i class="fas fa-file"></i> PDF</a>
+            {{-- <a href="" class="btn bg-info ml-2"><i class="fas fa-file-excel"></i> Excel</a>
+            <a href="/report/product/all/pdf" class="btn bg-info ml-2"><i class="fas fa-file"></i> PDF</a> --}}
           </div>
         </div>
         <div class="form-group">
@@ -136,7 +136,7 @@
         processing:true,
         serverSide:true,
         ajax:{
-          url:"{{route('report.allProduct')}}",
+          url:"{{route('report.allProductJson')}}",
          data:{from_date:from_date,to_date:to_date}
         },
         columns:[
@@ -144,7 +144,22 @@
           {data:"product_name",name:"product_name"},
           {data:"transaction_detail_amount",name:"transaction_detail_amount"},
           {data:"transaction_detail_total",name:"transaction_detail_total"}
-        ]
+        ],
+        dom: 'Blfrtip',
+        buttons: [
+            'copyHtml5',
+            'excelHtml5',
+            'csvHtml5',
+            {
+              extend: 'pdfHtml5',
+              messageTop:"Laporan Penjualan Produk",
+              title:"Laporan Penjualan Produk Semua Waktu",
+              filename:"Laporan-Harian-Jiwalu-Carwash",
+              footer:true,
+              header:true,
+              autoWidth:true
+            }
+        ],
       });
     }
     $('#filter').click(function(){

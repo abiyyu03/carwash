@@ -9,7 +9,7 @@
       </div><!-- /.col -->
       <div class="col-sm-6">
         <ol class="breadcrumb float-sm-right">
-          <li class="breadcrumb-item"><a href="#">Home</a></li>
+          <li class="breadcrumb-item active">Home</li>
           <li class="breadcrumb-item active">Transaksi</li>
         </ol>
       </div><!-- /.col -->
@@ -30,38 +30,37 @@
   </div>
 @endif
 <div class=" d-flex justify-content-end">
-  <a class="btn bg-info" href="#" data-toggle="modal" data-target="#exampleModal">
-    <i class="fas fa-exchange-alt"></i>
-    Buat Transaksi
-  </a>
+  
 </div>
-<div class="card mt-3">
-  <div class="card-body">
-    <div class="row d-flex justify-content-between">
-      <div class="col-md-4">
-
-      </div>
-      <div class="col-md-4">
+<div class="mt-3">
+  <div class="">
+    <div class="d-flex justify-content-between">
+      <div class="">
         <div class="input-group">
           <div class="input-group-append">
             <div class="input-group-text bg-gray">
-              <span class="fas fa-filter"></span> 
-              Status Transaksi
+              <span class="fas fa-check mr-1"></span> 
+              Status
             </div>
           </div>
           <select name="" id="status" class="form-control">
-            <option value="">Semua Status</option>
+            <option value="">- Semua Status Transaksi -</option>
             <option value="pending">Pending</option>
             <option value="complete">Complete</option>
           </select>
         </div>
+      </div>
+      <div class="">
+        <a class="btn bg-info" href="#" data-toggle="modal" data-target="#exampleModal">
+          <i class="fas fa-exchange-alt"></i>
+          Buat Transaksi
+        </a>
       </div>
     </div>
   </div>
 </div>
 <div class="card mt-3">
     <div class="card-body">
-        Halaman Transaksi
         <div class="table-responsive">
         <table class="table data-transaction table-striped table-bordered" style="width:100%">
           <thead class="table-dark">
@@ -103,13 +102,16 @@
           </button>
         </div>
         <div class="modal-body">
-          <form action="{{route('transaction.create')}}" method="POST" enctype="multipart/form-data" style="display:none" id="tambah-customer">
+          <form action="{{route('transaction.create')}}" method="POST" enctype="multipart/form-data" id="tambah-customer">
             @csrf
             <div>
               <div class="form-group">
                   <label for="customer_license_plate">Plat Nomor Kendaraan</label>
-                  <input type="text" name="customer_license_plate" id="customer_license_plate" value="{{old('customer_license_plate')}}" class="form-control" autocomplete="off" required>
-                  <div id="suggestion-box" class="bg-light card shadow"></div>
+                  <div class="d-flex justify-content-between">
+                    <input type="text" name="customer_license_plate" id="customer_license_plate" value="{{old('customer_license_plate')}}" class="form-control mr-2" autocomplete="off" required>
+                    <button type="button" id="autofill" class="btn bg-info"><i class="fas fa-check-circle"></i></button>
+                  </div>
+                  {{-- <div id="suggestion-box" class="bg-light card shadow"></div> --}}
               </div>
               <div class="form-group">
                   <label for="customer_vehicle">Merk Kendaraan</label>
@@ -122,18 +124,19 @@
               <div class="form-group">
                   <label for="customer_contact">Kontak Customer</label>
                   <input type="text" name="customer_contact" id="customer_contact" value="{{old('customer_contact')}}" class="form-control">
+                  <input type="hidden" name="id_customer" id="id_customer" value="{{old('id_customer')}}" class="form-control">
               </div>
             </div>
             <div class="modal-footer form-group">
-              <a href="#" id="clickTambah" onclick="clickTambah()" class="btn bg-secondary">Tambah Data Pelanggan</a>
-              <a href="#" id="clickExisting" onclick="clickExisting()" class="btn bg-secondary" style="display:none">Ambil Data sebelumnya</a>
+              {{-- <a href="#" id="clickTambah" onclick="clickTambah()" class="btn bg-secondary">Tambah Data Pelanggan</a> --}}
+              {{-- <a href="#" id="clickExisting" onclick="clickExisting()" class="btn bg-secondary" style="display:none">Ambil Data sebelumnya</a> --}}
               <button type="submit" class="btn bg-info">
                 <i class="fas fa-check"></i>
                 Lanjutkan
               </button>
             </div>
           </form>
-          <form action="{{route('transaction.useExisting')}}" method="POST" enctype="multipart/form-data" id="licence_plate">
+          {{-- <form action="{{route('transaction.useExisting')}}" method="POST" enctype="multipart/form-data" id="licence_plate">
             @csrf
             <div class="form-group">
                 <label for="id_customer">Cek Plat Kendaraan</label>
@@ -152,7 +155,7 @@
             </button>
             <a href="#" id="clickTambah" onclick="clickTambah()" class="justify-content-center d-flex mt-2 btn btn-secondary">Tambah Data Pelanggan</a> 
             <a href="#" id="clickExisting" onclick="clickExisting()" class="btn btn-secondary" style="display:none">Ambil Data sebelumnya</a>
-          </form>
+          </form> --}}
         </div>
       </div>
     </div>
@@ -303,48 +306,49 @@ $(document).ready(function(){
       alert('Both Date is required');
     }
   });
-
-  $('#customer_license_plate').keyup(function(){
-    var customer_plate = $("#customer_license_plate").val();
-    // var me = this;
+  
+  $('#autofill').click(function(){
+    var customer_license = $("#customer_license_plate").val();
     $.ajax({
-      url:"{{route('getPlateData')}}",
+      url:"{{route('getCustomerData')}}",
       cache:true,
-      data:{customer_license_plate:customer_plate},
+      data:{customer_license_plate:customer_license},
       success:function(data){
-        var lists = '';
-        // lists += '<ul style="list-style-type:none;margin-top:10px">';
-        $.each(data, function(key, val){
-          if(customer_plate == ''){
-            $('#suggestion-box').hide();
-          } else {
-            $('#suggestion-box').show();
-            lists += '<a onclick="autoFill('+val.customer_license_plate+')" id="auto"><p class="text-dark pl-4">'+val.customer_license_plate+'</p></a>';
-          }
-        });
-        $('#suggestion-box').html(lists);
+        // console.log(data);
+        var json = data;
+        obj = JSON.parse(json);
+        $("#customer_name").val(obj.customer_name);
+        $("#customer_vehicle").val(obj.customer_vehicle);
+        $("#customer_contact").val(obj.customer_contact);
+        $("#id_customer").val(obj.id_customer);
       },
-  });
+    });
+    // var customer_plate = $("#customer_license_plate").val();
+    // // var me = this;
+    // $.ajax({
+    //   url:"{{route('getPlateData')}}",
+    //   cache:true,
+    //   data:{customer_license_plate:customer_plate},
+    //   success:function(data){
+    //     var lists = '';
+    //     // lists += '<ul style="list-style-type:none;margin-top:10px">';
+    //     $.each(data, function(key, val){
+    //       if(customer_plate == ''){
+    //         $('#suggestion-box').hide();
+    //       } else {
+    //         $('#suggestion-box').show();
+    //         lists += '<a onclick="autoFill('+val.customer_license_plate+')" id="auto"><p class="text-dark pl-4">'+val.customer_license_plate+'</p></a>';
+    //       }
+    //     });
+    //     $('#suggestion-box').html(lists);
+    //   },
+    // $("#customer_license_plate").val(val.customer_license_plate);
   // $('#customer_license_plate').focusout(function(){
   });
-
-function autoFill(val){
-  $("#customer_license_plate").val(val.customer_license_plate);
-  var customer_license = $("#customer_license_plate").val();
-  $.ajax({
-    url:"{{route('getCustomerData')}}",
-    cache:true,
-    data:{customer_license_plate:customer_license},
-    success:function(data){
-      // console.log(data);
-      var json = data;
-      obj = JSON.parse(json);
-      $("#customer_name").val(obj.customer_name);
-      $("#customer_vehicle").val(obj.customer_vehicle);
-      $("#customer_contact").val(obj.customer_contact);
-    },
-  });
-}
+  
+// function autoFill(val){
+  
+// }
   // $("#licence_plate").select2();
 });
   function clickTambah()

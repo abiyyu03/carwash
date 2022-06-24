@@ -3,8 +3,8 @@
 <!-- Content Header (Page header) -->
 <div class="content-header">
     <div class="container-fluid">
-        <div class="card">
-            <div class="card-body">
+        <div class="">
+            <div class="">
                 <div class="d-flex justify-content-between">
                     <a href="/transaction" class="btn bg-warning"><i class="fas fa-arrow-circle-left"></i> Kembali</a>
                     <h3 class="m-0">{{ $transaction_data->customer->customer_license_plate }} - {{ $transaction_data->customer->customer_name}}</h3>

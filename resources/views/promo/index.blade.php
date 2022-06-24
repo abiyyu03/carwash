@@ -11,7 +11,7 @@
       <div class="col-sm-6">
         <ol class="breadcrumb float-sm-right">
           <li class="breadcrumb-item active">Promo</li>
-          <li class="breadcrumb-item active">Promo</li>
+          <li class="breadcrumb-item active">Promo Produk</li>
         </ol>
       </div><!-- /.col -->
     </div><!-- /.row -->
@@ -75,7 +75,7 @@
             <div class="form-group">
                 <label for="product_id" class="col-form-label">Terapkan untuk produk</label>
                 <select name="product_id[]" id="product_id" class="form-control" required multiple="multiple" style="width:100%">
-                  <option selected disabled>-</option>
+                  <option value="" disabled>-</option>
                   @foreach($product_data as $product)
                   <option value="{{$product->id_product}}">{{$product->product_name}}</option>
                   @endforeach

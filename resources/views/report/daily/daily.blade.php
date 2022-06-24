@@ -133,6 +133,21 @@
           {data:"transaction_time",name:"transaction_time"},
           {data:"transaction_grandtotal",name:"transaction_grandtotal"}
         ],
+        dom: 'Blfrtip',
+        buttons: [
+            'copyHtml5',
+            'excelHtml5',
+            'csvHtml5',
+            {
+              extend: 'pdfHtml5',
+              messageTop:"Laporan Transaksi",
+              title:"Laporan Transaksi",
+              filename:"Laporan-Harian-Jiwalu-Carwash",
+              footer:true,
+              header:true,
+              autoWidth:true
+            }
+        ],
       });
     }
     $('#filter').click(function(){

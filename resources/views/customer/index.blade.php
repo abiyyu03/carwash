@@ -6,12 +6,12 @@
   <div class="container-fluid">
     <div class="row mb-2">
       <div class="col-sm-6">
-        <h1 class="m-0">Pelanggan</h1>
+        <h1 class="m-0">Daftar Pelanggan Jiwalu</h1>
       </div><!-- /.col -->
       <div class="col-sm-6">
         <ol class="breadcrumb float-sm-right">
-          <li class="breadcrumb-item"><a href="#">Home</a></li>
-          <li class="breadcrumb-item active">Dashboard v1</li>
+          <li class="breadcrumb-item"><a href="#">Customer</a></li>
+          <li class="breadcrumb-item active">Data Pelanggan</li>
         </ol>
       </div><!-- /.col -->
     </div><!-- /.row -->
@@ -36,7 +36,7 @@
               </tr>
             </thead>
             <tbody>
-              @foreach($customer_data as $customer)
+              {{-- @foreach($customer_data as $customer)
                 <tr>
                   <td>{{ $loop->iteration }}</td>
                   <td>{{ $customer->customer_name }}</td>
@@ -47,7 +47,7 @@
                       <a href="#" id="editButton" data-toggle="modal" data-target="#editModal" class="btn btn-warning"><i class="fas fa-edit"></i> Edit</a> 
                       <a href="/customer/delete/{{ $customer->id_customer }}" id="deleteButton" class="btn btn-danger deleteButton"><i class="fas fa-trash-alt"></i> Delete</a> </td>
                 </tr>
-              @endforeach
+              @endforeach --}}
             </tbody>
           </table>
         </div>
@@ -100,58 +100,64 @@
 <script src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
-  // $('.data-customer').DataTable({
-  //   processing:true,
-  //   serverSide:true,
-  //   ajax:"{{route('customer.customerJson')}}",
-  //   columns:[
-  //     {data:"DT_RowIndex",name:"DT_RowIndex"},
-  //     {data:"customer_name",name:"customer_name"},
-  //     {data:"customer_contact",name:"customer_contact"},
-  //     {data:"customer_license_plate",name:"customer_license_plate"},
-  //     {
-  //       data:"id_customer",
-  //       render: function(data,type,row){
-  //         return '<a href="/customer/edit/'+data+'" class="btn btn-warning"><i class="fas fa-edit"></i></a> <a href="/customer/delete/'+data+'" class="btn btn-danger"><i class="fas fa-trash-alt"></i></a>';
-  //       }
-  //     }
-  //   ]
-  // });
-  $('.deleteButton').on("click",function(event){
-    event.preventDefault();
-    var url = $(this).attr('href');
-    console.log(url);
-    swal.fire({
-      title: 'Apakah Kamu yakin ingin menghapus data ini ?',
-      text: "Data yang terhapus tidak bisa di kembalikan!",
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonText: 'Yakin !'
-      }).then((result) => {
-        if (result.isConfirmed) {
-          window.location.href = url;
+  var table = $('.data-customer').DataTable({
+    processing:true,
+    serverSide:true,
+    ajax:"{{route('customer.customerJson')}}",
+    columns:[
+      {data:"DT_RowIndex",name:"DT_RowIndex"},
+      {data:"customer_name",name:"customer_name"},
+      {data:"customer_contact",name:"customer_contact"},
+      {data:"customer_license_plate",name:"customer_license_plate"},
+      {data:"customer_vehicle",name:"customer_vehicle"},
+      {data:"action",name:"action"}
+      // {
+      //   data:"id_customer",
+      //   render: function(data,type,row){
+      //     return 
+      //   }
+      // }
+    ],drawCallback:function (settings) {
+      table.on("click",'#editButton',function(){
+        $tr = $(this).closest('tr');
+        if($($tr).hasClass('child')){
+          $tr = $tr.prev('.parent');
         }
-    });
-  });
 
-  var table = $('.data-customer').DataTable();
-  // $('#editButton').on("click",function(){
-  table.on("click",'#editButton',function(){
-    $tr = $(this).closest('tr');
-    if($($tr).hasClass('child')){
-      $tr = $tr.prev('.parent');
+        var data = table.row($tr).data();
+        console.log(data);
+
+        $('#customer_name').val(data.customer_name);
+        $('#customer_contact').val(data.customer_contact);
+        $('#customer_license_plate').val(data.customer_license_plate);
+        $('#customer_vehicle').val(data.customer_vehicle);
+        $('#editForm').attr('action','customer/update/'+data.id_customer);
+        $('#editModal').modal('show');
+
+      });
+      $('.deleteButton').on("click",function(event){
+        event.preventDefault();
+        var url = $(this).attr('href');
+        console.log(url);
+        swal.fire({
+          title: 'Apakah Kamu yakin ingin menghapus data ini ?',
+          text: "Data yang terhapus tidak bisa di kembalikan!",
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonText: 'Yakin !'
+          }).then((result) => {
+            if (result.isConfirmed) {
+              window.location.href = url;
+            }
+        });
+      });
     }
-
-    var data = table.row($tr).data();
-    // console.log(data);
-
-    $('#customer_name').val(data[1]);
-    $('#customer_contact').val(data[2]);
-    $('#customer_license_plate').val(data[3]);
-    $('#customer_vehicle').val(data[4]);
-    $('#editForm').attr('action','customer/update/'+data[0]);
-    $('#editModal').modal('show');
-
+    });
+  
   });
-});
+  
+  //customer/edit/'.$customer->id_customer
+  // var table = $('.data-customer').DataTable();
+  // $('#editButton').on("click",function(){
+  
 </script>
