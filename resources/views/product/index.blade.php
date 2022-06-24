@@ -35,26 +35,7 @@
           Tambah Produk
       </button>
   </div>
-  <div class="card card-body mt-3">
-    <div class="d-flex justify-content-between">
-      <div class="as">
-        asd
-      </div>
-      <div class="">
-        <select name="product_category_id" class="form-control" required>
-          <option disabled>-</option>
-          @foreach($productCategory_data as $productCategory)
-          <option value="{{$productCategory->id_product_category}}" >{{$productCategory->category_name}}</option>
-          @endforeach
-        </select>
-        <form action="/product/category/{{$productCategory->id_product_category}}" method="POST">
-          @csrf
-          <button class="btn-info btn" type="submit" name="submit_filter" id="filter"><i class="fas fa-filter"></i> Filter</button>
-        </div>
-      </form>
-    </div>
-  </div>
-  <div class="card">
+  <div class="card mt-3">
     <div class="card-body">
       <div class="table-responsive">
         <table class="table data-product">
