@@ -96,16 +96,22 @@ class TransactionController extends Controller
     
     function createCustomerAndTransactionWithNewCustomerData(Request $request)
     {
-        $customer_data = $request->validate([
-            'customer_license_plate' => ['unique:customers'],
-        ]);
-        
-        DB::transaction(function() use ($request){
-            // Create customer data
-            $this->saveCustomer($request);
+        // $customer_data = $request->validate([
+        //     'customer_license_plate' => ['unique:customers'],
+        // ]);
+        $customer_data = Customer::where('customer_license_plate',$request->customer_license_plate)->first();
+        // $customer_data = Customer::find($request->id_customer);
+        // dd($request->id_customer);
+        DB::transaction(function() use ($request,$customer_data){
+            if($customer_data == NULL){
+                // Create customer data
+                $this->saveCustomer($request);
+                $this->saveTransaction($this->customer->id_customer);
+            } else {
+                // Create transaction data
+                $this->saveTransaction($request->id_customer);
+            }
             
-            // Create transaction data
-            $this->saveTransaction($this->customer->id_customer);
         });
         return redirect()->to('transaction/'.$this->transaction->id_transaction.'/select-product');
         
@@ -142,8 +148,8 @@ class TransactionController extends Controller
         
         //get ProductPromo data
         $productPromo_data = ProductPromo::where('product_id',$request->product_id)->first();
-        $cutPrice = $product_data->product_price * ($productPromo_data->discount / 100);
-        $discountPrice = $product_data->product_price - $cutPrice;
+        // $cutPrice = $product_data->product_price * ($productPromo_data->discount / 100);
+        // $discountPrice = $product_data->product_price - $cutPrice;
         // dd($product_data->product_price - $cutPrice);
         //define id
         $idTransaction = $request->transaction_id;
@@ -154,29 +160,29 @@ class TransactionController extends Controller
             //using cart
             $cart = session()->get($idTransaction,[]);
             
-            if($productPromo_data->product_id == $request->product_id){
+            // if($productPromo_data->product_id == $request->product_id){
             $cart[$idTransactionDetail] = [
                 "id_transaction_detail" => $request->id_transaction_detail,
                 "product_id" => $request->product_id,
-                "product_price" => $discountPrice,
+                "product_price" => ($productPromo_data == NULL) ? $product_data->product_price : ($product_data->product_price - ($productPromo_data->discount / 100)),
                 "transaction_detail_amount" => $request->transaction_detail_amount,
-                "transaction_detail_total" => $request->transaction_detail_amount * $discountPrice,
+                "transaction_detail_total" => ($productPromo_data == NULL) ? $request->transaction_detail_amount * $product_data->product_price : ($request->transaction_detail_amount * ($product_data->product_price - ($productPromo_data->discount / 100))),
                 "transaction_id" => $idTransaction,
                 "product_name" => $product_data->product_name,
                 "product_type" => $productType,
             ];
-            } else {
-               $cart[$idTransactionDetail] = [
-                "id_transaction_detail" => $request->id_transaction_detail,
-                "product_id" => $request->product_id,
-                "product_price" => $product_data->product_price,
-                "transaction_detail_amount" => $request->transaction_detail_amount,
-                "transaction_detail_total" => $request->transaction_detail_amount * $product_data->product_price,
-                "transaction_id" => $idTransaction,
-                "product_name" => $product_data->product_name,
-                "product_type" => $productType,
-            ]; 
-            }
+            // } else {
+            //    $cart[$idTransactionDetail] = [
+            //     "id_transaction_detail" => $request->id_transaction_detail,
+            //     "product_id" => $request->product_id,
+            //     "product_price" => $product_data->product_price,
+            //     "transaction_detail_amount" => $request->transaction_detail_amount,
+            //     "transaction_detail_total" => $request->transaction_detail_amount * $product_data->product_price,
+            //     "transaction_id" => $idTransaction,
+            //     "product_name" => $product_data->product_name,
+            //     "product_type" => $productType,
+            // ]; 
+            // }
             //put on the session
             session()->put($idTransaction,$cart);
         } else {
@@ -422,6 +428,7 @@ class TransactionController extends Controller
             //     ->get();
             $customer_data = Customer::where('customer_license_plate',request()->customer_license_plate)->first();
             $data = [
+                'id_customer' => $customer_data->id_customer,
                 'customer_license_plate' => $customer_data->customer_license_plate,
                 'customer_name' => $customer_data->customer_name,
                 'customer_contact' => $customer_data->customer_contact,

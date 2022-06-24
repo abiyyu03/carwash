@@ -12,7 +12,8 @@ class AttendanceController extends Controller
 {
     function index()
     {
-        return view ('attendance.index');
+        $employee_count = Employee::count();
+        return view ('attendance.index',compact('employee_count'));
     }
 
     function attendanceJson()

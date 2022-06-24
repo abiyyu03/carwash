@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\{Employee, User, Role, WorkDetail, TransactionDetail};
+use App\Models\{Employee, User, Role, WorkDetail, TransactionDetail,Config};
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
+use DataTables;
+use PDF;
 
 class CommissionController extends Controller
 {
@@ -16,8 +18,8 @@ class CommissionController extends Controller
 
     function index()
     {
-        $totalCommission = $this->getTotalCommission();
-        $workDetail_data = WorkDetail::with('employee')->groupBy('employee_id')
+        $workDetail_data = WorkDetail::with('employee')
+                ->groupBy('employee_id')
                 ->selectRaw('employee_id, sum(commission) as commission')
                 ->get();
         // $employee_data = Employee::pluck('employee_fullname');
@@ -36,7 +38,7 @@ class CommissionController extends Controller
         //     ];
         // }
         
-        return view('employee.commission',compact('workDetail_data','totalCommission'));
+        return view('employee.commission');
     }
 
     function getTotalCommission()
@@ -63,22 +65,44 @@ class CommissionController extends Controller
         return $workDetail_data;
     }
 
-    function commissionJson(Request $request)
+    function commissionJson()
     {
-        if($request->ajax()){
-            $workDetail_data = WorkDetail::get();
-        //     $workDetail_data = WorkDetail::whereHas('employee', function($query){ 
-        //     $query->where('employee_id',request()->route('id_transaction')); 
-        // })->get();
-            return Datatables::of($workDetail_data)
-                ->addIndexColumn()
-                ->addColumn('employee',function (WorkDetail $workDetail){
-                    return $workDetail->employee->id_employee;
-                })
-                ->addColumn('employee_fullname',function (WorkDetail $workDetail){
-                    return $workDetail->employee->employee_fullname;
-                })
-                ->make(true);
-        }
+        $workDetail_data = WorkDetail::with('employee','transactionDetail')
+            ->groupBy('employee_id')
+            ->selectRaw('employee_id, sum(commission) as commission')
+            ->get();
+        // if(request()->ajax()){
+        return DataTables::of($workDetail_data)
+            ->addIndexColumn()
+            ->addColumn('id_employee',function (WorkDetail $workDetail){
+                return $workDetail->employee->id_employee;
+            })
+            ->addColumn('employee_fullname',function (WorkDetail $workDetail){
+                return $workDetail->employee->employee_fullname;
+            })
+            // ->editColumn('action', function(WorkDetail $workDetail){
+                //     return '<a href="/work-detail/delete/'.$workDetail->id_work_detail.'" class="btn btn-info editButton" id="editButton"><i class="fas fa-pencil-alt"></i> Edit</a>
+                //     <a href="/work-detail/delete/'.$workDetail->id_work_detail.'" class="btn btn-danger" id="deleteButton"><i class="fas fa-trash-alt"></i> Hapus</a>';
+                // })
+            ->toJson();
+        // }
+    }
+
+    function commissionExportPDF()
+    {
+        $config_data = Config::first();
+        $data = json_decode(json_encode($this->commissionJson()),true);
+        $commission_data = $data['original']['data'];
+        $pdf = PDF::loadView('employee.export.commission-pdf',compact('commission_data','config_data'))
+            ->setOptions(['defaultFont' => 'sans-serif']);
+            // ->setPaper('a4', 'landscape');
+        return $pdf->stream();
+    }
+
+    function trackRecord($id_employee)
+    {
+        $workDetail_data = WorkDetail::where('employee_id',$id_employee)->get();
+        $employee_data = Employee::find($id_employee);
+        return view('employee.track-record',compact('workDetail_data','employee_data'));
     }
 }

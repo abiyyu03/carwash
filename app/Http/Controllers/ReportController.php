@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\{Transaction, Product,ProductCategory,WorkDetail, TransactionDetail, Customer, Employee, InventoryDetail, Outcome, AttendanceStart, AttendanceLeave, AttendanceSchedule, AttendanceStatus};
+use App\Models\{Transaction, Product,ProductCategory,WorkDetail, TransactionDetail, Customer, Employee, InventoryDetail, Outcome, AttendanceStart, AttendanceLeave, AttendanceSchedule, AttendanceStatus, Config};
 use Illuminate\Support\Facades\DB;
 use Alert;
 use PDF;
@@ -38,7 +38,7 @@ class ReportController extends Controller
             } else {
                 $transaction_data = Transaction::with('employee','customer')
                     ->where('transaction_status',"=","complete")
-                    ->where('transaction_date',date('Y-m-d'))
+                    // ->where('transaction_date',date('Y-m-d'))
                     ->get();
             }
             return DataTables()->of($transaction_data)
@@ -243,17 +243,16 @@ class ReportController extends Controller
         return view('report.daily.summary');
     }
 
-    function reportAllProduct()
+    function reportAllProductJson()
     {
         
-        $getTransactionTotal = Transaction::where('transaction_status','complete')->sum('transaction_grandtotal');
         // return $getTransactionTotal;
         // $transactionDetail_data = TransactionDetail::whereHas('transaction', function($query){ 
         //     $query->where('transaction_status','success'); 
         // })->get();
         // $transaction_data = Transaction::where('transaction_status','complete')->get();
         //if in range date filter
-        if(request()->ajax()){
+        // if(request()->ajax()){
             if(!empty(request()->from_date)){
                 $transactionDetail_data = TransactionDetail::with('product','transaction')
                     ->groupBy('product_id')
@@ -261,7 +260,6 @@ class ReportController extends Controller
                     ->selectRaw('product_id, sum(transaction_detail_amount) as transaction_detail_amount')
                     ->whereBetween('transaction_detail_date',[request()->from_date,request()->to_date])
                     ->get();
-                $transactionDetail_count = $transactionDetail_data->sum('transaction_detail_amount');
                 // $transactionDetail_data = DB::table('products')
                 //     ->join('transaction_details', function($join){
                 //         $sql->on('transaction_details.product_id', '=', 'products.id_product','left outer')
@@ -290,7 +288,8 @@ class ReportController extends Controller
                 //     ->selectRaw('sum(transaction_details.transaction_detail_amount) as transaction_detail_amount')
                 //     ->groupBy('products.product_name')
                 //     ->get();
-            }    
+            // }    
+            }
                 return DataTables()->of($transactionDetail_data)
                     ->addIndexColumn()
                     // ->with('transaction_data')
@@ -301,8 +300,13 @@ class ReportController extends Controller
                         return $transactionDetail_data->transaction_detail_total;
                     })
                     ->toJson();
-                }
+        
+    }
+    function reportAllProduct()
+    {
         // dd($transactionDetail_data);
+        // $transactionDetail_count = $transactionDetail_data->sum('transaction_detail_amount');
+        $getTransactionTotal = Transaction::where('transaction_status','complete')->sum('transaction_grandtotal');
         $transactionDetailProduk_total = 0; 
         $transactionDetailServis_total = 0; 
         $transactionDetail = TransactionDetail::with('product')->get();
@@ -332,6 +336,16 @@ class ReportController extends Controller
                 'transactionDetail_total','transactionDetailProduk_total','transactionDetailServis_total'));
     }
 
+    function exportAllProductPDF()
+    {
+        $config_data = Config::first();
+        $data = json_decode(json_encode($this->reportAllProductJson()),true);
+        $allProduct_data = $data['original']['data'];
+        $pdf = PDF::loadView('report.export.all-product-pdf',compact('allProduct_data','config_data'))
+            ->setOptions(['defaultFont' => 'sans-serif']);
+            // ->setPaper('a4', 'landscape');
+        return $pdf->stream();
+    }
 
     function getGrossTransactionTotal()
     {

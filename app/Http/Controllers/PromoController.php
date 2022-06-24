@@ -19,8 +19,8 @@ class PromoController extends Controller
                     return $promo->product->product_name;
                 })
                 ->editColumn('action', function(ProductPromo $promo){
-                    return '<a href="/promo/product'.$promo->id_promo.'/select-product" class="btn btn-warning"><i class="fas fa-pencil-alt"></i> Edit</a> 
-                    <a href="/promo/product/delete/'.$promo->id_promo.'" class="btn btn-danger" id="deleteButton"><i class="fas fa-trash-alt"></i> Hapus</a>';
+                    return '<a href="/promo/product'.$promo->id_product_promo.'" class="btn btn-warning"><i class="fas fa-pencil-alt"></i> Edit</a> 
+                    <a href="/promo/product/delete/'.$promo->id_product_promo.'" class="btn btn-danger" id="deleteButton"><i class="fas fa-trash-alt"></i> Hapus</a>';
                 })
                 ->rawColumns(['action'])
                 ->toJson();
@@ -39,9 +39,25 @@ class PromoController extends Controller
             $productPromo_data->discount = $request->discount;
             $productPromo_data->product_id = $product;
             $productPromo_data->save();
+
+            $product_data = Product::find($product);
+            $product_data->is_promo = '1';
+            $product_data->save();
         }
         Alert::success('Sukses','Promo berhasil dibuat');
         return redirect()->back();
         
+    }
+
+    function delete($id_promo)
+    {
+        $productPromo_data = ProductPromo::find($id_promo);
+        $product_data = Product::find($productPromo_data->product_id);
+        $product_data->is_promo = '0';
+        $product_data->save();
+        $productPromo_data->delete();
+        
+        Alert::success('Sukses','Promo berhasil berhasil dihapus');
+        return redirect()->back();
     }
 }

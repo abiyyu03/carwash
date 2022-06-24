@@ -20,7 +20,12 @@ class CustomerController extends Controller
         $customer_data = Customer::get();
         return Datatables::of($customer_data)
                     ->addIndexColumn()
-                    ->make(true);
+                    ->addColumn("action",function(Customer $customer){
+                        return '<a href="#" class="btn btn-warning" id="editButton"><i class="fas fa-edit"></i></a> 
+                        <a href="/customer/delete/'.$customer->id_customer.'" class="btn btn-danger"><i class="fas fa-trash-alt"></i></a>';
+                    })
+                    ->rawColumns(['action'])
+                    ->toJson();
     }
 
     function delete($id_customer)
@@ -31,7 +36,7 @@ class CustomerController extends Controller
         })->first();
 
         //check if customer's transaction is doesnt exist
-        if(!$transactionCustomer_data){
+        if($transactionCustomer_data == NULL){
             $customer_data = Customer::find($id_customer);
             $customer_data->delete();
 

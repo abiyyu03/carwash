@@ -24,7 +24,7 @@ class TransactionDetail extends Model
         return $this->belongsTo('App\Models\Product','product_id');
     }
 
-    function workDetail()
+    function workDetails()
     {
         return $this->hasMany('App\Models\WorkDetail');
     }
