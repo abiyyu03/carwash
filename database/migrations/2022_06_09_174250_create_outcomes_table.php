@@ -18,6 +18,7 @@ class CreateOutcomesTable extends Migration
             $table->string('needs');
             $table->integer('quantity')->default(1);
             $table->integer('expense_balance');
+            $table->date('outcome_date');
             $table->timestamps();
         });
     }
