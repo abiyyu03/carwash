@@ -10,8 +10,8 @@
       </div><!-- /.col -->
       <div class="col-sm-6">
         <ol class="breadcrumb float-sm-right">
-          <li class="breadcrumb-item"><a href="#">Home</a></li>
-          <li class="breadcrumb-item active">Dashboard v1</li>
+          <li class="breadcrumb-item active">Config</li>
+          <li class="breadcrumb-item active">Konfigurasi</li>
         </ol>
       </div><!-- /.col -->
     </div><!-- /.row -->
@@ -28,43 +28,45 @@
               <h2 class="card-title" ><i class="fas fa-cog"></i> Pengaturan Aplikasi</h2>
           </div>
           <div class="card-body">
-              <form action="{{route('user.update',Auth()->user()->id_user)}}" method="POST">
+              <form action="{{route('config.update',$config_data->id_config)}}" method="POST">
                   @csrf
                   {{method_field('PUT')}}
+                  <p class="font-weight-bold mb-0">Pengaturan Carwash</p>
                   <div class="form-group">
                     <label for="customer_name"></label>
                     <div class="input-group">
-                      <input type="number" name="commission_percentage" id="commission_percentage" value="" class="form-control" required>
                       <div class="input-group-append">
-                        <div class="input-group-text bg-light">
+                        <div class="input-group-text table-secondary">
+                          <span class="fas fa-pencil-alt mr-1"></span>
+                          Nama Carwash
+                        </div>
+                      </div>
+                      <input type="text" name="carwash_name" id="carwash_name" value="{{$config_data->carwash_name}}" class="form-control" required>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="customer_name"></label>
+                    <div class="input-group">
+                      <div class="input-group-append">
+                        <div class="input-group-text table-secondary">
+                          <span class="fas fa-pencil-alt mr-1"></span>
+                          Alamat Carwash
+                        </div>
+                      </div>
+                      <input type="text" name="carwash_address" id="carwash_address" value="{{$config_data->carwash_address}}" class="form-control" required>
+                    </div>
+                  </div>
+                  <p class="font-weight-bold mt-4 mb-0">Pengaturan Aplikasi</p>
+                  <div class="form-group">
+                    <label for="customer_name"></label>
+                    <div class="input-group">
+                      <div class="input-group-append">
+                        <div class="input-group-text table-secondary">
                           <span class="fas fa-percentage mr-1"></span>
-                          Persentasi Komisi Karyawan
+                          Persentase Komisi
                         </div>
                       </div>
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <label for="customer_name"></label>
-                    <div class="input-group">
-                      <input type="text" placeholder="00:00" name="attendance_start" id="attendance_start" value="" class="form-control" required>
-                      <div class="input-group-append">
-                        <div class="input-group-text bg-light">
-                          <span class="fas fa-hourglass-start mr-1"></span>
-                          Mulai Presensi Karyawan
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <label for="customer_name"></label>
-                    <div class="input-group">
-                      <input type="text" placeholder="00:00" name="attendance_end" id="attendance_end" value="" class="form-control" required>
-                      <div class="input-group-append">
-                        <div class="input-group-text bg-light">
-                          <span class="fas fa-hourglass-end mr-1"></span>
-                          Selesai Presensi Karyawan
-                        </div>
-                      </div>
+                      <input type="text" name="commission_percentage" id="commission_percentage" value="{{$config_data->commission_percentage}}" class="form-control" required>
                     </div>
                   </div>
                   <div class="form-group d-flex justify-content-end">
@@ -91,10 +93,6 @@
                       <label for="email">Email</label>
                       <input type="email" disabled name="email" value="{{ Auth()->user()->email }}" class="form-control" required>
                   </div>
-                  <div class="form-group">
-                      <label for="password">Password</label>
-                      <input type="password" name="password" class="form-control" required>
-                  </div>
                   <div class="form-group d-flex justify-content-end">
                       <button class="bg-info btn" type="submit"><i class="fas fa-check"></i> Perbarui</button>
                   </div>
@@ -108,7 +106,7 @@
                 <h2 class="card-title" ><i class="fas fa-palette"></i> Tampilan Aplikasi</h2>
             </div>
             <div class="card-body">
-                <form action="{{route('registers.register')}}" method="post">
+                <form action=" " method="post">
                     @csrf
                     <div class="form-group">
                         <label for="customer_name">Palet Warna</label>

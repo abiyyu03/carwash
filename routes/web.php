@@ -198,6 +198,7 @@ Route::get('/transaction/getTotal/{id_transaction}',[TransactionController::clas
 Route::get('/config',[ConfigController::class,'index']);
 Route::put('/config/user-edit/{id_user}',[ConfigController::class,'edit']);
 Route::put('/config/user-update/{id_user}',[ConfigController::class,'update'])->name('user.update');
+Route::put('/config/config-update/{id_config}',[ConfigController::class,'updateConfig'])->name('config.update');
 // });
 
 
