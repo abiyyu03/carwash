@@ -17,8 +17,8 @@ class CreateInventoriesTable extends Migration
             $table->id('id_inventory');
             $table->string('inventory_name');
             $table->string('inventory_code');
-            $table->integer('inventory_unit'); // jumlah barang
-            $table->integer('inventory_capital_price'); //harga modal
+            $table->integer('inventory_unit')->default(0); // jumlah barang
+            $table->integer('inventory_capital_price')->default(0); //harga modal
             $table->integer('inventory_usage')->nullable(); 
             $table->integer('inventory_usable')->nullable(); 
             $table->timestamps();
