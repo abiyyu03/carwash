@@ -44,13 +44,13 @@
       <div class="col-md-4">
         <div class="input-group">
           <div class="input-group-append">
-            <div class="input-group-text bg-light">
+            <div class="input-group-text bg-gray">
               <span class="fas fa-filter"></span> 
               Status Transaksi
             </div>
           </div>
           <select name="" id="status" class="form-control">
-            <option value="">Semua</option>
+            <option value="">Semua Status</option>
             <option value="pending">Pending</option>
             <option value="complete">Complete</option>
           </select>
@@ -107,20 +107,21 @@
             @csrf
             <div>
               <div class="form-group">
-                  <label for="customer_name">Nama Customer</label>
-                  <input type="text" name="customer_name" class="form-control">
-              </div>
-              <div class="form-group">
-                  <label for="customer_contact">Kontak Customer</label>
-                  <input type="text" name="customer_contact" class="form-control">
-              </div>
-              <div class="form-group">
                   <label for="customer_license_plate">Plat Nomor Kendaraan</label>
-                  <input type="text" name="customer_license_plate" class="form-control">
+                  <input type="text" name="customer_license_plate" id="customer_license_plate" value="{{old('customer_license_plate')}}" class="form-control" autocomplete="off" required>
+                  <div id="suggestion-box" class="bg-light card shadow"></div>
               </div>
               <div class="form-group">
                   <label for="customer_vehicle">Merk Kendaraan</label>
-                  <input type="text" name="customer_vehicle" class="form-control">
+                  <input type="text" name="customer_vehicle" id="customer_vehicle" value="{{old('customer_vehicle')}}" class="form-control">
+              </div>
+              <div class="form-group">
+                  <label for="customer_name">Nama Customer</label>
+                  <input type="text" name="customer_name" id="customer_name" value="{{old('customer_name')}}" class="form-control">
+              </div>
+              <div class="form-group">
+                  <label for="customer_contact">Kontak Customer</label>
+                  <input type="text" name="customer_contact" id="customer_contact" value="{{old('customer_contact')}}" class="form-control">
               </div>
             </div>
             <div class="modal-footer form-group">
@@ -132,7 +133,6 @@
               </button>
             </div>
           </form>
-          
           <form action="{{route('transaction.useExisting')}}" method="POST" enctype="multipart/form-data" id="licence_plate">
             @csrf
             <div class="form-group">
@@ -160,6 +160,7 @@
 </div>
 @endsection
 @push('addon-scripts')
+</head>
 <script>
 $(document).ready(function(){
   loadData();
@@ -218,24 +219,24 @@ $(document).ready(function(){
       }
     });
     $('#receiptButton').on("click",function(e){
-          e.preventDefault();
-          var url = $(this).attr('href');
-          console.log(url);
-          swal.fire({
-            title: 'Apakah Kamu yakin ingin menghapus data ini ?',
-            text: "Data yang terhapus tidak bisa di kembalikan!",
-            icon: 'warning',
-            // buttons: ["Cancel","Yakin!"],
-            showCancelButton: true,
-            // confirmButtonColor: '#3085d6',
-            // cancelButtonColor: '#d33',
-            confirmButtonText: 'Yakin !'
-          }).then((result) => {
-            if (result.isConfirmed) {
-              window.location.href = url;
-            }
-          });
-        });
+      e.preventDefault();
+      var url = $(this).attr('href');
+      console.log(url);
+      swal.fire({
+        title: 'Apakah Kamu yakin ingin menghapus data ini ?',
+        text: "Data yang terhapus tidak bisa di kembalikan!",
+        icon: 'warning',
+        // buttons: ["Cancel","Yakin!"],
+        showCancelButton: true,
+        // confirmButtonColor: '#3085d6',
+        // cancelButtonColor: '#d33',
+        confirmButtonText: 'Yakin !'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          window.location.href = url;
+        }
+      });
+    });
     $('#filter').click(function(){
       var from_date = $('#from_date').val();
       var to_date = $('#to_date').val();
@@ -247,6 +248,18 @@ $(document).ready(function(){
         alert('Both Date is required');
       }
     });
+    // $("#customer_license_plate").onkeyup(function(){
+    //   var = plate = $(this).val();
+    //   $.ajax({
+    //     type:"POST",
+    //     url:"",
+    //     dataType:"json",
+    //     data:{'plate':plate},
+    //     success:function(data){
+    //       $
+    //     }
+    //   });
+    // })
   
   // $('.receiptButton').on('click', 'button', table, function () {
   //   const data = table.row($(this).parents('tr')).data();
@@ -290,11 +303,50 @@ $(document).ready(function(){
       alert('Both Date is required');
     }
   });
+
+  $('#customer_license_plate').keyup(function(){
+    var customer_plate = $("#customer_license_plate").val();
+    // var me = this;
+    $.ajax({
+      url:"{{route('getPlateData')}}",
+      cache:true,
+      data:{customer_license_plate:customer_plate},
+      success:function(data){
+        var lists = '';
+        // lists += '<ul style="list-style-type:none;margin-top:10px">';
+        $.each(data, function(key, val){
+          if(customer_plate == ''){
+            $('#suggestion-box').hide();
+          } else {
+            $('#suggestion-box').show();
+            lists += '<a onclick="autoFill('+val.customer_license_plate+')" id="auto"><p class="text-dark pl-4">'+val.customer_license_plate+'</p></a>';
+          }
+        });
+        $('#suggestion-box').html(lists);
+      },
+  });
+  // $('#customer_license_plate').focusout(function(){
+  });
+
+function autoFill(val){
+  $("#customer_license_plate").val(val.customer_license_plate);
+  var customer_license = $("#customer_license_plate").val();
+  $.ajax({
+    url:"{{route('getCustomerData')}}",
+    cache:true,
+    data:{customer_license_plate:customer_license},
+    success:function(data){
+      // console.log(data);
+      var json = data;
+      obj = JSON.parse(json);
+      $("#customer_name").val(obj.customer_name);
+      $("#customer_vehicle").val(obj.customer_vehicle);
+      $("#customer_contact").val(obj.customer_contact);
+    },
+  });
+}
+  // $("#licence_plate").select2();
 });
-</script>
-@endpush
-<script>
-  $("#licence_plate").select2();
   function clickTambah()
   {
     $("#licence_plate").hide();
@@ -310,3 +362,4 @@ $(document).ready(function(){
     $("#clickExisting").hide();
   }
 </script>
+@endpush

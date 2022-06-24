@@ -78,7 +78,7 @@
                         </a>
                         <ul class="nav nav-treeview">
                             <li class="nav-item">
-                                <a href="/supplier" class="nav-link">
+                                <a href="/shopping" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>Daftar Perbelanjaan</p>
                                 </a>
@@ -87,6 +87,12 @@
                                 <a href="/inventory" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>Daftar Inventory</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="/supplier" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Daftar Supplier</p>
                                 </a>
                             </li>
                         </ul>
@@ -104,6 +110,29 @@
                                 <a href="/product_category" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>Kategori Produk</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="/product" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Produk</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link  {{ request()->segment(1) == 'promo' ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-percentage"></i>
+                            <p>
+                                Promo
+                                <i class="fas fa-angle-left right"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="/promo/product" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Diskon Produk</p>
                                 </a>
                             </li>
                             <li class="nav-item">

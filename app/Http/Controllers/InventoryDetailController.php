@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\{InventoryDetail, Inventory, Product, Outcome};
+use DB;
 use Alert;
 
 class InventoryDetailController extends Controller
@@ -11,12 +12,11 @@ class InventoryDetailController extends Controller
     function index()
     {
         $inventoryDetail_data = InventoryDetail::with('inventory','product')->get();
-        // dd($inventoryDetail_data->inventory);
-        $inventory_data = Inventory::selectRaw('id_inventory as id_product')->selectRaw('inventory_name as product_name')->get();
+        $inventory_data = Inventory::get();
         $product_data = Product::get();
-        $inventory_product = $inventory_data->merge($product_data);
+        // $inventory_product = $inventory_data->merge($product_data);
         // dd($inventory_product);
-        return view('supplier.index',compact('inventoryDetail_data','inventory_product'));
+        return view('shopping.index',compact('inventoryDetail_data','inventory_data','product_data'));
     }
 
     function store(Request $request)
@@ -40,7 +40,7 @@ class InventoryDetailController extends Controller
             $inventoryDetail_data->inventory_detail_amount = $request->inventory_detail_amount;
             $inventoryDetail_data->inventory_detail_price = $request->inventory_detail_price;
             $inventoryDetail_data->inventory_id = $request->inventory_id;
-            if($request->inventory_or_product_id != NULL)
+            if($request->inventory_id != NULL)
             {
                 $inventory_data = Inventory::find($request->inventory_id);
                 $inventory_data->inventory_unit += $request->inventory_detail_amount;
@@ -55,8 +55,8 @@ class InventoryDetailController extends Controller
                 $product_data->save();
             }
             $inventoryDetail_data->product_id = $request->product_id;
-            $inventoryDetail_data->supplier_name = $request->supplier_name;
-            $inventoryDetail_data->supplier_contact = $request->supplier_contact;
+            // $inventoryDetail_data->supplier_name = $request->supplier_name;
+            // $inventoryDetail_data->supplier_contact = $request->supplier_contact;
             $inventoryDetail_data->save();
             
             $outcome_data = new Outcome();
@@ -65,7 +65,7 @@ class InventoryDetailController extends Controller
             $outcome_data->expense_balance = $request->inventory_detail_price;
             $outcome_data->save();
         });
-        Alert::success('Sukses','Data Suplier berhasil Ditambah !');
+        Alert::success('Sukses','Data Belanja berhasil Ditambah !');
         return back();
     }
 
@@ -74,7 +74,7 @@ class InventoryDetailController extends Controller
         $inventoryDetail_data = InventoryDetail::find($id_inventory_detail);
         $inventoryDetail_data->delete();
 
-        Alert::success('Sukses','Data Suplier berhasil dihapus !');
+        Alert::success('Sukses','Data Belanja berhasil dihapus !');
         return back();
     }
 
@@ -133,7 +133,7 @@ class InventoryDetailController extends Controller
         $inventoryDetail_data->supplier_contact = $request->supplier_contact;
         $inventoryDetail_data->save();
 
-        Alert::success('Sukses','Data Suplier berhasil diubah !');
+        Alert::success('Sukses','Data Belanja berhasil diubah !');
         return back();
     }
 }

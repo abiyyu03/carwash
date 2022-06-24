@@ -10,8 +10,8 @@
       </div><!-- /.col -->
       <div class="col-sm-6">
         <ol class="breadcrumb float-sm-right">
-          <li class="breadcrumb-item"><a href="#">Home</a></li>
           <li class="breadcrumb-item active">Laporan</li>
+          <li class="breadcrumb-item active">Laporan Produk</li>
         </ol>
       </div><!-- /.col -->
     </div><!-- /.row -->
@@ -21,38 +21,38 @@
 @endsection
 @section('content')
 <!-- create data -->
-<div class="container-fluid">
+<div class="container-fluid"> 
   <div class="row">
+    <!-- ./col -->
     <div class="col-lg-3 col-6">
       <!-- small box -->
       <div class="small-box bg-info">
         <div class="inner">
-          <h4 class="font-weight-bold" id="getTotal">0</h4>
-          <p>Jumlah Penjualan Produk</p>
-        </div>
-      </div>
-    </div>
-    <!-- ./col -->
-    <div class="col-lg-3 col-6">
-      <!-- small box -->
-      <div class="small-box bg-success">
-        <div class="inner">
           <!-- <h4>53<sup style="font-size: 20px">%</sup></h4> -->
-          <h4 class="font-weight-bold">Rp. 0</h4>
-          <p>Laba Bersih</p>
+          <h4 class="font-weight-bold">{{$transactionDetail_count}}</h4>
+          <p>Jumlah Produk Terjual</p>
         </div>
         {{-- <div class="icon">
           <i class="ion ion-ios-box-outline"></i>
         </div> --}}
       </div>
     </div>
-    <!-- ./col -->
     <div class="col-lg-3 col-6">
       <!-- small box -->
       <div class="small-box bg-success">
         <div class="inner">
+          <h4 class="font-weight-bold" id="getTotal">Rp. {{$transactionDetail_total}}</h4>
+          <p>Total Penjualan Produk</p>
+        </div>
+      </div>
+    </div>
+    <!-- ./col -->
+    <div class="col-lg-3 col-6">
+      <!-- small box -->
+      <div class="small-box bg-primary">
+        <div class="inner">
           <!-- <h4>53<sup style="font-size: 20px">%</sup></h4> -->
-          <h4 class="font-weight-bold">{{ count($transactionDetail_data) }}</h4>
+          <h4 class="font-weight-bold">{{$transactionDetailProduk_total}}</h4>
           <p>Produk terjual</p>
         </div>
       </div>
@@ -60,23 +60,41 @@
     <!-- ./col -->
     <div class="col-lg-3 col-6">
       <!-- small box -->
-      <div class="small-box bg-success">
+      <div class="small-box bg-warning">
         <div class="inner">
           <!-- <h4>53<sup style="font-size: 20px">%</sup></h4> -->
-          <h4 class="font-weight-bold">{{ count($transaction_data) }}</h4>
-          <p>Transaksi</p>
+          <h4 class="font-weight-bold">{{$transactionDetailServis_total}}</h4>
+          <p>Kendaraan dicuci</p>
         </div>
       </div>
     </div>
   </div>
-  <div class="card mt-3">
-    <div class="card-body">
+  <div class="mt-3">
+    <div class="">
       <div class="form-inline justify-content-between">
-        <div class="form-group ">
-          {{-- <a href="" class="btn bg-maroon ml-2"><i class="fas fa-table"></i> Excel</a>
-          <a href="" class="btn bg-maroon ml-2"><i class="fas fa-table"></i> PDF</a> --}}
+        <div class="form-inline justify-content-between">
+          <div class="form-group ">
+            <a href="" class="btn bg-info ml-2"><i class="fas fa-file-excel"></i> Excel</a>
+            <a href="/report/summary/pdf" class="btn bg-info ml-2"><i class="fas fa-file"></i> PDF</a>
+          </div>
         </div>
         <div class="form-group">
+        </div>
+        <div class="form-group">
+          {{-- <div class="input-group mr-2">
+            <div class="input-group-append">
+              <div class="input-group-text bg-light">
+                <span class="fas fa-filter mr-1"></span>
+                Kategori 
+              </div>
+            </div>
+            <select name="" id="status" class="form-control">
+              <option value="">pilih kategori</option>
+              @foreach ($productCategory_data as $productCategory)   
+                <option value="{{$productCategory->id_product_category}}">{{$productCategory->category_name}}</option>
+              @endforeach
+            </select> 
+          </div> --}}
           <div class="input-group">
             <div class="input-group-append">
               <div class="input-group-text bg-light">
@@ -99,8 +117,8 @@
             <tr>
               <th>#</th>
               <th>Nama produk</th>
-              <th>Jumlah</th>
-              <th>Total</th>
+              <th>Jumlah (Pcs)</th>
+              <th>Total (Rp)</th>
             </tr>
           </thead>
         </table>
@@ -140,6 +158,19 @@
         alert('Both Date is required');
       }
     });
+
+    // $('#productCategoryFilter').change(function(){
+    //   var status = $('#status').val();
+    //   if(status != '')
+    //   {
+    //     $('.data-report').DataTable().destroy();
+    //     // loadData(from_date,to_date);
+    //     loadData(status);
+    //   } else {
+    //     $('.data-report').DataTable().destroy();
+    //     loadData();
+    //   }
+    // });
     // $.ajax({
     //   url:"/report/getTotal",
     //   type:"GET",

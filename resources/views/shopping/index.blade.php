@@ -6,7 +6,7 @@
   <div class="container-fluid">
     <div class="row mb-2">
       <div class="col-sm-6">
-        <h1 class="m-0">Supplier</h1>
+        <h1 class="m-0">Belanja Produk / Inventory</h1>
       </div><!-- /.col -->
       <div class="col-sm-6">
         <ol class="breadcrumb float-sm-right">
@@ -32,7 +32,7 @@
   <div class=" d-flex justify-content-end">
       <button type="button" class="btn bg-info" data-toggle="modal" data-target="#exampleModal">
           <i class="fas fa-plus"></i>
-          Tambah Supplier
+          Tambah Produk
       </button>
   </div>
   <div class="card mt-3">

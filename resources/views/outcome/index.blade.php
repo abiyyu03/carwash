@@ -35,8 +35,10 @@
                   <th>#</th>
                   <th>Kebutuhan</th>
                   <th>Jumlah</th>
+                  <th>Tanggal</th>
                   <th>Pengeluaran (Rp)</th>
-                  {{-- <th>Aksi</th> --}}
+                  <th>Tipe Pengeluaran</th>
+                  <th>Aksi</th>
                 </tr>
               </thead>
               <tbody>
@@ -151,7 +153,10 @@ $(document).ready(function(){
       {data:"DT_RowIndex",name:"DT_RowIndex"},
       {data:"needs",name:"needs"},
       {data:"quantity",name:"quantity"},
+      {data:"outcome_date",name:"outcome_date"},
       {data:"expense_balance",name:"expense_balance"},
+      {data:"outcome_type",name:"outcome_type"},
+      {data:"action",name:"action"},
       // {
       //   data:"id_inventory",
       //   render: function(data,type,row){

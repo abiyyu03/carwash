@@ -67,7 +67,7 @@
               <th>Harga Modal</th>
               <th>Stok Produk</th>
               <th>Stok Minimal Produk</th>
-              <th>Diskon (%)</th>
+              {{-- <th>Diskon (%)</th> --}}
               <th>Kategori Produk</th>
               <th>Aksi</th>
             </tr>
@@ -82,12 +82,12 @@
               <td>{{ $product->product_capital_price }}</td>
               <td>{{ $product->product_stock }}</td>
               <td>{{ $product->product_minimum_stock }}</td>
-              <td>{{ $product->product_discount }}</td>
+              {{-- <td>{{ $product->product_discount }}</td> --}}
               <!-- <td><a href="#" id="detailImage" data-toggle="modal" class="btn btn-primary" data-target="#detailModal" data-product-image="{{ $product->product_image }}"><i class="fas fa-image"></i> Tampilkan</a></td> -->
               <td>{{ $product->productCategory->category_name }}</td>
               <td><!-- <a href="#" id="detailButton" class="btn btn-primary"><i class="fas fa-info-circle"></i> Detail</a> -->
               @if(Auth()->user()->role->role_name == "owner")
-                <a href="#" id="percentageButton" data-toggle="modal" data-target="#percentageModal" class="btn btn-primary"><i class="fas fa-percentage"></i> Diskon</a> 
+                {{-- <a href="#" id="percentageButton" data-toggle="modal" data-target="#percentageModal" class="btn btn-primary"><i class="fas fa-percentage"></i> Diskon</a>  --}}
                 <a href="#" id="editButton" data-toggle="modal" data-target="#editModal" class="btn btn-warning"><i class="fas fa-edit"></i> Edit</a> 
                 <a href="/product/delete/{{ $product->id_product }}" id="deleteButton" class="btn btn-danger deleteButton"><i class="fas fa-trash-alt"></i> Delete</a> 
               @endif

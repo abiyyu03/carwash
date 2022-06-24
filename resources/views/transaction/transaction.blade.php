@@ -52,7 +52,7 @@
                                 </div> 
                                 <input id="transaction_detail_amount" value="1" min="1" name="transaction_detail_amount" type="number" readonly class="form-control"> 
                                 <div class="input-group-append">
-                                <button type="button" class="btn btn-primary" id="btn-plus"><i class="fas fa-plus-circle"></i></button>
+                                    <button type="button" class="btn btn-primary" id="btn-plus"><i class="fas fa-plus-circle"></i></button>
                                 </div>
                             </div>
                         </div> 
@@ -68,6 +68,10 @@
                         <div class="form-group mt-4" >
                             <button type="submit" class="btn bg-info form-control" {{($transaction_data->transaction_status !== 'pending') ? 'disabled' : ''}}><i class="fas fa-plus"></i> Tambah</button>
                         </div>
+                        <a href="" id="refreshButton" class="text-center d-block mx-auto text-info">
+                            <i class="fas fa-sync"></i>
+                            Refresh data
+                        </a>
                     </form>
                 </div>
             </div>
@@ -90,223 +94,282 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach($transactionWhereHas_data as $transactionDetail)
-                                <tr>
-                                    <td>{{ $loop->iteration }}</td>
-                                    <td>{{ $transactionDetail->product->product_name }}</td>
-                                    <td>{{ $transactionDetail->transaction_detail_amount }}</td>
-                                    <td>{{ $transactionDetail->transaction_detail_total }}</td>
-                                    <td><a href="/transaction/detail/delete/{{ $transactionDetail->id_transaction_detail }}" class="btn btn-danger {{($transaction_data->transaction_status !== 'pending') ? 'disabled' : ''}}"><i class="fas fa-times"> </i> Hapus</a></td>
-                                </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
+                                @if(session(request()->route('id_transaction')))
+                                    @foreach (session(request()->route('id_transaction')) as $transactionDetail)
+                                    @if (@$transactionDetail['transaction_id'] == request()->route('id_transaction'))
+                                    @php
+                                        $total += $transactionDetail['transaction_detail_total'];
+                                    @endphp
+                                    <tr>
+                                        <td>{{ $loop->iteration }}</td>
+                                        <td>{{ $transactionDetail['product_name'] }}</td>
+                                        <td>{{ $transactionDetail['transaction_detail_amount'] }}</td>
+                                        <td>{{ $transactionDetail['transaction_detail_total'] }}</td>
+                                        <td><a href="/transaction/{{ $transactionDetail['transaction_id'] }}/detail/delete/{{ $transactionDetail['id_transaction_detail'] }}" class="btn btn-danger {{($transaction_data->transaction_status !== 'pending') ? 'disabled' : ''}}"><i class="fas fa-times"> </i> Hapus</a></td>
+                                    </tr>
+                                    @endif
+                                    @endforeach
+                                @else
+                                    @foreach($transactionWhereHas_data as $transactionDetail)
+                                    <tr>
+                                        <td>{{ $loop->iteration }}</td>
+                                        <td>{{ $transactionDetail->product->product_name }}</td>
+                                        <td>{{ $transactionDetail->transaction_detail_amount }}</td>
+                                        <td>{{ $transactionDetail->transaction_detail_total }}</td>
+                                        <td></td>
+                                        {{-- <td><a href="/transaction/detail/delete/{{ $transactionDetail->id_transaction_detail }}" class="btn btn-danger {{($transaction_data->transaction_status !== 'pending') ? 'disabled' : ''}}"><i class="fas fa-times"> </i> Hapus</a></td> --}}
+                                    </tr>
+                                    @endforeach
+                                @endif
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="card">
-                <div class="card-body d-flex justify-content-end">
-                    <h3 class="font-weight-bold">Total : Rp.{{ $getTotal }}</h3>
-                    <a href="" class="btn bg-info ml-2" data-toggle="modal" data-target="#structModal"><i class="fas fa-check"></i> Konfirmasi Transaksi</a>
+                <div class="card">
+                    <div class="card-body d-flex justify-content-end">
+                        <h3 class="font-weight-bold">Total : Rp.{{ $total }}</h3>
+                        <a href="" class="btn bg-info ml-2" data-toggle="modal" data-target="#structModal"><i class="fas fa-check"></i> Konfirmasi Transaksi</a>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
-<div class="modal fade" id="structModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <!-- <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Buat Transaksi</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div> -->
-        <div class="modal-body">
-            @if($transaction_data->transaction_status === 'pending')
-            <div class="form-group">
-                <label for="product_name" class="col-form-label">Uang Cash</label>
-                <input type="hidden" class="form-control" value="{{ $getTotal }}" id="product_total">
-                <input type="text" class="form-control" id="cash">
-            </div>
-            @endif
-            <div class="container bg-light px-3" id="printArea">
-                <div class="header">
-                    <div class="mx-auto text-center">
-                        <!-- <div class="img-brand mt-2">
-                            <img src="jiwalu-logo.png" width="60px" alt="" id="img-brand">
-                        </div> -->
-                        <div class="info-brand" style="margin:auto">
-                            <p class="mb-0 lead font-weight-bold">Jiwalu Carwash</p>
-                            <p class="small">Jalan Pancasila, Depok, Jawabarat, 21342</p>
+    <div class="modal fade" id="structModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <!-- <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Buat Transaksi</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div> -->
+                <div class="modal-body">
+                    <div class="container bg-light px-3" id="printArea">
+                        {{-- <div class="header">
+                            <div class="mx-auto text-center">
+                                <!-- <div class="img-brand mt-2">
+                                    <img src="jiwalu-logo.png" width="60px" alt="" id="img-brand">
+                                </div> -->
+                                <div class="info-brand" style="margin:auto;display:block">
+                                    <p class="mb-0 lead font-weight-bold">Jiwalu Carwash</p>
+                                    <p class="small">Jalan Pancasila, Depok, Jawabarat, 21342</p>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
-                <div class="title-brand">
-                    <hr>
-                    <p class="small">ID Transaksi : {{ $transaction_data->id_transaction }}</p>
-                    <p class="small">Hari/Tanggal : {{ \Carbon\Carbon::parse($transaction_data->transaction_timestamp)->isoFormat('dddd, D MMMM Y') }}</p>
-                    <p class="small">Pukul : {{ \Carbon\Carbon::parse($transaction_data->transaction_timestamp)->isoFormat('HH:mm') }} WIB</p>
-                </div>
-                <div class="content">
-                    <div class="table-responsive">
-                        <table class="table table-striped">
-                            <thead>
-                                <tr>
-                                    <th class="small">#</th>
-                                    <th class="small">Nama</th>
-                                    <th class="small">Amount</th>
-                                    <th class="small">Harga/pcs</th>
-                                    <th class="small">Subtotal</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach($transactionWhereHas_data as $transactionDetail)
-                                <tr>
-                                    <td class="small">{{ $loop->iteration }}</td>
-                                    <td class="small">{{ $transactionDetail->product->product_name }}</td>
-                                    <td class="small">{{ $transactionDetail->transaction_detail_amount }}</td>
-                                    <td class="small">{{ $transactionDetail->product->product_price }}</td>
-                                    <td class="small">{{ $transactionDetail->transaction_detail_total }}</td>
-                                </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                        <div class="result text-left">
+                        <div class="title-brand">
                             <hr>
-                            <p class="text-center">Perhitungan</p>
-                            <table class="table">
-                                <tr>
-                                    <td class="small">Uang Cash</td>
-                                    <td class="small"> : </td>
-                                    <td class="small font-weight-bold">Rp. <span id="cashes">0</span></td>
-                                </tr>
-                                <tr>
-                                    <td class="small">Kembalian</td>
-                                    <td class="small"> : </td>
-                                    <td class="small font-weight-bold">Rp. <span id="payback">0</span></td>
-                                </tr>
-                                <tr>
-                                    <td class="small">Grand Total</td>
-                                    <td class="small"> : </td>
-                                    <td class="small font-weight-bold"><span>Rp. {{ $getTotal }}</td>
-                                </tr>
-                        </table>
+                            <p class="small">ID Transaksi : {{ $transaction_data->id_transaction }}</p>
+                            <p class="small">Hari/Tanggal : {{ \Carbon\Carbon::parse($transaction_data->transaction_timestamp)->isoFormat('dddd, D MMMM Y') }}</p>
+                            <p class="small">Pukul : {{ \Carbon\Carbon::parse($transaction_data->transaction_timestamp)->isoFormat('HH:mm') }} WIB</p>
+                        </div> --}}
+                        <div class="content">
+                            <div class="table-responsive">
+                                {{-- <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th class="small">#</th>
+                                            <th class="small">Nama</th>
+                                            <th class="small">Amount</th>
+                                            <th class="small">Harga/pcs</th>
+                                            <th class="small">Subtotal</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @if(session(request()->route('id_transaction')))
+                                            @foreach (session(request()->route('id_transaction')) as $transactionDetail)
+                                            @if (@$transactionDetail['transaction_id'] == request()->route('id_transaction'))
+                                            @php
+                                                $total += $transactionDetail['transaction_detail_total'];
+                                            @endphp
+                                            <tr>
+                                                <td>{{ $loop->iteration }}</td>
+                                                <td>{{ $transactionDetail['product_name'] }}</td>
+                                                <td>{{ $transactionDetail['transaction_detail_amount'] }}</td>
+                                                <td>{{ @$transactionDetail['product_price'] }}</td>
+                                                <td>{{ $transactionDetail['transaction_detail_total'] }}</td>
+                                            </tr>
+                                            @endif
+                                            @endforeach
+                                        @else
+                                            @foreach($transactionWhereHas_data as $transactionDetail)
+                                            <tr>
+                                                <td>{{ $loop->iteration }}</td>
+                                                <td>{{ $transactionDetail->product->product_name }}</td>
+                                                <td>{{ $transactionDetail->transaction_detail_amount }}</td>
+                                                <td>{{ $transactionDetail->product->product_price }}</td>
+                                                <td>{{ $transactionDetail->transaction_detail_total }}</td>
+                                            </tr>
+                                            @endforeach
+                                        @endif
+                                    </tbody>
+                                </table> --}}
+                                @if($transaction_data->transaction_status === 'pending')
+                                <div class="form-group">
+                                    <label for="product_name" class="col-form-label">Uang Cash</label>
+                                    <input type="hidden" class="form-control" value="{{ $total }}" id="product_total">
+                                    <input type="number" class="form-control" id="cash">
+                                </div>
+                                @endif
+                                <div class="result text-left">
+                                    {{-- <hr> --}}
+                                    <p class="text-center">Perhitungan</p>
+                                    <table class="table">
+                                        <tr>
+                                            <td class="small">Uang Cash</td>
+                                            <td class="small"> : </td>
+                                            <td class="small font-weight-bold">Rp. <span id="cashes">0</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="small">Kembalian</td>
+                                            <td class="small"> : </td>
+                                            <td class="small font-weight-bold">Rp. <span id="payback">0</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="small">Grand Total</td>
+                                            <td class="small"> : </td>
+                                            <td class="small font-weight-bold">Rp. <span id="grandtotal">{{ $total }}</td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-4 text-right">
+                            <a href="#" class="btn btn-secondary" data-dismiss="modal" aria-label="Close">
+                                <i class="fas fa-times"></i>
+                                Tutup
+                            </a>
+                            @if($transaction_data->transaction_status === 'pending')
+                            <a href="/transaction/{{$transaction_data->id_transaction}}/finish" onclick="printDiv()" id="finishPay" class="btn btn-info disabled">
+                                <i class="fas fa-check-circle"></i>
+                                Selesaikan Pembayaran
+                            </a>
+                            @endif
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="mt-4 text-right">
-                <a href="#" class="btn btn-secondary" data-dismiss="modal" aria-label="Close">
-                    <i class="fas fa-times"></i>
-                    Tutup
-                </a>
-                @if($transaction_data->transaction_status === 'pending')
-                <a href="/transaction/{{$transaction_data->id_transaction}}/finish" onclick="printDiv()" id="finishPay" class="btn btn-info disabled">
-                    <i class="fas fa-check-circle"></i>
-                    Selesaikan Pembayaran
-                </a>
-                @endif
-            </div>
         </div>
-      </div>
     </div>
-  </div>
-</div>
-@endsection
-@push('addon-scripts')
-<script src="{{url('plugins/jquery/jquery.min.js')}}"></script>
-<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-<script>
-    $(document).ready(function(){
-        // $('#product_category_id').select2();
-        $('#employee_id').select2();
-        $('#product_id').select2();
-        var i = 1;
+    <style>
+        @media print {
+            #printArea {
+                width:3in;
+                height:5in;
+            }
+        }
+    </style>
+    @endsection
+    @push('addon-scripts')
+    <script src="{{url('plugins/jquery/jquery.min.js')}}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            // $('#product_category_id').select2();
+            $('#employee_id').select2();
+            $('#product_id').select2();
+            var i = 1;
             $('#amount').hide();
             $('#employee').hide();
-        // transaction detail amount
-        $('#btn-plus').on('click', function(){
-            $('#transaction_detail_amount').val(++i);
-        });
-        $('#btn-minus').on('click', function(){
-            if($('#transaction_detail_amount').val() > 1)
-            {
-                $('#transaction_detail_amount').val(--i);
-            }
-        });
-
-        $('#product_category_id').on('change',function(){
-            var product_category_id = $(this).val();
-            var div = $(this).parent();
-            // var op = " ";
-            // console.log($("#product_category_id option:selected").attr('id'));
-            if ($("#product_category_id option:selected").attr('id') == "produk") {
-                $('#amount').show();
-                $('#employee').hide();
-            } else {
-                $('#employee').show();
-                $('#amount').hide();
-            }
-
-            $.ajax({
-                type:'get',
-                url:'{!!URL::to('dropdownProduct')!!}',
-                dataType:'json',
-                data:{
-                    id:product_category_id
-                },
-                success:function(data){
-                    $('#product_id').empty();
-                    $('#product_price').val("");
-                    $('#product_id').append('<option selected value="" disabled>pilih produk</option>');
-                    // for (var i = 0; i < data.length; i++) {
-                    //     console.log(data[i]);
-                    //     op+='<option value="'+data[i].id_product+'">'+data[i].product_name+'</option>';
-                    // }
-                    $.each(data,function(key, product_id){
-                        $('#product_id').append('<option value="'+product_id.id_product+'">'+product_id.product_name+' - Rp.'+product_id.product_price+'</option>');
-                        // $('#product_price').val(product_id.product_price);
+            // transaction detail amount
+            $('#btn-plus').on('click', function(){
+                $('#transaction_detail_amount').val(++i);
+            });
+            $('#btn-minus').on('click', function(){
+                if($('#transaction_detail_amount').val() > 1)
+                {
+                    $('#transaction_detail_amount').val(--i);
+                }
+            });
+            
+            $('#product_category_id').on('change',function(){
+                var product_category_id = $(this).val();
+                var div = $(this).parent();
+                // var op = " ";
+                // console.log($("#product_category_id option:selected").attr('id'));
+                if ($("#product_category_id option:selected").attr('id') == "produk") {
+                    $('#amount').show();
+                    $('#employee').hide();
+                } else {
+                    $('#employee').show();
+                    $('#amount').hide();
+                }
+                
+                $.ajax({
+                    type:'get',
+                    url:'{!!URL::to('dropdownProduct')!!}',
+                    dataType:'json',
+                    data:{
+                        id:product_category_id
+                    },
+                    success:function(data){
+                        $('#product_id').empty();
+                        $('#product_price').val("");
+                        $('#product_id').append('<option selected value="" disabled>pilih produk</option>');
+                            $.each(data,function(key, product_id){
+                                $('#product_id').append('<option value="'+product_id.id_product+'">'+product_id.product_name+' - Rp.'+product_id.product_price+'</option>');
+                            });
+                        },
                     });
-                },
+                });
+                $('#product_id').on('change',function(){
+                    var product_id = $(this).val();
+                    
+                    $.ajax({
+                        type:'get',
+                        url:'{!!URL::to('getProductProduct')!!}',
+                        dataType:'json',
+                        data:{
+                            id:product_id
+                        },
+                        success:function(data){
+                            $('#product_price').val("Rp. "+data.product_price);
+                        },
+                    });
+                });
+                
+                $('#cash').on('keyup',function(){
+                    //uang kembali
+                    var total = $("#product_total").val();
+                    var cash = $("#cash").val();
+                    $("#payback").text(cash - total);
+
+                    $("#cashes").text($("#cash").val());
+                    $("#finishPay").attr("class","btn btn-info");
+                });
+
+                $('#refreshButton').on("click", function(){
+                    $('#product_id').ajax.reload();
+                    $('#product_category_id').ajax.reload();
+                    // $.ajax({
+                    //     type:'get',
+                    //     url:'transaction/JWL202262261129/select-product',
+                    //     dataType:'json',
+                    //     data:{
+                    //         id:product_id
+                    //     },
+                    //     success:function(data){
+                    //         $('#product_id').ajax.reload();
+                    //         $('#product_category_id').ajax.reload();
+                    //     },
+                    // });
+                })
+                
             });
-        });
-        $('#product_id').on('change',function(){
-            var product_id = $(this).val();
-
-            $.ajax({
-                type:'get',
-                url:'{!!URL::to('getProductProduct')!!}',
-                dataType:'json',
-                data:{
-                    id:product_id
-                },
-                success:function(data){
-                    $('#product_price').val("Rp. "+data.product_price);
-                },
-            });
-        });
-
-        $('#cash').on('keyup',function(){
-            $("#payback").text($("#cash").val() - $("#product_total").val());
-            $("#cashes").text($("#cash").val());
-            $("#finishPay").attr("class","btn btn-info");
-        });
-
-    });
-    function printDiv()
-    {
-        let divContents = document.getElementById("printArea").innerHTML;
-        let a = window.open('','','height=600, width=500');
-        a.document.write('<html>');
-        a.document.write('<head>');
-        a.document.write('<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">');
-        a.document.write('</head>');
-        a.document.write('<body class="p-4">');
-        a.document.write(divContents);
-        a.document.write('</body></html>');
-        a.document.close();
-        // a.print();
-    }
-</script>
-@endpush
+            function printDiv()
+            {
+                let divContents = document.getElementById("printArea").innerHTML;
+                let a = window.open('','','height=600, width=500');
+                a.document.write('<html>');
+                a.document.write('<head>');
+                    // a.document.write('<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">');
+                    a.document.write('</head>');
+                    a.document.write('<body class="p-4">');
+                        a.document.write(divContents);
+                        a.document.write('</body></html>');
+                        a.document.close();
+                        a.print();
+                    }
+                </script>
+                @endpush

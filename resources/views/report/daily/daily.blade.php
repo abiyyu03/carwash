@@ -10,8 +10,8 @@
       </div><!-- /.col -->
       <div class="col-sm-6">
         <ol class="breadcrumb float-sm-right">
-          <li class="breadcrumb-item"><a href="#">Home</a></li>
-          <li class="breadcrumb-item active">Laporan</li>
+          <li class="breadcrumb-item"><a href="#">Laporan</a></li>
+          <li class="breadcrumb-item active">Laporan Harian</li>
         </ol>
       </div><!-- /.col -->
     </div><!-- /.row -->
@@ -27,8 +27,8 @@
       <!-- small box -->
       <div class="small-box bg-info">
         <div class="inner">
-          <h4 class="font-weight-bold" id="getTotal">Rp.{{ $getTransactionTotal }}</h4>
-          <p>Laba Bersih</p>
+          <h4 class="font-weight-bold" id="getTotal">Rp. {{$transactionTotal}}</h4>
+          <p>Pendapatan Kotor</p>
         </div>
       </div>
     </div>
@@ -39,7 +39,7 @@
         <div class="inner">
           <!-- <h4>53<sup style="font-size: 20px">%</sup></h4> -->
           <h4 class="font-weight-bold">Rp. 0</h4>
-          <p>Laba Kotor</p>
+          <p>Komisi Karyawan</p>
         </div>
         {{-- <div class="icon">
           <i class="ion ion-ios-box-outline"></i>
@@ -49,28 +49,28 @@
     <!-- ./col -->
     <div class="col-lg-3 col-6">
       <!-- small box -->
-      <div class="small-box bg-success">
+      <div class="small-box bg-primary">
         <div class="inner">
           <!-- <h4>53<sup style="font-size: 20px">%</sup></h4> -->
-          <h4 class="font-weight-bold">0</h4>
-          <p>Produk terjual</p>
+          <h4 class="font-weight-bold">{{ $transactionComplete_count }}</h4>
+          <p>Transaksi Complete</p>
         </div>
       </div>
     </div>
     <!-- ./col -->
     <div class="col-lg-3 col-6">
       <!-- small box -->
-      <div class="small-box bg-success">
+      <div class="small-box bg-warning">
         <div class="inner">
           <!-- <h4>53<sup style="font-size: 20px">%</sup></h4> -->
-          <h4 class="font-weight-bold">0</h4>
-          <p>Transaksi</p>
+          <h4 class="font-weight-bold">{{ $transactionPending_count }}</h4>
+          <p>Transaksi Pending</p>
         </div>
       </div>
     </div>
   </div>
-  <div class="card mt-3">
-    <div class="card-body">
+  <div class="mt-3">
+    <div class="">
       <div class="form-inline justify-content-between">
         <div class="form-group ">
           {{-- <a href="" class="btn bg-maroon ml-2"><i class="fas fa-table"></i> Excel</a>
@@ -103,7 +103,7 @@
               <th>Kasir</th>
               <th>Tanggal Transaksi</th>
               <th>Waktu Transaksi</th>
-              <th>Grand Total</th>
+              <th>Grand Total (Rp)</th>
             </tr>
           </thead>
         </table>

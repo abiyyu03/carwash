@@ -12,7 +12,8 @@ class Customer extends Model
     protected $primaryKey = "id_customer";
     protected $casts = ['id' => 'string'];
     public $incrementing = false;
-    protected $fillable = ['id_customer','customer_name','customer_contact','customer_license_plate','vehicle_type_id'];
+    protected $fillable = ['id_customer','customer_name','customer_contact',
+                        'customer_license_plate','customer_vehicle','customer_attend'];
 
     // // every customer has a vehicletype
     // function vehicleType()

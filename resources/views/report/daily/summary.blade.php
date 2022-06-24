@@ -24,18 +24,28 @@
     <div class="card-body">
       <div class="form-inline justify-content-between">
         <div class="form-group ">
-          {{-- <a href="" class="btn bg-maroon ml-2"><i class="fas fa-table"></i> Excel</a>
-          <a href="" class="btn bg-maroon ml-2"><i class="fas fa-table"></i> PDF</a> --}}
+          <a href="" class="btn bg-info ml-2"><i class="fas fa-file-excel"></i> Excel</a>
+          <a href="/report/summary/pdf" class="btn bg-info ml-2"><i class="fas fa-file"></i> PDF</a>
         </div>
-        <div class="form-group">
+        {{-- <div class="form-group">
           <div class="input-group">
             <div class="input-group-append">
               <div class="input-group-text bg-light">
                 <span class="fas fa-calendar"></span> 
               </div>
             </div>
-            <input type="text" name="from_date" class="form-control" id="from_date" readonly>
+            <input type="text" name="filter_date" class="form-control" id="filter_date" readonly>
           </div>
+        </div> --}}
+        <div class="input-group">
+          <div class="input-group-append">
+            <div class="input-group-text bg-light">
+              <span class="fas fa-calendar"></span> 
+            </div>
+          </div>
+          <input type="date" name="from_date" class="form-control" id="from_date" >
+          <input type="date" name="to_date" class="form-control ml-2" id="to_date" >
+          <button type="button" class="btn bg-info ml-2" id="filter"><i class="fas fa-calendar"></i> Filter</button>
         </div>
       </div>
     </div>
@@ -48,34 +58,49 @@
               <table class="table table-bordered table-striped">
                 <thead>
                   <tr class="bg-info">
-                    <th>Pendapatan</th>
+                    <th><i class="fas fa-money-bill-alt"></i> Pendapatan</th>
                     <!-- <th>Aksi</th> -->
                   </tr>
                 </thead>
                 <tbody>
+                  <tr>
+                    <td>
+                      <div class="d-flex justify-content-between">
+                        <p class="mb-0">Produk Terjual</p>
+                        <p class="mb-0 font-weight-bold" id="produk-terjual"></p>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <div class="d-flex justify-content-between">
+                        <p class="mb-0">Kendaraan dicuci</p>
+                        <p class="mb-0 font-weight-bold" id="kendaraan-dicuci"></p>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <div class="d-flex justify-content-between">
+                        <p class="mb-0">Total Pelanggan</p>
+                        <p class="mb-0 font-weight-bold" id="total-pelanggan"></p>
+                      </div>
+                    </td>
+                  </tr>
                   <tr>
                     <td>
                       <div class="d-flex justify-content-between">
                         <p class="mb-0">Laba Kotor</p>
-                        <p class="mb-0">Rp. {{ $getTransactionTotal }}</p>
+                        <p class="mb-0 font-weight-bold" id="laba-kotor"></p>
                       </div>
                     </td>
                   </tr>
-                  <tr>
-                    <td>
+                    <th class="table-secondary">
                       <div class="d-flex justify-content-between">
-                        <p class="mb-0">Laba bersih</p>
-                        <p class="mb-0">Rp.300000</p>
+                        <p class="mb-0">Pendapatan Bersih</p>
+                        <p class="mb-0 font-weight-bold" id="pendapatan-bersih"></p>
                       </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <div class="d-flex justify-content-between">
-                        <p class="mb-0">Pendapatan Kotor</p>
-                        <p class="mb-0">Rp.300000</p>
-                      </div>
-                    </td>
+                    </th>
                   </tr>
                 </tbody>
               </table>
@@ -84,20 +109,42 @@
               <table class="table table-bordered table-striped">
                 <thead>
                   <tr>
-                    <th class="bg-info">Pengeluaran</th>
+                    <th class="bg-info"><i class="fas fa-money-bill-wave"></i> Pengeluaran</th>
                     <!-- <th>Aksi</th> -->
                   </tr>
                 </thead>
                 <tbody>
                   <tr>
-                    <td>Pengeluaran Hari Ini</td>
-                    <p class="mb-0">Rp.300000</p>
+                    <td>
+                      <div class="d-flex justify-content-between">
+                        <p class="mb-0">Fix Cost</p>
+                        <p class="mb-0 font-weight-bold" id="fix-cost"></p>
+                      </div>
+                    </td>
                   </tr>
                   <tr>
-                    <td>Pengeluaran Bulan Ini</td>
+                    <td>
+                      <div class="d-flex justify-content-between">
+                        <p class="mb-0">Variable Cost</p>
+                        <p class="mb-0 font-weight-bold" id="variable-cost"></p>
+                      </div>
+                    </td>
                   </tr>
                   <tr>
-                    <td>asldkasjl</td>
+                    <td>
+                      <div class="d-flex justify-content-between">
+                        <p class="mb-0">Komisi karyawan</p>
+                        <p class="mb-0 font-weight-bold" id="komisi-karyawan"></p>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th class="table-secondary">
+                      <div class="d-flex justify-content-between">
+                        <p class="mb-0">Total Pengeluaran</p>
+                        <p class="mb-0 font-weight-bold" id="total-pengeluaran"></p>
+                      </div>
+                    </th>
                   </tr>
                 </tbody>
               </table>
@@ -106,7 +153,7 @@
               <table class="table table-bordered table-striped">
                 <thead>
                   <tr>
-                    <th class="bg-info">Laporan Karyawan</th>
+                    <th class="bg-info"><i class="fas fa-users"></i> Laporan Karyawan</th>
                     <!-- <th>Aksi</th> -->
                   </tr>
                 </thead>
@@ -115,7 +162,7 @@
                     <td>
                       <div class="d-flex justify-content-between">
                         <p class="mb-0">Karyawan masuk</p>
-                        <p class="mb-0 font-weight-bold">20</p>
+                        <p class="mb-0 font-weight-bold" id="karyawan-masuk"></p>
                       </div>
                     </td>
                   </tr>
@@ -123,17 +170,17 @@
                     <td>
                       <div class="d-flex justify-content-between">
                         <p class="mb-0">Karyawan tidak masuk</p>
-                        <p class="mb-0 font-weight-bold">20</p>
+                        <p class="mb-0 font-weight-bold" id="karyawan-tidak-masuk"></p>
                       </div>
                     </td>
                   </tr>
                   <tr>
-                    <td>
+                    <th class="table-secondary">
                       <div class="d-flex justify-content-between">
-                        <p class="mb-0">Komisi karyawan</p>
-                        <p class="mb-0 font-weight-bold">Rp. 20.000</p>
+                        <p class="mb-0">Total Karyawan</p>
+                        <p class="mb-0 font-weight-bold" id="total-karyawan"></p>
                       </div>
-                    </td>
+                    </th>
                   </tr>
                 </tbody>
               </table>
@@ -146,6 +193,15 @@
 @push('addon-scripts')
 <script type="text/javascript">
 $(document).ready(function(){
+  let money = $(".money").text();
+  console.log(money);
+  new Intl.NumberFormat('ID', { style: 'currency', currency: 'IDR' }).format(money);
+  // new Intl.NumberFormat('id', {
+  //   style: 'currency',
+  //   currency: 'IDR',
+  //   // minimumFractionDigits: 2
+  // });
+  // formatter.format($(".money").text());
   $('.data-commission').DataTable({
     dom: 'Bfrtip',
     buttons:[
@@ -160,19 +216,69 @@ $(document).ready(function(){
       }
       ]
   });
-  $('#from_date').daterangepicker({
-    opens: 'left'
-  }, function(start, end, label) {
-    var from_date = start.format('YYYY-MM-DD'); 
-    var to_date = end.format('YYYY-MM-DD');
+  // $("#customer_license_plate").val(val.customer_license_plate);
+  // var customer_license = $("#customer_license_plate").val();
+  loadData();
+  function loadData(from_date = '', to_date = ''){
+    $.ajax({
+    url:"{{route('summary.index')}}",
+    cache:true,
+    data:{from_date:from_date,to_date:to_date},
+    success:function(data){
+      console.log(data);
+      var json = data;
+      obj = JSON.parse(json);
+      //pendapatan
+      $("#produk-terjual").text(obj.transactionDetailProduk_total);
+      $("#kendaraan-dicuci").text(obj.transactionDetailServis_total);
+      $("#total-pelanggan").text(obj.customer);
+      $("#laba-kotor").text(obj.transactionDetail_total);
+      $("#pendapatan-bersih").text(parseInt(obj.transactionDetail_total) - parseInt(obj.allTypeCost) - parseInt(obj.workDetail_commission));
+
+      //pengeluaran
+      let totalPengeluaran = parseInt(obj.allTypeCost) + parseInt(obj.workDetail_commission);
+      $("#fix-cost").text(obj.fixCost);
+      $("#variable-cost").text(obj.variableCost);
+      $("#komisi-karyawan").text(obj.workDetail_commission);
+      $("#total-pengeluaran").text(totalPengeluaran);
+
+      //karyawan
+      $("#karyawan-masuk").text(obj.attendance_attend);
+      $("#karyawan-tidak-masuk").text(obj.attendance_present);
+      $("#total-karyawan").text(obj.attendance_attend);
+
+    },
+    });
+  }
+  $('#filter').click(function(){
+    var from_date = $('#from_date').val();
+    var to_date = $('#to_date').val();
     if(from_date != '' && to_date != '')
     {
-      $('.data-report').DataTable().destroy();
+      // alert("AHAY");
+      // $("#produk-terjual").text('');
+      // $("#kendaraan-dicuci").text('');
+      // $("#total-pelanggan").text('');
+      // $("#laba-kotor").text('');
+      // $("#pendapatan-bersih").text('');
+
+      // //pengeluaran
+      // let totalPengeluaran = parseInt('') + parseInt('');
+      // $("#fix-cost").text('');
+      // $("#variable-cost").text('');
+      // $("#komisi-karyawan").text('');
+      // $("#total-pengeluaran").text('');
+
+      // //karyawan
+      // $("#karyawan-masuk").text('');
+      // $("#karyawan-tidak-masuk").text('');
+      // $("#total-karyawan").text('');
       loadData(from_date,to_date);
     } else {
       alert('Both Date is required');
     }
   });
+  //           'workDetail_commission' => $workDetail_commission
   // $('.data-commission').DataTable({
   //   processing:true,
   //   serverSide:true,
