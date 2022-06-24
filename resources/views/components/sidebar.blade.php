@@ -69,10 +69,10 @@
                             </li>
                         </ul>
                     </li><li class="nav-item">
-                        <a href="#" class="nav-link">
-                            <i class="nav-icon fas fa-warehouse"></i>
+                        <a href="#" class="nav-link {{ (request()->segment(1) == 'product' || request()->segment(1) == 'inventory') ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-boxes"></i>
                             <p>
-                                Inventori
+                                Inventori & Produk
                                 <i class="fas fa-angle-left right"></i>
                             </p>
                         </a>
@@ -95,17 +95,6 @@
                                     <p>Daftar Supplier</p>
                                 </a>
                             </li>
-                        </ul>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#" class="nav-link  {{ request()->segment(1) == 'product' ? 'active' : '' }}">
-                            <i class="nav-icon fas fa-boxes"></i>
-                            <p>
-                                Produk
-                                <i class="fas fa-angle-left right"></i>
-                            </p>
-                        </a>
-                        <ul class="nav nav-treeview">
                             <li class="nav-item">
                                 <a href="/product_category" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
@@ -120,6 +109,17 @@
                             </li>
                         </ul>
                     </li>
+                    {{-- <li class="nav-item">
+                        <a href="#" class="nav-link  {{ request()->segment(1) == 'product' ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-boxes"></i>
+                            <p>
+                                Produk
+                                <i class="fas fa-angle-left right"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                        </ul>
+                    </li> --}}
                     <li class="nav-item">
                         <a href="#" class="nav-link  {{ request()->segment(1) == 'promo' ? 'active' : '' }}">
                             <i class="nav-icon fas fa-percentage"></i>
