@@ -69,7 +69,7 @@
                             </li>
                         </ul>
                     </li><li class="nav-item">
-                        <a href="#" class="nav-link {{ (request()->segment(1) == 'product' || request()->segment(1) == 'inventory') ? 'active' : '' }}">
+                        <a href="#" class="nav-link {{ (request()->segment(1) == 'product' || request()->segment(1) == 'inventory' || request()->segment(1) == 'shopping' || request()->segment(1) == 'product_category') ? 'active' : '' }}">
                             <i class="nav-icon fas fa-boxes"></i>
                             <p>
                                 Inventori & Produk
@@ -135,16 +135,16 @@
                                     <p>Diskon Produk</p>
                                 </a>
                             </li>
-                            <li class="nav-item">
+                            {{-- <li class="nav-item">
                                 <a href="/product" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>Produk</p>
                                 </a>
-                            </li>
+                            </li> --}}
                         </ul>
                     </li>
                     <li class="nav-item">
-                        <a href="#" class="nav-link">
+                        <a href="#" class="nav-link {{ request()->segment(1) == 'report' ? 'active' : '' }}">
                             <i class="nav-icon fas fa-copy"></i>
                             <p>
                                 Laporan
