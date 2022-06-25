@@ -179,7 +179,7 @@
                         </ul>
                     </li>
                     <li class="nav-item">
-                        <a href="#" class="nav-link">
+                        <a href="#" class="nav-link {{ request()->segment(1) == 'outcome' ? 'active' : '' }}">
                             <i class="nav-icon fas fa-wallet"></i>
                             <p>
                                 Keuangan
@@ -193,19 +193,19 @@
                                     <p>pengeluaran</p>
                                 </a>
                             </li>
-                            <li class="nav-item">
+                            {{-- <li class="nav-item">
                                 <a href="/outcome" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>pemasukan</p>
                                 </a>
-                            </li>
+                            </li> --}}
                         </ul>
                     </li>
                     <li class="nav-item">
-                        <a href="#" class="nav-link">
+                        <a href="#" class="nav-link {{ request()->segment(1) == 'customer' ? 'active' : '' }}">
                             <i class="nav-icon fas fa-user-tie"></i>
                             <p>
-                                Pelanggan
+                                Customer
                                 <i class="fas fa-angle-left right"></i>
                             </p>
                         </a>
@@ -219,18 +219,18 @@
                         </ul>
                     </li>
                     <li class="nav-item">
-                        <a href="#" class="nav-link">
+                        <a href="#" class="nav-link {{ request()->segment(1) == 'account' ? 'active' : '' }}">
                             <i class="nav-icon fas fa-users"></i>
                             <p>
-                                Account Management
+                                Account
                                 <i class="fas fa-angle-left right"></i>
                             </p>
                         </a>
                         <ul class="nav nav-treeview">
-                            <li class="nav-item">
+                            <li class="nav-item ">
                                 <a href="/account" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
-                                    <p>Account</p>
+                                    <p>Daftar Akun User</p>
                                 </a>
                             </li>
                         </ul>
