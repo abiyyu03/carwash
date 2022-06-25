@@ -80,7 +80,7 @@
                   <option value="variable_cost">Variable Cost</option>
                 </select>
             </div>
-            <div class="form-group">
+            {{-- <div class="form-group">
                 <label for="outcome_type" class="col-form-label">Jangka Waktu Pengeluaran</label>
                 <select name="outcome_type" id="outcome_range" class="form-control">
                   <option value="" disabled selected>-</option>
@@ -89,7 +89,7 @@
                   <option value="monthly">Setiap Bulan</option>
                   <option value="everySixMonth">Setiap 6 Bulan</option>
                 </select>
-            </div>
+            </div> --}}
 
             <div class="modal-footer form-group">
                 <button type="submit" class="btn btn-info">Tambah Pengeluaran</button>
@@ -114,24 +114,24 @@
           @csrf
           {{method_field('PUT')}}
             <div class="form-group">
-                <label for="needs" class="col-form-label">Nama Barang</label>
-                <input type="text" class="form-control" id="edit_inventory_name" name="needs" required>
+                <label for="needs" class="col-form-label">Kebutuhan</label>
+                <input type="text" class="form-control" id="" name="needs" required>
             </div>
             <div class="form-group">
-                <label for="inventory_code" class="col-form-label">Kode Barang</label>
-                <input type="text" class="form-control" id="edit_inventory_code" name="inventory_code" required>
+                <label for="quantity" class="col-form-label">quantity</label>
+                <input type="text" class="form-control" id="" name="quantity" required>
             </div>
             <div class="form-group">
-                <label for="inventory_usable" class="col-form-label">Penggunaan (khusus bahan steam)</label>
-                <input type="number" class="form-control" id="edit_inventory_usable" name="inventory_usable" required>
+                <label for="expense_balance" class="col-form-label">Pengeluaran (Rp) </label>
+                <input type="number" class="form-control" id="" name="expense_balance" required>
             </div>
-            <!-- <div class="form-group">
-                <label for="inventory_usage" class="col-form-label">Takaran Barang</label>
-                <input type="number" class="form-control" id="" name="inventory_usage" required>
-            </div> -->
             <div class="form-group">
-                <label for="inventory_capital_price" class="col-form-label">Harga modal</label>
-                <input type="number" class="form-control" id="edit_inventory_capital_price" name="inventory_capital_price" required>
+                <label for="outcome_type" class="col-form-label">Jenis Pengeluaran </label>
+                <select name="outcome_type" id="outcome_type" class="form-control">
+                  <option value="" disabled selected></option>
+                  <option value="fix_cost">Fix Cost</option>
+                  <option value="variable_cost">Variable Cost</option>
+                </select>
             </div>
             <div class="modal-footer form-group">
                 <button type="submit" class="btn btn-info">Edit Inventori</button>

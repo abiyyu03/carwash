@@ -47,4 +47,8 @@ class OutcomeController extends Controller
         Alert::success('Sukses','Pengeluaran berhasil diatur !');
         return back();
     }
+
+    function delete($id_outcome){
+        
+    }
 }
