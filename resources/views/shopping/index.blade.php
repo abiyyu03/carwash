@@ -10,8 +10,8 @@
       </div><!-- /.col -->
       <div class="col-sm-6">
         <ol class="breadcrumb float-sm-right">
-          <li class="breadcrumb-item"><a href="#">Home</a></li>
-          <li class="breadcrumb-item active">Dashboard v1</li>
+          <li class="breadcrumb-item"><a href="#">Product</a></li>
+          <li class="breadcrumb-item active">Belanja Produk</li>
         </ol>
       </div><!-- /.col -->
     </div><!-- /.row -->
@@ -43,28 +43,32 @@
             <tr>
               <th>#</th>
               <th>Nama Barang</th>
-              <th>Harga Barang</th>
+              <th>Harga Modal (Rp)</th>
               <th>Jumlah Barang</th>
               <th>Nama Item / Produk</th>
               <th>Nama / Nama Toko</th>
               <th>Kontak Toko</th>
+              @if (Auth()->user()->role->role_name == "owner")
               <th>Aksi</th>
+              @endif
             </tr>
           </thead>
           <tbody>
             @foreach($inventoryDetail_data as $inventoryDetail)
             <tr>
-              <td>{{ $loop->iteration }}</td>
+              <td>{{/* $loop->iteration*/$inventoryDetail->id_inventory_detail }}</td>
               <td>{{ $inventoryDetail->inventory_detail_name }}</td>
               <td>{{ $inventoryDetail->inventory_detail_price }}</td>
               <td>{{ $inventoryDetail->inventory_detail_amount }}</td>
               <td>{{ ($inventoryDetail->inventory != NULL) ? @$inventoryDetail->inventory->inventory_name : @$inventoryDetail->product->product_name }}</td>
               <td>{{ $inventoryDetail->supplier_name }}</td>
               <td>{{ $inventoryDetail->supplier_contact }}</td>
+              @if (Auth()->user()->role->role_name == "owner")
               <td>
                 <a href="#" id="editButton" data-toggle="modal" data-target="#editModal" class="btn btn-warning"><i class="fas fa-edit"></i> Edit</a> 
                 <a href="/supplier/delete/{{ $inventoryDetail->id_inventory_detail }}" id="deleteButton" class="btn btn-danger deleteButton"><i class="fas fa-trash-alt"></i> Delete</a> 
               </td>
+              @endif
             </tr>
             @endforeach
           </tbody>
@@ -110,6 +114,14 @@
               </select>
             </div>
             <div class="form-group">
+              <label for="supplier_name" class="col-form-label">Nama Supplier / Toko</label>
+              <input type="text" class="form-control" id="edit_supplier_name" value="{{old('supplier_name')}}" name="supplier_name" required>
+            </div>
+            <div class="form-group">
+              <label for="supplier_contact" class="col-form-label">Kontak Supplier</label>
+              <input type="text" class="form-control" id="edit_supplier_contact" name="supplier_contact">{{old('supplier_contact')}}</textarea>
+            </div>
+            <div class="form-group">
               <label for="product_id" class="col-form-label">Nama Produk</label>
               <select name="product_id" id="" class="form-control">
                 <option value="">-</option>
@@ -150,6 +162,10 @@
               <input type="text" class="form-control" id="edit_supplier_name" value="{{old('supplier_name')}}" name="supplier_name" required>
             </div>
             <div class="form-group">
+              <label for="supplier_contact" class="col-form-label">Kontak Supplier</label>
+              <input type="text" class="form-control" id="edit_supplier_contact" name="supplier_contact">{{old('supplier_contact')}}</textarea>
+            </div>
+            <div class="form-group">
               <label for="inventory_detail_name" class="col-form-label">Nama Barang</label>
               <input type="text" class="form-control" id="edit_inventory_detail_name" value="{{old('inventory_detail_name')}}" name="inventory_detail_name" required>
             </div>
@@ -160,10 +176,6 @@
             <div class="form-group">
               <label for="inventory_detail_price" class="col-form-label">Harga Barang</label>
               <input type="number" class="form-control" id="edit_inventory_detail_price" value="{{old('inventory_detail_price')}}" name="inventory_detail_price" required>
-            </div>
-            <div class="form-group">
-              <label for="supplier_contact" class="col-form-label">Kontak Supplier</label>
-              <input type="text" class="form-control" id="edit_supplier_contact" name="supplier_contact">{{old('supplier_contact')}}</textarea>
             </div>
             <div class="modal-footer form-group">
               <button type="submit" class="btn btn-info">Edit Supplier</button>
@@ -213,8 +225,8 @@
         $('#edit_inventory_detail_name').val(data[1]);
         $('#edit_inventory_detail_price').val(data[2]);
         $('#edit_inventory_detail_amount').val(data[3]);
-        $('#edit_supplier_name').val(data[5]);
-        $('#edit_supplier_contact').val(data[6]);
+        // $('#edit_supplier_name').val(data[5]);
+        // $('#edit_supplier_contact').val(data[6]);
         $('#editForm').attr('action','shopping/update/'+data[0]);
         $('#editModal').modal('show');
         

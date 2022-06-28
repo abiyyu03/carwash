@@ -88,14 +88,14 @@
                 <label for="inventory_usable" class="col-form-label">Penggunaan (khusus bahan steam)</label>
                 <input type="number" class="form-control" id="" name="inventory_usable">
             </div>
-            <!-- <div class="form-group">
+            <div class="form-group">
                 <label for="inventory_usage" class="col-form-label">Takaran Barang</label>
-                <input type="number" class="form-control" id="" name="inventory_usage" required>
-            </div> -->
-            {{-- <div class="form-group">
+                <input type="number" class="form-control" id="" readonly placeholder="Diisi saat input barang">
+            </div>
+            <div class="form-group">
                 <label for="inventory_capital_price" class="col-form-label">Harga modal</label>
-                <input type="number" class="form-control" id="" name="inventory_capital_price" required>
-            </div> --}}
+                <input type="number" class="form-control" id="" readonly placeholder="Diisi saat input barang">
+            </div>
             <div class="modal-footer form-group">
                 <button type="submit" class="btn btn-info">Tambah Inventori</button>
             </div>

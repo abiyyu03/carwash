@@ -170,14 +170,15 @@
             style="position: relative; height: 300px;">
             <canvas id="revenue-chart-canvas" height="300" style="height: 300px;"></canvas>
           </div>
-          <div class="chart tab-pane" id="sales-chart" style="position: relative; height: 300px;">
-            <canvas id="sales-chart-canvas" height="300" style="height: 300px;"></canvas>
-          </div>
+          {{-- <div class="chart tab-pane" id="sales-chart" style="position: relative; height: 300px;"> --}}
+            {{-- <canvas id="sales-chart-canvas" height="300" style="height: 300px;"></canvas> --}}
+            <div id="stocks-chart"></div>
+            {!!Lava::render('LineChart', 'MyStocks', 'stocks-chart')!!}
+          {{-- </div> --}}
         </div>
       </div><!-- /.card-body -->
     </div>
     <!-- /.card -->
-    
     <!-- DIRECT CHAT -->
     <div class="card direct-chat direct-chat-primary">
       {{-- <div class="card-header">
@@ -411,4 +412,8 @@
   </div>
   <!-- /.row (main row) -->
 </div>
+<script src="https://www.gstatic.com/charts/loader.js"></script>
+<script>
+    window.google.charts.load('46', {packages: ['corechart']});
+</script>
 @endsection

@@ -128,7 +128,7 @@
           {data:"DT_RowIndex",name:"DT_RowIndex", orderable:false, searchable:false},
           {data:"customer_name",name:"customer_name.customer_name"},
           {data:"customer_license_plate",name:"customer_license_plate.customer_license_plate"},
-          {data:"employee",name:"employee.employee_fullname"},
+          {data:"employee",name:"employee"},
           {data:"transaction_date",name:"transaction_date"},
           {data:"transaction_time",name:"transaction_time"},
           {data:"transaction_grandtotal",name:"transaction_grandtotal"}

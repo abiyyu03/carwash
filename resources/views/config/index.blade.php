@@ -22,13 +22,14 @@
 @section('content')
 <div class="container-fluid">
   <div class="row">
+    @if (Auth()->user()->role->role_name == "owner")
     <div class="col-md-12">
       <div class="card">
           <div class="card-header bg-info">
               <h2 class="card-title" ><i class="fas fa-cog"></i> Pengaturan Aplikasi</h2>
           </div>
           <div class="card-body">
-              <form action="{{route('config.update',$config_data->id_config)}}" method="POST">
+            <form action="{{route('config.update',$config_data->id_config)}}" method="POST">
                   @csrf
                   {{method_field('PUT')}}
                   <p class="font-weight-bold mb-0">Pengaturan Carwash</p>
@@ -76,6 +77,7 @@
           </div>
       </div>
     </div>
+    @endif
     <div class="col-md-12">
       <div class="card">
           <div class="card-header bg-info">
@@ -100,34 +102,6 @@
           </div>
       </div>
     </div>
-      <!-- <div class="col-md-6">
-      <div class="card">
-            <div class="card-header bg-info">
-                <h2 class="card-title" ><i class="fas fa-palette"></i> Tampilan Aplikasi</h2>
-            </div>
-            <div class="card-body">
-                <form action=" " method="post">
-                    @csrf
-                    <div class="form-group">
-                        <label for="customer_name">Palet Warna</label>
-                        <select name="" id="" class="form-control">
-                          <option value="info">Hijau Toska</option>
-                        </select>
-                    </div>
-                    <div class="form-group d-flex justify-content-end">
-                        <button class="bg-info btn" type="submit"><i class="fas fa-check"></i> Ubah</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-      </div> -->
   </div>
 </div>
 @endsection
-<script>
-  //store item to localstorage
-  localStorage.setItem("theme","navy");
-
-  //get item on localstorage
-  document.getElementById("element").innerHTML = localStorage.getItem("theme");
-</script>

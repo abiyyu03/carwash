@@ -45,7 +45,9 @@
                   <th class="d-none">Email</th>
                   <th class="d-none">Alamat</th> 
                   <th class="d-none">PAS Foto</th>
+                  @if (Auth()->user()->role->role_name == "owner")
                   <th>Aksi</th>
+                  @endif
                 </tr>
               </thead>
               <tbody>
@@ -61,9 +63,11 @@
                     <td class="d-none">{{ $employee->employee_email }}</td>
                     <td class="d-none">{{ $employee->employee_address }}</td>
                     <td class="d-none">{{ $employee->employee_photo }}</td>
+                    @if (Auth()->user()->role->role_name == "owner")
                     <td><a href="#" id="detailButton" data-toggle="modal" data-target="#detailModal" class="btn btn-primary"><i class="fas fa-info-circle"></i> Detail</a> 
-                        <a href="#" id="editButton" class="btn btn-warning"><i class="fas fa-edit"></i> Edit</a> 
-                        <a href="/employee/delete/{{ $employee->id_employee }}" class="btn btn-danger deleteButton"><i class="fas fa-trash-alt"></i> Delete</a></td>
+                      <a href="#" id="editButton" class="btn btn-warning"><i class="fas fa-edit"></i> Edit</a> 
+                      <a href="/employee/delete/{{ $employee->id_employee }}" class="btn btn-danger deleteButton"><i class="fas fa-trash-alt"></i> Delete</a></td>
+                    @endif
                   </tr>
                 @endforeach
               </tbody>
@@ -85,9 +89,11 @@
       <div class="modal-body">
         <form method="POST" action="{{route('employee.store')}}" enctype="multipart/form-data">
           @csrf
+          <fieldset>
+            <legend>Data Pribadi Karyawan</legend>
             <div class="form-group">
-                <label for="employee_fullname" class="col-form-label">Nama lengkap</label>
-                <input type="text" class="form-control" value="{{old('employee_fullname')}}" id="employee_fullname" name="employee_fullname" required>
+              <label for="employee_fullname" class="col-form-label">Nama lengkap</label>
+            <input type="text" class="form-control" value="{{old('employee_fullname')}}" id="employee_fullname" name="employee_fullname" required>
             </div>
             <div class="form-group">
                 <label for="employee_nik" class="col-form-label">NIK</label>
@@ -110,31 +116,34 @@
                 <input type="text" class="form-control" value="{{old('employee_contact')}}" id="employee_contact" name="employee_contact" required>
             </div>
             <div class="form-group">
-                <label for="employee_photo" class="col-form-label">Pas Foto</label>
-                <input type="file" accept="image/jpg,image/jpeg,image/png" class="form-control" value="{{old('employee_photo')}}" id="employee_photo" name="employee_photo">
+              <label for="employee_photo" class="col-form-label">Pas Foto</label>
+              <input type="file" accept="image/jpg,image/jpeg,image/png" class="form-control" value="{{old('employee_photo')}}" id="employee_photo" name="employee_photo">
             </div>
             <div class="form-group">
-                <label for="employee_address" class="col-form-label">Alamat</label>
-                <input type="text" class="form-control" value="{{old('employee_address')}}" id="employee_address" name="employee_address" required>
+              <label for="employee_address" class="col-form-label">Alamat</label>
+              <input type="text" class="form-control" value="{{old('employee_address')}}" id="employee_address" name="employee_address" required>
+            </div>
+          </fieldset>
+          <fieldset>
+            <legend>Data Akun</legend>
+            <div class="form-group">
+              <label for="employee_email" class="col-form-label">Email</label>
+              <input type="email" class="form-control" value="{{old('employee_email')}}" id="employee_email" name="employee_email" required>
             </div>
             <div class="form-group">
-                <label for="employee_email" class="col-form-label">Email</label>
-                <input type="email" class="form-control" value="{{old('employee_email')}}" id="employee_email" name="employee_email" required>
+              <label for="password" class="col-form-label">Password</label>
+              <input type="password" class="form-control" value="{{old('password')}}" id="password" name="password" required>
             </div>
             <div class="form-group">
-                <label for="password" class="col-form-label">Password</label>
-                <input type="password" class="form-control" value="{{old('password')}}" id="password" name="password" required>
+              <label for="role_id" class="col-form-label">Role Karyawan</label>
+              <select class="form-control" name="role_id">
+                <option>-</option>
+                @foreach($role_data as $role)
+                <option value="{{$role->id_role}}">{{$role->role_name}}</option>
+                @endforeach
+              </select>
             </div>
-            <div class="form-group">
-                <label for="role_id" class="col-form-label">Role Karyawan</label>
-                <!-- <input type="role_id" class="form-control" value="{{old('role_id')}}" id="role_id" name="role_id" required> -->
-                <select class="form-control" name="role_id">
-                  <option>-</option>
-                  @foreach($role_data as $role)
-                    <option value="{{$role->id_role}}">{{$role->role_name}}</option>
-                  @endforeach
-                </select>
-            </div>
+          </fieldset>
             <div class="modal-footer form-group">
                 <button type="submit" class="btn bg-info">Tambah Data</button>
             </div>
@@ -149,7 +158,7 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Daftarkan Karyawan</h5>
+        <h5 class="modal-title" id="exampleModalLabel">Edit Data Karyawan</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -166,10 +175,10 @@
                 <label for="employee_nik" class="col-form-label">NIK</label>
                 <input type="text" class="form-control" value="{{old('employee_nik')}}" id="edit_employee_nik" name="employee_nik" required>
             </div>
-            <div class="form-group">
+            {{-- <div class="form-group">
                 <label for="employee_birthdate" class="col-form-label">Tanggal Lahir</label>
                 <input type="date" class="form-control" value="{{old('employee_birthdate')}}" id="edit_employee_birthdate" name="employee_birthdate" required>
-            </div>
+            </div> --}}
             <div class="form-group">
                 <label for="employee_gender" class="col-form-label">Gender</label>
                 <select name="employee_gender" id="edit_employee_gender" class="form-control">
@@ -189,10 +198,6 @@
             <div class="form-group">
                 <label for="employee_address" class="col-form-label">Alamat</label>
                 <input type="text" class="form-control" value="{{old('employee_address')}}" id="edit_employee_address" name="employee_address" required>
-            </div>
-            <div class="form-group">
-                <label for="employee_email" class="col-form-label">Email</label>
-                <input type="email" class="form-control" value="{{old('employee_email')}}" id="edit_employee_email" name="employee_email" required>
             </div>
             <div class="modal-footer form-group">
                 <button type="submit" class="btn bg-info">Edit Data</button>
@@ -214,7 +219,7 @@
       <div class="modal-body">
         <div class="container">
           <img src="" class="img rounded mx-auto d-block" id="detail_employee_photo" alt="" style="border-radius:50%">
-          <table class="table table-responsive mt-3 mx-auto">
+          <table class="table table-responsive mt-3">
             <tr>
               <td>Nama Lengkap</td>
               <td> : </td>
@@ -266,37 +271,14 @@
 </div>
 
 @endsection
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
+{{-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
   <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.js"></script>
-  <script src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"></script>
+  <script src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"></script> --}}
+@push('addon-scripts')
 <script type="text/javascript">
 $(document).ready(function(){
   $('.data-employee').DataTable();
-  //   processing:true,
-  //   serverSide:true,
-  //   ajax:"{{route('employee.employeeJson')}}",
-  //   columns:[
-  //     // {data:"DT_Row_Index",name:"DT_Row_Index", orderable:false, searchable:false},
-  //     {data:"DT_RowIndex",name:"DT_RowIndex", orderable:false, searchable:false},
-  //     {data:"id_employee",name:"id_employee"},
-  //     {data:"employee_fullname",name:"employee_fullname"},
-  //     {data:"employee_nickname",name:"employee_nickname"},
-  //     {data:"employee_nik",name:"employee_nik"},
-  //     {data:"employee_gender",name:"employee_gender"},
-  //     // {data:"employee_birthdate",name:"employee_birthdate"},
-  //     // {data:"employee_photo",name:"employee_photo"},
-  //     // {data:"employee_contact",name:"employee_contact"},
-  //     // {data:"employee_email",name:"employee_email"},
-  //     // {data:"employee_address",name:"employee_address"},
-  //     {
-  //       data:"id_employee",
-  //       render: function(data,type,row){
-  //         return '<a href="/employee/detail/'+data+'" class="btn btn-primary"><i class="fas fa-info-circle"></i> Detail</a> <a href="/employee/edit/'+data+'" class="btn btn-warning"><i class="fas fa-edit"></i> Edit</a> <a href="/employee/delete/'+data+'" class="btn btn-danger"><i class="fas fa-trash-alt"></i> Delete</a>';
-  //       }
-  //     }
-  //   ]
-  // });
   $('.deleteButton').on("click",function(event){
     event.preventDefault();
     var url = $(this).attr('href');
@@ -333,7 +315,6 @@ $(document).ready(function(){
     $('#edit_employee_gender').val(data[4]);
     $('#edit_employee_birthdate').val(data[5]);
     $('#edit_employee_contact').val(data[6]);
-    $('#edit_employee_email').val(data[7]);
     $('#edit_employee_address').val(data[8]);
     // $('#edit_employee_photo').attr('src','img/employee/'+data[9]);
     $('#editForm').attr('action','employee/update/'+data[1]);
@@ -363,3 +344,4 @@ $(document).ready(function(){
   
 });
 </script>
+@endpush

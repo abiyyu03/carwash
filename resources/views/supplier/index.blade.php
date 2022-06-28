@@ -102,18 +102,6 @@
               <input type="text" class="form-control" id="edit_supplier_name" value="{{old('supplier_name')}}" name="supplier_name" required>
             </div>
             <div class="form-group">
-              <label for="inventory_detail_name" class="col-form-label">Nama Barang</label>
-              <input type="text" class="form-control" id="edit_inventory_detail_name" value="{{old('inventory_detail_name')}}" name="inventory_detail_name" required>
-            </div>
-            <div class="form-group">
-              <label for="inventory_detail_amount" class="col-form-label">Jumlah Barang</label>
-              <input type="text" class="form-control" id="edit_inventory_detail_amount" value="{{old('inventory_detail_amount')}}" name="inventory_detail_amount" required>
-            </div>
-            <div class="form-group">
-              <label for="inventory_detail_price" class="col-form-label">Harga Barang</label>
-              <input type="number" class="form-control" id="edit_inventory_detail_price" value="{{old('inventory_detail_price')}}" name="inventory_detail_price" required>
-            </div>
-            <div class="form-group">
               <label for="supplier_contact" class="col-form-label">Kontak Supplier</label>
               <input type="text" class="form-control" id="edit_supplier_contact" name="supplier_contact">{{old('supplier_contact')}}</textarea>
             </div>

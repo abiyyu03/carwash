@@ -19,6 +19,9 @@ class CreateOutcomesTable extends Migration
             $table->integer('quantity')->default(1);
             $table->integer('expense_balance');
             $table->date('outcome_date');
+            $table->integer('outcome_type_id')
+                ->references('id_outcome_type')
+                ->on('outcomes');
             $table->timestamps();
         });
     }

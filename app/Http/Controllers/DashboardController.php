@@ -3,12 +3,27 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\{Customer, VehicleType, Transaction, Product};
+use App\Models\{Customer, VehicleType, Transaction, TransactionDetail, Product};
+use Lava;
+use DataTables;
 
 class DashboardController extends Controller
 {
     function index()
     {
+        $chart = Lava::DataTable();
+        $chart->addDateColumn('Day of Month')
+            ->addNumberColumn('Projected')
+            ->addNumberColumn('Official');
+
+        // Random Data For Example
+        for ($a = 1; $a < 30; $a++) {
+            $chart->addRow([
+            '2015-10-' . $a, rand(800,1000), rand(800,1000)
+            ]);
+        }
+        Lava::LineChart('MyStocks', $chart);
+        
         $transaction_data = $this->getAllTransaction();
         $transactionPending_data = $this->getAllTransaction();
         $product_data = $this->getProduct();

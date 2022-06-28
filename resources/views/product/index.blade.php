@@ -44,12 +44,11 @@
               <th>#</th>
               <th>Nama Produk</th>
               <th>Kode Produk</th>
+              <th>Kategori Produk</th>
               <th>Harga Produk</th>
               <th>Harga Modal</th>
               <th>Stok Produk</th>
               <th>Stok Minimal Produk</th>
-              {{-- <th>Diskon (%)</th> --}}
-              <th>Kategori Produk</th>
               <th>Aksi</th>
             </tr>
           </thead>
@@ -59,16 +58,14 @@
               <td>{{ $loop->iteration }}</td>
               <td>{{ $product->product_name }}</td>
               <td>{{ $product->product_code }}</td>
+              <td>{{ $product->productCategory->category_name }}</td>
               <td>{{ $product->product_price }}</td>
               <td>{{ $product->product_capital_price }}</td>
               <td>{{ $product->product_stock }}</td>
               <td>{{ $product->product_minimum_stock }}</td>
-              {{-- <td>{{ $product->product_discount }}</td> --}}
-              <!-- <td><a href="#" id="detailImage" data-toggle="modal" class="btn btn-primary" data-target="#detailModal" data-product-image="{{ $product->product_image }}"><i class="fas fa-image"></i> Tampilkan</a></td> -->
-              <td>{{ $product->productCategory->category_name }}</td>
-              <td><!-- <a href="#" id="detailButton" class="btn btn-primary"><i class="fas fa-info-circle"></i> Detail</a> -->
+              <td>
               @if(Auth()->user()->role->role_name == "owner")
-                {{-- <a href="#" id="percentageButton" data-toggle="modal" data-target="#percentageModal" class="btn btn-primary"><i class="fas fa-percentage"></i> Diskon</a>  --}}
+                <a href="/product/change-status/{{$product->id_product}}" class="btn btn-{{$product->is_active == 0 ? 'info' : 'danger'}}">{{ $product->is_active == 0 ? 'Aktifkan' : 'Non-Aktifkan'}} </a>
                 <a href="#" id="editButton" data-toggle="modal" data-target="#editModal" class="btn btn-warning"><i class="fas fa-edit"></i> Edit</a> 
                 <a href="/product/delete/{{ $product->id_product }}" id="deleteButton" class="btn btn-danger deleteButton"><i class="fas fa-trash-alt"></i> Delete</a> 
               @endif
@@ -122,15 +119,11 @@
               <input type="number" class="form-control" id="product_stock" value="{{old('product_stock')}}" name="product_stock" required>
             </div> --}}
             <div class="form-group product">
-              <label for="product_minimum_stock" class="col-form-label">Minimal Stok</label>
+              <label for="product_minimum_stock" class="col-form-label">Minimal Stok (Jika tipe produk adalah barang)</label>
               <input type="number" class="form-control" id="product_minimum_stock" value="{{old('product_minimum_stock')}}" name="product_minimum_stock">
             </div>
-            <!-- <div class="form-group">
-              <label for="image" class="col-form-label">Gambar Produk</label>
-              <input type="file" class="form-control" id="product_image" value="{{old('product_image')}}" name="product_image">
-            </div> -->
             <div class="form-group service">
-                <label for="inventory_id">Penggunaan Inventori (Jika tipe produk adalah cuci steam)</label>
+                <label for="inventory_id">Jumlah Penggunaan Inventori (Jika tipe produk adalah cuci steam)</label>
                 <select name="inventory_id[]" id="inventory_id" class="form-control" style="width:100%" multiple>
                   <option disabled value="">-</option>
                   @foreach($inventory_data as $inventory)
@@ -169,26 +162,10 @@
               <label for="product_price" class="col-form-label">Harga</label>
               <input type="number" class="form-control" id="edit_product_price" name="product_price" required>
             </div>
-            {{-- <div class="form-group">
-              <label for="product_capital_price" class="col-form-label">Harga Beli</label>
-              <input type="number" class="form-control" id="edit_product_capital_price" name="product_capital_price" required>
-            </div> --}}
-            {{-- <div class="form-group">
-              <label for="product_stock" class="col-form-label">Jumlah Stok</label>
-              <input type="number" class="form-control" id="edit_product_stock" name="product_stock" required>
-            </div> --}}
             <div class="form-group">
               <label for="product_minimum_stock" class="col-form-label">Minimal Stok</label>
               <input type="number" class="form-control" id="edit_product_minimum_stock" name="product_minimum_stock">
             </div>
-            <!-- <div class="form-group">
-              <label for="product_discount" class="col-form-label">Diskon (Opsional)</label>
-              <input type="number" class="form-control" id="edit_product_discount" name="product_discount">
-            </div> -->
-            <!-- <div class="form-group">
-              <label for="image" class="col-form-label">Gambar Produk</label>
-              <input type="file" class="form-control" id="edit_product_image" value="{{old('product_image')}}" name="product_image">
-            </div> -->
             {{-- <div class="form-group">
                 <label for="product_category_id">Kategori Produk</label>
                 <select name="product_category_id" id="edit_product_category_id" class="form-control" required>
@@ -200,33 +177,6 @@
             </div> --}}
             <div class="modal-footer form-group">
               <button type="submit" class="btn btn-info">Edit Produk</button>
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-<div class="modal fade" id="percentageModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Buat Diskon</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-        <form action="" method="POST" id="percentageForm">
-            @csrf
-            {{method_field('PUT')}}
-            <input type="hidden" class="form-control disabled" id="percentage_product_price" name="product_price" readonly>
-            <div class="form-group">
-              <label for="product_discount" class="col-form-label">Diskon</label>
-              <input type="number" class="form-control" min=0 id="percentage_product_discount" name="product_discount">
-            </div>
-            <div class="modal-footer form-group">
-              <button type="submit" class="btn btn-info">Atur Diskon</button>
             </div>
           </form>
         </div>
@@ -299,7 +249,7 @@ $(document).ready(function(){
 
     $('#edit_product_name').val(data[1]);
     $('#edit_product_code').val(data[2]);
-    $('#edit_product_price').val(data[3]);
+    $('#edit_product_price').val(data[4]);
     // $('#edit_product_capital_price').val(data[4]);
     // $('#edit_product_stock').val(data[5]);
     $('#edit_product_minimum_stock').val(data[6]);

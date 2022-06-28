@@ -22,31 +22,6 @@
 @section('content')
 <!-- create data -->
 <div class="container-fluid">
-  <div class="row">
-    <div class="col-lg-6 col-6">
-      <!-- small box -->
-      <div class="small-box bg-info">
-        <div class="inner">
-          <h4 class="font-weight-bold" id="employee_attendance">0</h4>
-          <p>Karyawan Masuk</p>
-        </div>
-      </div>
-    </div>
-    <!-- ./col -->
-    <div class="col-lg-6 col-6">
-      <!-- small box -->
-      <div class="small-box bg-success">
-        <div class="inner">
-          <!-- <h4>53<sup style="font-size: 20px">%</sup></h4> -->
-          <h4 class="font-weight-bold">{{$employee_count}}</h4>
-          <p>Jumlah Karyawan</p>
-        </div>
-        {{-- <div class="icon">
-          <i class="ion ion-ios-box-outline"></i>
-        </div> --}}
-      </div>
-    </div>
-  </div>
   <div class="mt-3">
     <div class="">
       <div class="form-inline justify-content-between">
@@ -87,6 +62,31 @@
       </div>
     </div>
   </div>
+  {{-- <div class="row">
+    <div class="col-lg-6 col-6">
+      <!-- small box -->
+      <div class="small-box bg-info">
+        <div class="inner">
+          <h4 class="font-weight-bold" id="employee_attendance">0</h4>
+          <p>Karyawan Masuk</p>
+        </div>
+      </div>
+    </div>
+    <!-- ./col -->
+    <div class="col-lg-6 col-6">
+      <!-- small box -->
+      <div class="small-box bg-success">
+        <div class="inner">
+          <!-- <h4>53<sup style="font-size: 20px">%</sup></h4> -->
+          <h4 class="font-weight-bold">{{$employee_count}}</h4>
+          <p>Jumlah Karyawan</p>
+        </div>
+        {{-- <div class="icon">
+          <i class="ion ion-ios-box-outline"></i>
+        </div>
+      </div>
+    </div>
+  </div> --}}
     <div class="card mt-3">
         <div class="card-body">
           {{-- <p>Karyawan Masuk <span id="date">Hari ini</span></p> --}}

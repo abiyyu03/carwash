@@ -6,7 +6,7 @@
   <div class="container-fluid">
     <div class="row mb-2">
       <div class="col-sm-6">
-        <h1 class="m-0">Laporan Penjualan Produk</h1>
+        <h1 class="m-0">Laporan Per Produk</h1>
       </div><!-- /.col -->
       <div class="col-sm-6">
         <ol class="breadcrumb float-sm-right">
@@ -22,7 +22,9 @@
 @section('content')
 <!-- create data -->
 <div class="container-fluid"> 
-  <div class="row">
+  <div id="stocks-chart"></div>
+  {!!Lava::render('LineChart', 'MyStocks', 'stocks-chart')!!}
+  <div class="row mt-3">
     <!-- ./col -->
     <div class="col-lg-3 col-6">
       <!-- small box -->
@@ -127,7 +129,12 @@
   </div>
 </div>
 @endsection
-@push('addon-scripts')      
+@push('addon-scripts')  
+<script src="https://www.gstatic.com/charts/loader.js"></script>
+<script>
+  window.google.charts.load('46', {packages: ['corechart']});
+  
+</script>    
 <script type="text/javascript">
   $(document).ready(function () {
     loadData();
@@ -162,6 +169,10 @@
         ],
       });
     }
+    function selectCallback (event, chart) {
+// Useful for using chart methods such as chart.getSelection();
+    console.log(chart.getSelection());
+  }
     $('#filter').click(function(){
       var from_date = $('#from_date').val();
       var to_date = $('#to_date').val();
@@ -173,7 +184,28 @@
         alert('Both Date is required');
       }
     });
-
+    $('#autofill').click(function(){
+    var customer_license = $("#customer_license_plate").val();
+    $.ajax({
+      url:"{{route('getCustomerData')}}",
+      cache:true,
+      data:{customer_license_plate:customer_license},
+      success:function(data){
+        // console.log(data);
+        var json = data;
+        obj = JSON.parse(json);
+        $("#customer_name").val(obj.customer_name);
+        $("#customer_vehicle").val(obj.customer_vehicle);
+        $("#customer_contact").val(obj.customer_contact);
+        $("#id_customer").val(obj.id_customer);
+      },
+    });
+  });
+  $.getJSON('http://my.cool.site.com/api/whatever/getDataTableJson', function (dataTableJson) {
+  lava.loadData('Chart1', dataTableJson, function (chart) {
+    console.log(chart);
+  });
+});
     // $('#productCategoryFilter').change(function(){
     //   var status = $('#status').val();
     //   if(status != '')

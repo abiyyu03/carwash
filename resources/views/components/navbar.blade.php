@@ -39,11 +39,14 @@
             <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
                 {{-- <span class="dropdown-item dropdown-header">15 Notifications</span>
                 <div class="dropdown-divider"></div> --}}
+                <a href="/config" class="dropdown-item">
+                    <i class="fas fa-cog mr-2"></i> Pengaturan
+                </a>
+                <div class="dropdown-divider"></div> 
                 <a href="/logout" class="dropdown-item">
                     <i class="fas fa-sign-out-alt mr-2"></i> Logout
                 </a>
-                {{-- <div class="dropdown-divider"></div>
-                <a href="#" class="dropdown-item">
+                {{-- <a href="#" class="dropdown-item">
                     <i class="fas fa-users mr-2"></i> 8 friend requests
                     <span class="float-right text-muted text-sm">12 hours</span>
                 </a>
@@ -51,7 +54,7 @@
                 <a href="#" class="dropdown-item">
                     <i class="fas fa-file mr-2"></i> 3 new reports
                     <span class="float-right text-muted text-sm">2 days</span>
-                </a> --}}
+                </a>  --}}
                 {{-- <div class="dropdown-divider"></div>
                 <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a> --}}
             </div>

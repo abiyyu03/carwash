@@ -9,6 +9,7 @@ use Carbon\Carbon;
 use DataTables;
 use Mike42\Escpos\PrintConnectors\FilePrintConnector;
 use Mike42\Escpos\Printer;
+use Mike42\Escpos\PrintConnectors\WindowsPrintConnector;
 use Alert;
 use Cart;
 
@@ -52,6 +53,11 @@ class TransactionController extends Controller
             ->editColumn('transaction_time', function(Transaction $transaction){
                 return $transaction->created_at ? with(new Carbon($transaction->created_at))->isoFormat('HH:mm')/*->diffForHumans()*/ : '';
             })
+            ->editColumn('transaction_status', function(Transaction $transaction){
+                return $transaction->transaction_status == "pending" 
+                    ? "<span class='p-1 rounded bg-warning'>".$transaction->transaction_status."</span>"
+                    : "<span class='p-1 rounded bg-success'>".$transaction->transaction_status."</span>" ;
+            })
             ->editColumn('transaction_date', function(Transaction $transaction){
                 return $transaction->created_at ? with(new Carbon($transaction->created_at))->isoFormat('dddd, D MMMM Y')/*->diffForHumans()*/ : '';
             })
@@ -60,7 +66,7 @@ class TransactionController extends Controller
                 <a href="/transaction/delete/'.$transaction->id_transaction.'" class="btn btn-info receiptButton" id="receiptButton"><i class="fas fa-receipt"></i> Struk</a>
                 <a href="/transaction/delete/'.$transaction->id_transaction.'" class="btn btn-danger" id="deleteButton"><i class="fas fa-trash-alt"></i> Hapus</a>';
             })
-            ->rawColumns(['action'])
+            ->rawColumns(['action','transaction_status'])
             ->addIndexColumn()
             ->toJson();
         }
@@ -154,6 +160,7 @@ class TransactionController extends Controller
         //define id
         $idTransaction = $request->transaction_id;
         $idTransactionDetail = $request->id_transaction_detail;
+        $config_data = Config::first();
         //check are product or service
         if($productType === "produk")
         {
@@ -164,6 +171,7 @@ class TransactionController extends Controller
             $cart[$idTransactionDetail] = [
                 "id_transaction_detail" => $request->id_transaction_detail,
                 "product_id" => $request->product_id,
+                "product_category_id" => $product_data->productCategory->id_product_category,
                 "product_price" => ($productPromo_data == NULL) ? $product_data->product_price : ($product_data->product_price - ($productPromo_data->discount / 100)),
                 "transaction_detail_amount" => $request->transaction_detail_amount,
                 "transaction_detail_total" => ($productPromo_data == NULL) ? $request->transaction_detail_amount * $product_data->product_price : ($request->transaction_detail_amount * ($product_data->product_price - ($productPromo_data->discount / 100))),
@@ -171,29 +179,19 @@ class TransactionController extends Controller
                 "product_name" => $product_data->product_name,
                 "product_type" => $productType,
             ];
-            // } else {
-            //    $cart[$idTransactionDetail] = [
-            //     "id_transaction_detail" => $request->id_transaction_detail,
-            //     "product_id" => $request->product_id,
-            //     "product_price" => $product_data->product_price,
-            //     "transaction_detail_amount" => $request->transaction_detail_amount,
-            //     "transaction_detail_total" => $request->transaction_detail_amount * $product_data->product_price,
-            //     "transaction_id" => $idTransaction,
-            //     "product_name" => $product_data->product_name,
-            //     "product_type" => $productType,
-            // ]; 
-            // }
+
             //put on the session
             session()->put($idTransaction,$cart);
         } else {
             //get commission for employee    
-            $commission = ($config->commission_percentage * $product_data->product_price);
+            $commission = (($config_data->commission_percentage/100) * $product_data->product_price);
             
             $cart = session()->get($idTransaction,[]);
             
             $cart[$idTransactionDetail] = [
                 "id_transaction_detail" => $request->id_transaction_detail,
                 "product_id" => $request->product_id,
+                "product_category_id" => $product_data->productCategory->id_product_category,
                 "product_price" => $product_data->product_price,
                 "transaction_detail_amount" => $request->transaction_detail_amount,
                 "transaction_detail_total" => $request->transaction_detail_amount * $product_data->product_price,
@@ -205,7 +203,7 @@ class TransactionController extends Controller
             //put on the session
             session()->put($idTransaction,$cart);
             
-            DB::transaction(function() use ($employee_data,$request,$product_data){   
+            DB::transaction(function() use ($employee_data,$request,$product_data,$commission){   
                 // save employee data (siapa aja yang nyuci)
                 for ($i=0; $i < sizeof($employee_data); $i++) {
                     $this->workDetail->employee_id = $employee_data[$i];
@@ -248,15 +246,6 @@ class TransactionController extends Controller
     
     function deleteTransactionDetail($id_transaction, $id_transaction_detail)
     {
-        // $workDetail_data = $this->workDetail->whereHas('transactionDetail', function($query){ 
-            //     $query->where('transaction_detail_id',request()->route('id_transaction_detail')); 
-            // })->get();
-            // dd($workDetail_data)
-            // $transactionDetail_data = $this->transactionDetail->find($id_transaction_detail);
-            // $product_data = Product::find($transactionDetail_data->product->id_product);
-            // $productType = $transactionDetail_data->product->productCategory->productType->product_type;
-            // $productType = $product_data->productCategory->productType->product_type;
-            // dd($cart[$id_transaction_detail]['product_type']);
         $workDetail_data = $this->workDetail->where('transaction_detail_id',request()->route('id_transaction_detail'))->get();
             
         $cart = session()->get($id_transaction);
@@ -265,7 +254,7 @@ class TransactionController extends Controller
         $product_data = Product::with('productCategory')->find(
             $cart[$id_transaction_detail]['product_id']
         );
-            
+          
             //check if data is product
         if($cart[$id_transaction_detail]['product_type'] == "produk"){
             if(isset($cart[$id_transaction_detail])){
@@ -277,11 +266,15 @@ class TransactionController extends Controller
                 unset($cart[$id_transaction_detail]);
                 session()->put($id_transaction,$cart);
             }
-            DB::transaction(function() use ($id_transaction_detail, $id_transaction){
+
+            //delete work detail (pekerjaan karyawan)
+            DB::transaction(function() use ($id_transaction_detail, $id_transaction, $workDetail_data){
+                //if service
                 foreach ($workDetail_data as $workDetail) {
                     $selectedWorkDetail = WorkDetail::find($workDetail->id_work_detail);
                     $selectedWorkDetail->delete();
                 }
+                //if produk
                 foreach($product_data->inventories as $inventory)
                 {    
                     $inventory_data = Inventory::find($inventory->id_inventory);
@@ -302,6 +295,7 @@ class TransactionController extends Controller
                 
                 //store data to database
                 foreach (session($id_transaction) as $transactionDetail) {
+                    //make sure transaction detail data is equal to stored data in session
                     if ($transactionDetail['transaction_id'] === $id_transaction) {
                         
                         //if produk
@@ -309,6 +303,7 @@ class TransactionController extends Controller
                             TransactionDetail::insert([
                                 'id_transaction_detail' => $transactionDetail['id_transaction_detail'],
                                 'product_id' => $transactionDetail['product_id'],
+                                'product_category_id' =>$transactionDetail['product_category_id'],
                                 'transaction_detail_amount' => $transactionDetail['transaction_detail_amount'],
                                 'transaction_detail_total' => $transactionDetail['transaction_detail_total'],
                                 'transaction_id' => $transactionDetail['transaction_id'],
@@ -316,14 +311,17 @@ class TransactionController extends Controller
                                 'updated_at' => Carbon::now(),
                             ]);
                             
+                            /* subtract product stock */
                             $this->subtractProductStock(
                                 $transactionDetail['product_id'],
                                 $transactionDetail['transaction_detail_amount']
                             );
                         } else {
+                            //if servis
                             TransactionDetail::insert([
                                 'id_transaction_detail' => $transactionDetail['id_transaction_detail'],
                                 'product_id' => $transactionDetail['product_id'],
+                                'product_category_id' =>$transactionDetail['product_category_id'],
                                 'transaction_detail_amount' => $transactionDetail['transaction_detail_amount'],
                                 'transaction_detail_total' => $transactionDetail['transaction_detail_total'],
                                 'transaction_id' => $transactionDetail['transaction_id'],
@@ -333,11 +331,11 @@ class TransactionController extends Controller
                         }
                     }   
                 }
-                //unset session data after store it on database
+                //unset session data after store data in database
                 session()->forget($id_transaction);
                 
                 
-                //1 update status and grandtotal in transaction, print receipt
+                //1 update status and grandtotal in transaction
                 $commissionTotal = 0;
                 $transaction_data = $this->transaction->with('customer','employee')->find($id_transaction);
                 $transaction_data->transaction_status = "complete";
@@ -357,13 +355,12 @@ class TransactionController extends Controller
                     //delete transaction data and its detail transaction
                     $transaction_data = $this->transaction->find($id_transaction);
                     $transaction_data->delete();
+                    Alert::success('Sukses','Data Transaksi Pelanggan berhasil dihapus');
                 });
             } else {
                 Alert::error('Gagal','Hapus detail data transaksinya dahulu !');
-                return redirect()->back();
             }
-            Alert::success('Sukses','Data Transaksi Pelanggan berhasil dihapus');
-            return redirect()->to('/transaction');
+            return redirect()->back();
         }
         
         function getTransactionTotal($id_transaction)
@@ -388,6 +385,7 @@ class TransactionController extends Controller
             $product_data = $this->product->with('productCategory')->find($product_id);
             $this->transactionDetail->id_transaction_detail = request()->id_transaction_detail;
             $this->transactionDetail->product_id = request()->product_id;
+            $this->transactionDetail->transaction_detail_date = date('Y-m-d');
             $this->transactionDetail->transaction_detail_amount = request()->transaction_detail_amount;
             $this->transactionDetail->transaction_detail_total = (request()->transaction_detail_amount * $product_data->product_price); 
             $this->transactionDetail->transaction_id = request()->transaction_id;
@@ -409,7 +407,7 @@ class TransactionController extends Controller
         {
             $product_data = $this->product->select(['product_name','id_product','product_category_id','product_price'])
             ->where('product_category_id',$request->id)
-            // ->where('product_stock','>','product_minimum_stock')
+            ->where('is_active','1')
             ->get();
             return response()->json($product_data);
         }
@@ -452,12 +450,81 @@ class TransactionController extends Controller
         return response()->json($customer_data);
     }
 
-    function print()
+    function printStruck($id_transaction)
     {
-        $connector = new FilePrintConnector("php://stdout");
-        $printer = new Printer($connector);
-        $printer -> text("Hello World!\n");
-        $printer -> cut();
-        $printer -> close();
+        $transaction_data = Transaction::find($id_transaction);
+        $config_data = Config::first();
+        $transactionDetail_data = $this->transactionDetail->whereHas('transaction', function($query){ 
+            $query->where('transaction_id',request()->route('id_transaction')); 
+        })->get();
+        // dd($transactionDetail_data);
+        // dd($transaction_data);
+        $this->processTransaction($id_transaction);
+        // try {
+        //     // Enter the share name for your USB printer here
+        //     // $connector = null;
+        //     // $connector = new WindowsPrintConnector("POS-58-1");
+        //     // // $connector = new FilePrintConnector("");
+        
+        //     // /* Print a "Hello world" receipt" */
+        //     // $printer = new Printer($connector);
+        //     // $printer->initialize();
+        //     // $printer->setFont(Printer::FONT_A);
+        //     // $printer->setJustification(Printer::JUSTIFY_CENTER);
+        //     // $printer->text($config_data->carwash_name."\n");
+        //     // $printer->setLineSpacing(2);
+
+        //     // $printer->initialize();
+        //     // $printer->setFont(Printer::FONT_A);
+        //     // $printer->setJustification(Printer::JUSTIFY_CENTER);
+        //     // $printer->text($config_data->carwash_address."\n");
+        //     // $printer->setLineSpacing(2);
+
+        //     // $printer->text("-----------------------------"."\n");
+        //     // $printer->initialize();
+        //     // $printer->setFont(Printer::FONT_A);
+        //     // $printer->setJustification(Printer::JUSTIFY_LEFT);
+        //     // $printer->text("Kode Transaksi : ".$transaction_data->id_transaction."\n");
+        //     // $printer->setLineSpacing(2);
+
+        //     $printer->initialize();
+        //     $printer->setFont(Printer::FONT_A);
+        //     $printer->setJustification(Printer::JUSTIFY_LEFT);
+        //     $printer->text("Nama Pelanggan : ".$transaction_data->customer->customer_name."\n");
+        //     $printer->setLineSpacing(2);
+        //     foreach ($transactionDetail_data as $transactionDetail) {
+        //         # code...
+        //         $printer->text($transactionDetail->product->product_name);
+        //         $printer->text("\n"); 
+        //         $printer->text($transactionDetail->product_price." x ".$transactionDetail->transaction_detail_amount);
+        //         $printer->text("                      ");
+        //         $printer->text($transactionDetail->transaction_detail_total);
+        //     }
+        //     // $line = sprintf('%-13.40s %3.0f %-3.40s %9.40s %-2.40s %13.40s'); $printer->initialize();
+        //     $printer->setFont(Printer::FONT_A);
+        //     $printer->setJustification(Printer::JUSTIFY_LEFT);
+        //     $printer->text("===================================");
+        //     $printer->setLineSpacing(2);
+            
+        //     $printer->setFont(Printer::FONT_A);
+        //     $printer->setJustification(Printer::JUSTIFY_RIGHT);
+        //     $printer->text("Grand Total".$transaction_data->transaction_grandtotal);
+        //     $printer->setLineSpacing(2);
+
+        //     $printer->setFont(Printer::FONT_A);
+        //     $printer->setJustification(Printer::JUSTIFY_CENTER);
+        //     $printer->text("Terima Kasih :)");
+        //     $printer->setLineSpacing(2);
+
+        //     // end loop
+        //     $printer -> cut();
+        //     $printer -> close();
+            
+        //     /* Close printer */
+        //     // $printer -> close();
+        // } catch (Exception $e) {
+        //     echo "Couldn't print to this printer: " . $e -> getMessage() . "\n";
+        // }
+        return redirect()->to('transaction');
     }
 }

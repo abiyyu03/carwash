@@ -241,7 +241,7 @@
                                 Tutup
                             </a>
                             @if($transaction_data->transaction_status === 'pending')
-                            <a href="/transaction/{{$transaction_data->id_transaction}}/finish" onclick="printDiv()" id="finishPay" class="btn btn-info disabled">
+                            <a href="/transaction/print/receipt/{{$transaction_data->id_transaction}}" id="finishPay" class="btn btn-info disabled">
                                 <i class="fas fa-check-circle"></i>
                                 Selesaikan Pembayaran
                             </a>

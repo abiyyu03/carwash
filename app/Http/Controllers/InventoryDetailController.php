@@ -55,23 +55,28 @@ class InventoryDetailController extends Controller
                 $product_data->save();
             }
             $inventoryDetail_data->product_id = $request->product_id;
-            $inventoryDetail_data->save();
             
             //check if supplier data not exist
             $supplier_data = Supplier::where('supplier_name',$request->supplier_name)->first();
-            if($supplier_data->supplier_name != $request->supplier_name){
-                $supplier_data = new Supplier();
-                $supplier_data->supplier_name = $request->supplier_name;
-                $supplier_data->supplier_contact = $request->supplier_contact;
-                $supplier_data->save();
+            if($supplier_data == NULL){
+                // $supplier_data = new Supplier();
+                // $supplier_data->supplier_name = $request->supplier_name;
+                // $supplier_data->supplier_contact = $request->supplier_contact;
+                // $supplier_data->save();
+                Supplier::insert([
+                    'supplier_name' => $request->supplier_name,
+                    'supplier_contact' => $request->supplier_contact
+                ]);
             }
+            // $inventoryDetail_data->supplier_id = $request->supplier_id;
+            $inventoryDetail_data->save();
 
             $outcome_data = new Outcome();
             $outcome_data->needs = $request->inventory_detail_name;
             $outcome_data->quantity = $request->inventory_detail_amount;
             $outcome_data->expense_balance = $request->inventory_detail_price;
             $outcome_data->outcome_date = date('Y-m-d');
-            $outcome_data->outcome_type_id = $request->outcome_type_id;
+            $outcome_data->outcome_type_id = 1;//$request->outcome_type_id;
             $outcome_data->save();
         });
         Alert::success('Sukses','Data Belanja berhasil Ditambah !');
@@ -138,8 +143,8 @@ class InventoryDetailController extends Controller
             $product_data->save();
         }
         // $inventoryDetail_data->product_id = $request->product_id;
-        $inventoryDetail_data->supplier_name = $request->supplier_name;
-        $inventoryDetail_data->supplier_contact = $request->supplier_contact;
+        // $inventoryDetail_data->supplier_name = $request->supplier_name;
+        // $inventoryDetail_data->supplier_contact = $request->supplier_contact;
         $inventoryDetail_data->save();
 
         Alert::success('Sukses','Data Belanja berhasil diubah !');

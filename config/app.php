@@ -139,6 +139,7 @@ return [
         /*
          * Laravel Framework Service Providers...
          */
+        Khill\Lavacharts\Laravel\LavachartsServiceProvider::class,
         Maatwebsite\Excel\ExcelServiceProvider::class,
         Darryldecode\Cart\CartServiceProvider::class,
         Barryvdh\DomPDF\ServiceProvider::class,
@@ -194,6 +195,7 @@ return [
     */
 
     'aliases' => [
+        'Lava' => Khill\Lavacharts\Laravel\LavachartsFacade::class,
         'PDF' => Baryyvdh\DomPDF\Facades::class,
         'App' => Illuminate\Support\Facades\App::class,
         'Arr' => Illuminate\Support\Arr::class,

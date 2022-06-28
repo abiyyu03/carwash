@@ -78,33 +78,33 @@
                         </a>
                         <ul class="nav nav-treeview">
                             <li class="nav-item">
+                                <a href="/product" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Produk</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
                                 <a href="/shopping" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
-                                    <p>Daftar Perbelanjaan</p>
+                                    <p>Perbelanjaan</p>
                                 </a>
                             </li>
                             <li class="nav-item">
                                 <a href="/inventory" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
-                                    <p>Daftar Inventory</p>
+                                    <p>Inventory</p>
                                 </a>
                             </li>
                             <li class="nav-item">
                                 <a href="/supplier" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
-                                    <p>Daftar Supplier</p>
+                                    <p>Supplier</p>
                                 </a>
                             </li>
                             <li class="nav-item">
                                 <a href="/product_category" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>Kategori Produk</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="/product" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Produk</p>
                                 </a>
                             </li>
                         </ul>
@@ -132,15 +132,72 @@
                             <li class="nav-item">
                                 <a href="/promo/product" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
-                                    <p>Diskon Produk</p>
+                                    <p>Promo Per Produk</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="/promo/per-purchase" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Promo Per Pembelian</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link {{ request()->segment(1) == 'outcome' ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-chart-line"></i>
+                            <p>
+                                Analisis
+                                <i class="fas fa-angle-left right"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            {{-- <li class="nav-item">
+                                <a href="#" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Kategori Produk</p>
+                                </a>
+                                <ul class="nav nav-treeview">
+                                </ul>
+                            </li> --}}
+                            <li class="nav-item">
+                                <a href="/analysis/busiest-time" class="nav-link">
+                                    <i class="far fa-arrow-right nav-icon"></i>
+                                    <p>Waktu Teramai</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="/analysis/category/best-seller" class="nav-link">
+                                    <i class="far fa-arrow-right nav-icon"></i>
+                                    <p>Kategori Terlaris</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="/analysis/product/best-seller" class="nav-link">
+                                    <i class="far fa-arrow-right nav-icon"></i>
+                                    <p>Produk Terlaris</p>
                                 </a>
                             </li>
                             {{-- <li class="nav-item">
-                                <a href="/product" class="nav-link">
+                                <a href="#" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>Produk</p>
                                 </a>
+                                <ul class="nav nav-treeview">
+                                    <li class="nav-item">
+                                        <a href="/analysis/product/busiest-time" class="nav-link">
+                                            <i class="far fa-arrow-right nav-icon"></i>
+                                            <p>Waktu Teramai</p>
+                                        </a>
+                                    </li>
+                                </ul>
                             </li> --}}
+                            <li class="nav-item">
+                                <a href="/analysis/employee/attendance" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Kehadiran Karyawan</p>
+                                </a>
+                            </li>
                         </ul>
                     </li>
                     <li class="nav-item">
@@ -161,19 +218,19 @@
                             <li class="nav-item">
                                 <a href="/report/product/all" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
-                                    <p>Semua Penjualan Produk</p>
+                                    <p>Laporan Per Produk</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="/report/category/all" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Laporan Per Kategori</p>
                                 </a>
                             </li>
                             <li class="nav-item">
                                 <a href="/report/daily" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>Laporan Harian</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="/report/monthly" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Laporan Bulanan</p>
                                 </a>
                             </li>
                         </ul>
@@ -254,14 +311,14 @@
                     </li>
                     @endif
                     
-                    <li class="nav-item">
+                    {{-- <li class="nav-item">
                         <a href="/config" class="nav-link {{ request()->segment(1) == 'config' ? 'active' : '' }}">
                             <i class="nav-icon fas fa-cog"></i>
                             <p>
                                 Pengaturan
                             </p>
                         </a>
-                    </li>
+                    </li> --}}
                 </ul>
             </nav>
             <!-- /.sidebar-menu -->

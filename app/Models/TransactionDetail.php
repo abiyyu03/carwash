@@ -12,7 +12,7 @@ class TransactionDetail extends Model
     protected $primaryKey = "id_transaction_detail";
     public $incrementing = false;
     // protected $casts = ['id'=>'integer'];
-    protected $fillable = ['transaction_detail_amount','transaction_detail_price','transaction_detail_date','transaction_detail_total','transaction_id','product_id'];
+    protected $fillable = ['transaction_detail_amount','product_category_id','transaction_detail_price','transaction_detail_date','transaction_detail_total','transaction_id','product_id'];
 
     function transaction()
     {
@@ -27,5 +27,10 @@ class TransactionDetail extends Model
     function workDetails()
     {
         return $this->hasMany('App\Models\WorkDetail');
+    }
+
+    function productCategory()
+    {
+        return $this->belongsTo('App\Models\ProductCategory','product_category_id');
     }
 }

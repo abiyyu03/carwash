@@ -24,15 +24,15 @@ class ProductController extends Controller
         return view('product.index',compact('productCategory_data','product_data','inventory_data'));
 
     }
-    function indexes($id_product_category)
-    {
-        $productCategory_data = ProductCategory::get();
-        $inventory_data = Inventory::get();
-        if(request()->submit_filter){
-            $product_data = $this->product_data->where('product_category_id',$id_product_category)->get();
-            return view('product.index',compact('productCategory_data','product_data','inventory_data'));
-        }
-    }
+    // function indexes($id_product_category)
+    // {
+    //     $productCategory_data = ProductCategory::get();
+    //     $inventory_data = Inventory::get();
+    //     if(request()->submit_filter){
+    //         $product_data = $this->product_data->where('product_category_id',$id_product_category)->get();
+    //         return view('product.index',compact('productCategory_data','product_data','inventory_data'));
+    //     }
+    // }
 
     function productJson(Request $request)
     {
@@ -59,21 +59,16 @@ class ProductController extends Controller
         ]);
 
         DB::transaction(function() use ($request, $storeProductImageAction){
-            //upload product image
-            // if($request->file('product_image') != NULL)
-            // {
-            //     $storeProductImageAction->executeProduct($request);
-            // }
-
             $product_data = new Product();
             $product_data->product_name = $request->product_name;
             $product_data->product_code = $this->getProductCode($request);
             $product_data->product_price = $request->product_price;
             // $product_data->product_capital_price = $request->product_capital_price;
             // $product_data->product_stock = $request->product_stock;
-            $product_data->product_minimum_stock = $request->product_minimum_stock;
+            $product_data->product_minimum_stock = ($request->product_minimum_stock == NULL) ? 0 : $request->product_minimum_stock;
             // $product_data->product_discount = $request->product_discount;
             $product_data->product_category_id = $request->product_category_id;
+            $product_data->is_active = '1';
             $product_data->save();
 
             //store inventory data used
@@ -88,16 +83,31 @@ class ProductController extends Controller
         DB::transaction(function() use ($id_product){
             $product_data = $this->product_data->find($id_product);
             //check if image data is exist
-            if($product_data->product_image != NULL)
-            {
-                unlink(public_path('/img/product/'.$product_data->product_image));
-            }
+            // if($product_data->product_image != NULL)
+            // {
+            //     unlink(public_path('/img/product/'.$product_data->product_image));
+            // }
             $product_data->delete();
         });
         Alert::success('Sukses','Data Produk berhasil dihapus !');
         return redirect()->back();
     }
 
+    function changeProductStatus($id_product)
+    {
+        $product_data = Product::find($id_product);
+        if($product_data->is_active == '0'){
+            $product_data->is_active = '1';
+            $product_data->save();
+            Alert::success('sukses','Status produk aktif !');
+        } else {
+            $product_data->is_active = '0';
+            $product_data->save();
+            Alert::success('sukses','Status produk aktif !');
+        }
+        return back();
+
+    }
     function getProductCode(Request $request)
     {
         return strtoupper(substr($request->product_name,0,2)).$request->product_minimum_stock.$request->product_category_id;
@@ -108,10 +118,10 @@ class ProductController extends Controller
         $product_data = Product::findOrFail($id_product);
         $product_data->product_name = $request->product_name;
         $product_data->product_price = $request->product_price;
-        $product_data->product_capital_price = $request->product_capital_price;
-        $product_data->product_stock = $request->product_stock;
-        $product_data->product_minimum_stock = $request->product_minimum_stock;
-        $product_data->product_category_id = $request->product_category_id;
+        // $product_data->product_capital_price = $request->product_capital_price;
+        // $product_data->product_stock = $request->product_stock;
+        $product_data->product_minimum_stock = ($request->product_minimum_stock == NULL) ? 0 : $request->product_minimum_stock;
+        // $product_data->product_category_id = $request->product_category_id;
         $product_data->save();
         
         Alert::success('Sukses','Data produk berhasil diubah !');

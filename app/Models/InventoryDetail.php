@@ -10,8 +10,8 @@ class InventoryDetail extends Model
     use HasFactory;
     protected $table = "inventory_details";
     protected $primaryKey = "id_inventory_detail";
-    protected $fillable = ['id_inventory_detail', 'inventory_detail_name', 'inventory_detail_amount', 'inventory_detail_price', 
-                         'inventory_id','product_id','supplier_name', 'supplier_contact'];
+    protected $fillable = ['inventory_detail_name', 'inventory_detail_amount', 'inventory_detail_price', 
+                         'inventory_id','product_id'];
 
     function product()
     {

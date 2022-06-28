@@ -22,4 +22,9 @@ class ProductCategory extends Model
     {
         return $this->belongsTo('App\Models\ProductType','product_type_id');
     }
+
+    function transactionDetail()
+    {
+        return $this->hasMany('App\Models\TransactionDetail');
+    }
 }

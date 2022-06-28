@@ -69,7 +69,8 @@
   <!-- Bootstrap 4 -->
   <script src="{{url('plugins/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
   <!-- ChartJS -->
-  <script src="{{url('plugins/chart.js/Chart.min.js')}}"></script>
+  {{-- <script src="{{url('plugins/chart.js/Chart.min.js')}}"></script> --}}
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.8.0/chart.min.js" integrity="sha512-sW/w8s4RWTdFFSduOTGtk4isV1+190E/GghVffMA9XczdJ2MDzSzLEubKAs5h0wzgSJOQTRYyaz73L3d6RtJSg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <!-- Sparkline -->
   <script src="{{url('plugins/sparklines/sparkline.js')}}"></script>
   <!-- jQuery Knob Chart -->
