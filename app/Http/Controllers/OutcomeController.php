@@ -40,7 +40,7 @@ class OutcomeController extends Controller
         $outcome_data = new Outcome();
         $outcome_data->needs = $request->needs;
         $outcome_data->quantity = $request->quantity;
-        $outcome_data->expanse_balance = $request->expanse_balance;
+        $outcome_data->expense_balance = $request->expense_balance;
         $outcome_data->outcome_date = date('Y-m-d');
         $outcome_data->save();
 
