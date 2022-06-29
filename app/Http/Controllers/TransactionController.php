@@ -154,8 +154,7 @@ class TransactionController extends Controller
         
         //get ProductPromo data
         $productPromo_data = ProductPromo::where('product_id',$request->product_id)->first();
-        // dd($productPromo_data);
-        // $cutPrice = $product_data->product_price * ($productPromo_data->discount / 100);
+        $cutPrice = ($productPromo_data->discount / 100) * $product_data->product_price;
         // $discountPrice = $product_data->product_price - $cutPrice;
         // dd($product_data->product_price - $cutPrice);
         //define id
@@ -173,7 +172,7 @@ class TransactionController extends Controller
                 "id_transaction_detail" => $request->id_transaction_detail,
                 "product_id" => $request->product_id,
                 "product_category_id" => $product_data->productCategory->id_product_category,
-                "product_price" => ($productPromo_data == NULL) ? $product_data->product_price : ($product_data->product_price - (($productPromo_data->discount / 100) * $product_data->product_price )),
+                "product_price" => ($productPromo_data == NULL) ? $product_data->product_price : $product_data->product_price - $cutPrice,
                 "transaction_detail_amount" => $request->transaction_detail_amount,
                 "transaction_detail_total" => ($productPromo_data == NULL) ? $request->transaction_detail_amount * $product_data->product_price : ($request->transaction_detail_amount * ($product_data->product_price - ($productPromo_data->discount / 100))),
                 "transaction_id" => $idTransaction,
@@ -193,7 +192,7 @@ class TransactionController extends Controller
                 "id_transaction_detail" => $request->id_transaction_detail,
                 "product_id" => $request->product_id,
                 "product_category_id" => $product_data->productCategory->id_product_category,
-                "product_price" => ($productPromo_data == NULL) ? $product_data->product_price : ($product_data->product_price - (($productPromo_data->discount / 100) * $product_data->product_price )),
+                "product_price" => ($productPromo_data == NULL) ? $product_data->product_price : $product_data->product_price - $cutPrice,
                 "transaction_detail_amount" => $request->transaction_detail_amount,
                 "transaction_detail_total" => $request->transaction_detail_amount * $product_data->product_price,
                 "transaction_id" => $idTransaction,
