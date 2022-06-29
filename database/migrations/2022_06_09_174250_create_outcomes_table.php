@@ -14,7 +14,7 @@ class CreateOutcomesTable extends Migration
     public function up()
     {
         Schema::create('outcomes', function (Blueprint $table) {
-            $table->id('id_outcomes');
+            $table->id('id_outcome');
             $table->string('needs');
             $table->integer('quantity')->default(1);
             $table->integer('expense_balance');

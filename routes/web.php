@@ -82,11 +82,16 @@ Route::put('/product/discount/create/{id_product}',[ProductController::class,'ad
 
 //outcome
 Route::get('/outcome',[OutcomeController::class,'index'])
-->name('outcome.index')
-->middleware('role:supervisor,owner');
+    ->name('outcome.index')
+    ->middleware('role:supervisor,owner');
+Route::get('/outcome/delete/{id_outcome}',[OutcomeController::class,'delete'])
+    ->middleware('role:owner');
 Route::post('/outcome',[OutcomeController::class,'store'])
-->name('outcome.store')
-->middleware('role:supervisor,owner');
+    ->name('outcome.store')
+    ->middleware('role:supervisor,owner');
+Route::put('/outcome/update/{id_outcome}',[OutcomeController::class,'update'])
+    ->name('outcome.update')
+    ->middleware('role:supervisor,owner');
 
 //Employee 
 Route::get('/employee',[EmployeeController::class,'index'])

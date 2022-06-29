@@ -10,7 +10,7 @@ class Outcome extends Model
     use HasFactory;
     protected $table = "outcomes";
     protected $fillable = ['needs','expense_balance','quantity','outcome_date','outcome_type_id'];
-    protected $primaryKey = "id_outcomes";
+    protected $primaryKey = "id_outcome";
 
     function outcomeType()
     {
