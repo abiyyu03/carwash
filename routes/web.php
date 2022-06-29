@@ -190,6 +190,8 @@ Route::put('/shopping/update/{id_inventory_detail}',[InventoryDetailController::
 
 //Supplier
 Route::get('/supplier',[SupplierController::class,'index'])->name('supplier')->middleware('role:supervisor,owner');
+Route::get('/supplier/delete/{id_supplier}',[SupplierController::class,'delete'])->middleware('role:supervisor,owner');
+Route::put('/supplier/update/{id_supplier}',[SupplierController::class,'update'])->middleware('role:supervisor,owner');
 
 //Promo
 Route::get('/promo/product/',[PromoController::class,'index'])->name('productPromo')->middleware('role:supervisor,owner');

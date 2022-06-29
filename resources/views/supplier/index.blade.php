@@ -48,7 +48,17 @@
             </tr>
           </thead>
           <tbody>
-            
+            @foreach ($supplier_data as $supplier)
+                <tr>
+                  <td>{{$loop->iteration}}</td>
+                  <td>{{$supplier->supplier_name}}</td>
+                  <td>{{$supplier->supplier_contact}}</td>
+                  <td>
+                    <a href="/supplier/update/{{$supplier->id_supplier}}" data-id="{{$supplier->id_supplier}}" class="btn btn-info editButton" id="editButton"><i class="fas fa-pencil-alt"></i> Edit</a>
+                    <a href="/supplier/delete/{{$supplier->id_supplier}}" class="btn btn-danger" id="deleteButton"><i class="fas fa-trash-alt"></i> Hapus</a>
+                  </td>
+                </tr>
+            @endforeach
           </tbody>
         </table>
       </div>
@@ -119,83 +129,81 @@
 @push('addon-scripts')
 <script>
   $(document).ready(function(){
-    $('.data-supplier').DataTable({
-      processing:true,
-      serverSide:true,
-      ajax:"{{route('supplier')}}",
-      // ajax:{
-      //   url
-      //   data:{status:status}
-      // },
-      columns:[
-        {data:"DT_RowIndex",name:"DT_RowIndex", orderable:false, searchable:false},
-        {data:"supplier_name",name:"supplier_name"},
-        {data:"supplier_contact",name:"supplier_contact"},
-        {
-          data:"action",
-          name:"action"
+    // $('.data-supplier').DataTable();
+    var table = $('.data-supplier').DataTable();
+    // $('.data-supplier').DataTable({
+    //   processing:true,
+    //   serverSide:true,
+    //   ajax:"{{route('supplier')}}",
+    //   // ajax:{
+    //   //   url
+    //   //   data:{status:status}
+    //   // },
+    //   columns:[
+    //     {data:"DT_RowIndex",name:"DT_RowIndex", orderable:false, searchable:false},
+    //     {data:"supplier_name",name:"supplier_name"},
+    //     {data:"supplier_contact",name:"supplier_contact"},
+    //     {
+    //       data:"action",
+    //       name:"action"
+    //     }
+    //   ],
+    //   drawCallback: function(settings){
+    //       $('#deleteButton').on("click",function(e){
+    //       e.preventDefault();
+    //       var url = $(this).attr('href');
+    //       console.log(url);
+    //       swal.fire({
+    //         title: 'Apakah Kamu yakin ingin menghapus data ini ?',
+    //         text: "Data yang terhapus tidak bisa di kembalikan!",
+    //         icon: 'warning',
+    //         // buttons: ["Cancel","Yakin!"],
+    //         showCancelButton: true,
+    //         // confirmButtonColor: '#3085d6',
+    //         // cancelButtonColor: '#d33',
+    //         confirmButtonText: 'Yakin !'
+    //       }).then((result) => {
+    //         if (result.isConfirmed) {
+    //           window.location.href = url;
+    //         }
+    //       });
+    //     });
+    //   }
+    // });
+    table.on("click",'#deleteButton',function(){
+      event.preventDefault();
+      var url = $(this).attr('href');
+      swal.fire({
+        title: 'Apakah Kamu yakin ingin menghapus data ini ?',
+        text: "Data yang terhapus tidak bisa di kembalikan!",
+        icon: 'warning',
+        // buttons: ["Cancel","Yakin!"],
+        showCancelButton: true,
+        // confirmButtonColor: '#3085d6',
+        // cancelButtonColor: '#d33',
+        confirmButtonText: 'Yakin !'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          window.location.href = url;
         }
-      ],
-      drawCallback: function(settings){
-          $('#deleteButton').on("click",function(e){
-          e.preventDefault();
-          var url = $(this).attr('href');
-          console.log(url);
-          swal.fire({
-            title: 'Apakah Kamu yakin ingin menghapus data ini ?',
-            text: "Data yang terhapus tidak bisa di kembalikan!",
-            icon: 'warning',
-            // buttons: ["Cancel","Yakin!"],
-            showCancelButton: true,
-            // confirmButtonColor: '#3085d6',
-            // cancelButtonColor: '#d33',
-            confirmButtonText: 'Yakin !'
-          }).then((result) => {
-            if (result.isConfirmed) {
-              window.location.href = url;
-            }
-          });
-        });
-      }
-    });
-    $('.deleteButton').on("click",function(event){
-        event.preventDefault();
-        var url = $(this).attr('href');
-        console.log(url);
-        swal.fire({
-            title: 'Apakah Kamu yakin ingin menghapus data ini ?',
-            text: "Data yang terhapus tidak bisa di kembalikan!",
-            icon: 'warning',
-            // buttons: ["Cancel","Yakin!"],
-            showCancelButton: true,
-            // confirmButtonColor: '#3085d6',
-            // cancelButtonColor: '#d33',
-            confirmButtonText: 'Yakin !'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                window.location.href = url;
-            }
-        });
+      });
     });
     
-    var table = $('.data-inventoryDetail').DataTable();
-    table.on("click",'#editButton',function(){
-        $tr = $(this).closest('tr');
-        if($($tr).hasClass('child')){
-            $tr = $tr.prev('.parent');
-        }
-        
-        var data = table.row($tr).data();
-        // console.log(data);
-        
-        $('#edit_inventory_detail_name').val(data[1]);
-        $('#edit_inventory_detail_price').val(data[2]);
-        $('#edit_inventory_detail_amount').val(data[3]);
-        $('#edit_supplier_name').val(data[5]);
-        $('#edit_supplier_contact').val(data[6]);
-        $('#editForm').attr('action','shopping/update/'+data[0]);
-        $('#editModal').modal('show');
-        
+    table.on("click",'#editButton',function(event){
+      event.preventDefault();
+      $tr = $(this).closest('tr');
+      if($($tr).hasClass('child')){
+        $tr = $tr.prev('.parent');
+      }
+      
+      var data = table.row($tr).data();
+      // console.log(data);
+      
+      $('#edit_supplier_name').val(data[1]);
+      $('#edit_supplier_contact').val(data[2]);
+      $('#editForm').attr('action','supplier/update/'+$("#editButton").data('id'));
+      $('#editModal').modal('show');
+      
     });
   });
 </script>
