@@ -74,7 +74,7 @@
             </div>
             <div class="form-group">
                 <label for="outcome_type" class="col-form-label">Jenis Pengeluaran </label>
-                <select name="outcome_type" id="outcome_type" class="form-control">
+                <select name="outcome_type_id" id="outcome_type_id" class="form-control">
                   <option value="" disabled selected></option>
                   <option value="fix_cost">Fix Cost</option>
                   <option value="variable_cost">Variable Cost</option>
