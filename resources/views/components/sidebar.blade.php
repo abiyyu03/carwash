@@ -135,12 +135,12 @@
                                     <p>Promo Per Produk</p>
                                 </a>
                             </li>
-                            <li class="nav-item">
+                            {{-- <li class="nav-item">
                                 <a href="/promo/per-purchase" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>Promo Per Pembelian</p>
                                 </a>
-                            </li>
+                            </li> --}}
                         </ul>
                     </li>
                     <li class="nav-item">
@@ -192,12 +192,12 @@
                                     </li>
                                 </ul>
                             </li> --}}
-                            <li class="nav-item">
+                            {{-- <li class="nav-item">
                                 <a href="/analysis/employee/attendance" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>Kehadiran Karyawan</p>
                                 </a>
-                            </li>
+                            </li> --}}
                         </ul>
                     </li>
                     <li class="nav-item">

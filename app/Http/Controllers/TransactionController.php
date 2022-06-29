@@ -154,7 +154,7 @@ class TransactionController extends Controller
         
         //get ProductPromo data
         $productPromo_data = ProductPromo::where('product_id',$request->product_id)->first();
-        $cutPrice = ($productPromo_data->discount / 100) * $product_data->product_price;
+        @$cutPrice = ($productPromo_data->discount / 100) * $product_data->product_price;
         // $discountPrice = $product_data->product_price - $cutPrice;
         // dd($product_data->product_price - $cutPrice);
         //define id

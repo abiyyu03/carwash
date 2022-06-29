@@ -105,7 +105,7 @@
                                         <td>{{ $transactionDetail['product_name'] }}</td>
                                         <td>{{ $transactionDetail['transaction_detail_amount'] }}</td>
                                         <td>{{ $transactionDetail['transaction_detail_total'] }}</td>
-                                        <td><a href="/transaction/{{ $transactionDetail['transaction_id'] }}/detail/delete/{{ $transactionDetail['id_transaction_detail'] }}" class="btn btn-danger {{($transaction_data->transaction_status !== 'pending') ? 'disabled' : ''}}"><i class="fas fa-times"> </i> Hapus</a></td>
+                                        <td><a href="/transaction/{{ $transactionDetail['transaction_id'] }}/detail/delete/{{ $transactionDetail['id_transaction_detail'] }}" class="btn btn-danger {{($transaction_data->transaction_status !== 'pending') ? 'disabled' : ''}}"><i class="fas fa-times"> </i></a></td>
                                     </tr>
                                     @endif
                                     @endforeach
@@ -138,72 +138,10 @@
     <div class="modal fade" id="structModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
-                <!-- <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Buat Transaksi</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div> -->
                 <div class="modal-body">
                     <div class="container bg-light px-3" id="printArea">
-                        {{-- <div class="header">
-                            <div class="mx-auto text-center">
-                                <!-- <div class="img-brand mt-2">
-                                    <img src="jiwalu-logo.png" width="60px" alt="" id="img-brand">
-                                </div> -->
-                                <div class="info-brand" style="margin:auto;display:block">
-                                    <p class="mb-0 lead font-weight-bold">Jiwalu Carwash</p>
-                                    <p class="small">Jalan Pancasila, Depok, Jawabarat, 21342</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="title-brand">
-                            <hr>
-                            <p class="small">ID Transaksi : {{ $transaction_data->id_transaction }}</p>
-                            <p class="small">Hari/Tanggal : {{ \Carbon\Carbon::parse($transaction_data->transaction_timestamp)->isoFormat('dddd, D MMMM Y') }}</p>
-                            <p class="small">Pukul : {{ \Carbon\Carbon::parse($transaction_data->transaction_timestamp)->isoFormat('HH:mm') }} WIB</p>
-                        </div> --}}
                         <div class="content">
                             <div class="table-responsive">
-                                {{-- <table class="table table-striped">
-                                    <thead>
-                                        <tr>
-                                            <th class="small">#</th>
-                                            <th class="small">Nama</th>
-                                            <th class="small">Amount</th>
-                                            <th class="small">Harga/pcs</th>
-                                            <th class="small">Subtotal</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @if(session(request()->route('id_transaction')))
-                                            @foreach (session(request()->route('id_transaction')) as $transactionDetail)
-                                            @if (@$transactionDetail['transaction_id'] == request()->route('id_transaction'))
-                                            @php
-                                                $total += $transactionDetail['transaction_detail_total'];
-                                            @endphp
-                                            <tr>
-                                                <td>{{ $loop->iteration }}</td>
-                                                <td>{{ $transactionDetail['product_name'] }}</td>
-                                                <td>{{ $transactionDetail['transaction_detail_amount'] }}</td>
-                                                <td>{{ @$transactionDetail['product_price'] }}</td>
-                                                <td>{{ $transactionDetail['transaction_detail_total'] }}</td>
-                                            </tr>
-                                            @endif
-                                            @endforeach
-                                        @else
-                                            @foreach($transactionWhereHas_data as $transactionDetail)
-                                            <tr>
-                                                <td>{{ $loop->iteration }}</td>
-                                                <td>{{ $transactionDetail->product->product_name }}</td>
-                                                <td>{{ $transactionDetail->transaction_detail_amount }}</td>
-                                                <td>{{ $transactionDetail->product->product_price }}</td>
-                                                <td>{{ $transactionDetail->transaction_detail_total }}</td>
-                                            </tr>
-                                            @endforeach
-                                        @endif
-                                    </tbody>
-                                </table> --}}
                                 @if($transaction_data->transaction_status === 'pending')
                                 <div class="form-group">
                                     <label for="product_name" class="col-form-label">Uang Cash</label>
@@ -357,19 +295,19 @@
                 })
                 
             });
-            function printDiv()
-            {
-                let divContents = document.getElementById("printArea").innerHTML;
-                let a = window.open('','','height=600, width=500');
-                a.document.write('<html>');
-                a.document.write('<head>');
-                    // a.document.write('<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">');
-                    a.document.write('</head>');
-                    a.document.write('<body class="p-4">');
-                        a.document.write(divContents);
-                        a.document.write('</body></html>');
-                        a.document.close();
-                        a.print();
-                    }
-                </script>
+            // function printDiv()
+            // {
+            //     let divContents = document.getElementById("printArea").innerHTML;
+            //     let a = window.open('','','height=600, width=500');
+            //     a.document.write('<html>');
+            //     a.document.write('<head>');
+            //         // a.document.write('<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">');
+            //         a.document.write('</head>');
+            //         a.document.write('<body class="p-4">');
+            //             a.document.write(divContents);
+            //             a.document.write('</body></html>');
+            //             a.document.close();
+            //             a.print();
+            //         }
+            //     </script>
                 @endpush
