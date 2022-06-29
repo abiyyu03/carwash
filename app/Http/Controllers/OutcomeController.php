@@ -42,6 +42,7 @@ class OutcomeController extends Controller
         $outcome_data->quantity = $request->quantity;
         $outcome_data->expense_balance = $request->expense_balance;
         $outcome_data->outcome_date = date('Y-m-d');
+        $outcome_data->outcome_type_id =$request->outcome_type_id;
         $outcome_data->save();
 
         Alert::success('Sukses','Pengeluaran berhasil diatur !');
