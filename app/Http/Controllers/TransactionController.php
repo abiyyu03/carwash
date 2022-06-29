@@ -269,17 +269,22 @@ class TransactionController extends Controller
 
             //delete work detail (pekerjaan karyawan)
             DB::transaction(function() use ($id_transaction_detail, $id_transaction, $workDetail_data){
-                //if service
-                foreach ($workDetail_data as $workDetail) {
-                    $selectedWorkDetail = WorkDetail::find($workDetail->id_work_detail);
-                    $selectedWorkDetail->delete();
-                }
+                $transactionDetail_data = TransactionDetail::with('product','productCategory')->find($id_transaction_detail);
+                $isProduct = $transactionDetail_data->productCategory->productType->product_type == "produk";
                 //if produk
-                foreach($product_data->inventories as $inventory)
-                {    
-                    $inventory_data = Inventory::find($inventory->id_inventory);
-                    $inventory_data->inventory_usage += 1;
-                    $inventory_data->save();
+                if($isProduct) {
+                    foreach($product_data->inventories as $inventory)
+                    {    
+                        $inventory_data = Inventory::find($inventory->id_inventory);
+                        $inventory_data->inventory_usage += 1;
+                        $inventory_data->save();
+                    }
+                } else {
+                    //if service
+                    foreach ($workDetail_data as $workDetail) {
+                        $selectedWorkDetail = WorkDetail::find($workDetail->id_work_detail);
+                        $selectedWorkDetail->delete();
+                    }
                 }
             });
         }        
