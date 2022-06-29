@@ -20,12 +20,12 @@
 @section('content')
 <!-- create data -->
 <div class="container-fluid">
-  <div class="card mt-3">
-    <div class="card-body">
+  <div class="mt-3">
+    <div class="">
       <div class="form-inline justify-content-between">
         <div class="form-group ">
-          <a href="" class="btn bg-info ml-2"><i class="fas fa-file-excel"></i> Excel</a>
-          <a href="/report/summary/pdf" class="btn bg-info ml-2"><i class="fas fa-file"></i> PDF</a>
+          {{-- <a href="" class="btn bg-info ml-2"><i class="fas fa-file-excel"></i> Excel</a>
+          <a href="/report/summary/pdf" class="btn bg-info ml-2"><i class="fas fa-file"></i> PDF</a> --}}
         </div>
         {{-- <div class="form-group">
           <div class="input-group">
@@ -229,18 +229,19 @@ $(document).ready(function(){
       var json = data;
       obj = JSON.parse(json);
       //pendapatan
+      let pendapatanBersih = parseInt(obj.transactionDetail_total) - parseInt(obj.allTypeCost) - parseInt(obj.workDetail_commission)
       $("#produk-terjual").text(obj.transactionDetailProduk_total);
       $("#kendaraan-dicuci").text(obj.transactionDetailServis_total);
       $("#total-pelanggan").text(obj.customer);
-      $("#laba-kotor").text(obj.transactionDetail_total);
-      $("#pendapatan-bersih").text(parseInt(obj.transactionDetail_total) - parseInt(obj.allTypeCost) - parseInt(obj.workDetail_commission));
+      $("#laba-kotor").text("Rp. "+obj.transactionDetail_total);
+      $("#pendapatan-bersih").text("Rp. "+pendapatanBersih);
 
       //pengeluaran
       let totalPengeluaran = parseInt(obj.allTypeCost) + parseInt(obj.workDetail_commission);
-      $("#fix-cost").text(obj.fixCost);
-      $("#variable-cost").text(obj.variableCost);
-      $("#komisi-karyawan").text(obj.workDetail_commission);
-      $("#total-pengeluaran").text(totalPengeluaran);
+      $("#fix-cost").text("Rp. "+obj.fixCost);
+      $("#variable-cost").text("Rp. "+obj.variableCost);
+      $("#komisi-karyawan").text("Rp. "+obj.workDetail_commission);
+      $("#total-pengeluaran").text("Rp. "+totalPengeluaran);
 
       //karyawan
       $("#karyawan-masuk").text(obj.attendance_attend);
